@@ -1,13 +1,19 @@
 // @ts-check
 
+import React from 'react';
+import ReactDOM from 'react-dom';
 import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
 
 import '../assets/application.scss';
 
+import Router from './Router.jsx';
+
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
+
+ReactDOM.render(<Router />, document.getElementById('chat'));
 
 const p = document.createElement('p');
 p.classList.add('card-text');

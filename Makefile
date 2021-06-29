@@ -28,3 +28,6 @@ test:
 	npm test -s
 
 .PHONY: test
+
+push:
+	git push -u origin main
