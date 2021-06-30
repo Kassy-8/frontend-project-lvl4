@@ -10,6 +10,7 @@ import { Button, Navbar } from 'react-bootstrap';
 import AuthProvider from './AuthProvider.jsx';
 import useAuth from './useAuth.jsx';
 import LoginPage from './LoginPage.jsx';
+import Chat from './Chat.jsx';
 
 const PrivateRoute = ({ children, path }) => {
   const auth = useAuth();
@@ -34,13 +35,13 @@ const NoMatchPage = () => (
   </div>
 );
 
-const Chat = () => (
-  <div>
-    <span>
-      The Chat will be there soon
-    </span>
-  </div>
-);
+// const Chat = () => (
+//   <div>
+//     <span>
+//       The Chat will be there soon
+//     </span>
+//   </div>
+// );
 
 const AppRouter = () => (
   <AuthProvider>
