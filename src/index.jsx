@@ -7,14 +7,14 @@ import 'regenerator-runtime/runtime.js';
 
 import '../assets/application.scss';
 
-import Router from './Router.jsx';
+import AppRouter from './Router.jsx';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
 
-ReactDOM.render(<Router />, document.getElementById('chat'));
-
+ReactDOM.render(<AppRouter />, document.getElementById('chat'));
+/*
 const p = document.createElement('p');
 p.classList.add('card-text');
 p.textContent = 'It works!';
@@ -35,3 +35,4 @@ const container = document.querySelector('#chat');
 container.append(card);
 
 console.log('it works!');
+*/

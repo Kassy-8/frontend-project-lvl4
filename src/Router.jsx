@@ -53,13 +53,14 @@ const AppRouter = () => (
           Выйти
         </Button>
       </Navbar>
+
       <Switch>
-        <PrivateRoute path="/">
-          <Chat />
-        </PrivateRoute>
         <Route path="/login">
           <LoginPage />
         </Route>
+        <PrivateRoute exact path="/">
+          <Chat />
+        </PrivateRoute>
         <Route path="*">
           <NoMatchPage />
         </Route>
