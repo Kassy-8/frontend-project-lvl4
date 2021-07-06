@@ -2,18 +2,24 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
 import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
 
 import '../assets/application.scss';
 
 import AppRouter from './Router.jsx';
+import store from './store.js';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
 
-ReactDOM.render(<AppRouter />, document.getElementById('chat'));
+ReactDOM.render(
+  <Provider store={store}>
+    <AppRouter />
+  </Provider>, document.getElementById('chat'),
+);
 /*
 const p = document.createElement('p');
 p.classList.add('card-text');

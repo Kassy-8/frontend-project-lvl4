@@ -5,12 +5,7 @@ import { useFormik } from 'formik';
 import { useLocation, useHistory } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import useAuth from './useAuth.jsx';
-
-const apiPath = '/api/v1';
-const routes = {
-  loginPath: () => [apiPath, 'login'].join('/'),
-  usersPath: () => [apiPath, 'data'].join('/'),
-};
+import routes from './routes.js';
 
 const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
@@ -23,8 +18,8 @@ const LoginPage = () => {
     try {
       const response = await axios.post(routes.loginPath(), { username, password });
       // console.log('data from server', response.data);
-      const tokenString = JSON.stringify(response.data);
-      localStorage.setItem('userId', tokenString);
+      const token = JSON.stringify(response.data);
+      localStorage.setItem('userId', token);
       auth.logIn();
       const { from } = location.state || { from: { pathname: '/' } };
       history.replace(from);
