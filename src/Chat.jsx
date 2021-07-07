@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
+import {
+  Button, Col, Container, Form, Nav, Row,
+} from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-// import { selectMessages, selectCurrentChannel } from './reducers.js';
-import { selectMessages, fetchMessages } from './messagesSlice.js';
-import { selectChannels, fetchChannels } from './channelsSlice.js';
+// import { io } from 'socket.io-client';
+import { socket } from './index.jsx'; 
+import { selectChannels, fetchChannels, selectMessages } from './channelsSlice.js';
 
 const Chat = () => {
   // console.log('in Chat');
@@ -20,9 +23,13 @@ const Chat = () => {
   useEffect(() => {
     if (requestChannelStatus === 'idle') {
       dispatch(fetchChannels());
-      dispatch(fetchMessages());
     }
   }, [requestChannelStatus, dispatch]);
+
+  // const socket = io();
+  socket.on('connect', () => {
+    console.log('socket connect in chat');
+  });
 
   if (requestChannelStatus === 'failed') {
     return (
@@ -52,19 +59,74 @@ const Chat = () => {
     );
   };
 
+  const renderChannels = () => {
+    const channelsList = channelsAllIds.map((id) => (
+      <Nav.Item id={id} key={id} as="li">
+        <Nav.Link>
+          {channelsById[id].name}
+        </Nav.Link>
+      </Nav.Item>
+    ));
+
+    return (
+      <Nav className="flex-column" variant="pills" as="ul">
+        {channelsList}
+      </Nav>
+    );
+  };
+
+  const renderTextInput = () => (
+    <Form>
+      <Form.Row>
+        <Col>
+          <Form.Group>
+            <Form.Label htmlFor="message">
+              <Form.Control
+                className="mb-2"
+                id="message"
+                placeholder="Введите сообщение"
+              />
+            </Form.Label>
+          </Form.Group>
+        </Col>
+        <Col>
+          <Button type="submit" className="mb-2">
+            Отправить
+          </Button>
+        </Col>
+      </Form.Row>
+    </Form>
+  );
+
   return (
-    <div>
-      <div>
-        <ul>
-          {channelsAllIds.map((id) => (
-            <li key={id}>
-              {channelsById[id].name}
-            </li>
-          ))}
-        </ul>
-      </div>
-      {renderMessages()}
-    </div>
+    <Container fluid className=" border h-100">
+      <Row className="h-100">
+        <Col lg={3} xs={2} className="border">
+          <div className="d-flex justify-content-between m-2 p-2">
+            <span>Каналы</span>
+            <Button variant="outline-primary" size="sm">
+              +
+            </Button>
+          </div>
+          <div className="d-flex">
+            {renderChannels()}
+          </div>
+        </Col>
+        <Col className="border">
+          <div className="d-flex flex-column h-100">
+            <div className="mb-4 p-3">
+              Заголовок
+            </div>
+            <div>
+              Текстовое поле
+            </div>
+            <div className="mt-auto px-5 py-3">
+              {renderTextInput()}
+            </div>
+          </div>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

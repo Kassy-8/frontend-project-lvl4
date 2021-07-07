@@ -3,7 +3,9 @@ import * as yup from 'yup';
 import axios from 'axios';
 import { useFormik } from 'formik';
 import { useLocation, useHistory } from 'react-router-dom';
-import { Form, Button } from 'react-bootstrap';
+import {
+  Form, Button, Col, Row,
+} from 'react-bootstrap';
 import useAuth from './useAuth.jsx';
 import routes from './routes.js';
 
@@ -46,52 +48,56 @@ const LoginPage = () => {
   });
 
   return (
-    <Form onSubmit={formik.handleSubmit}>
-      <Form.Group controlId="username">
-        <Form.Label>Name</Form.Label>
-        <Form.Control
-          name="username"
-          type="name"
-          placeholder="Ваш логин"
-          value={formik.values.username}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={(formik.touched.username && formik.errors.username) || (authFailed === true)}
-        />
-        <Form.Control.Feedback
-          type="invalid"
-        >
-          {formik.errors.username}
-        </Form.Control.Feedback>
-      </Form.Group>
-      <Form.Group controlId="password">
-        <Form.Label>Password</Form.Label>
-        <Form.Control
-          type="password"
-          placeholder="Пaроль"
-          name="password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={(formik.touched.password && formik.errors.password) || (authFailed === true)}
-        />
-        <Form.Control.Feedback
-          type="invalid"
-        >
-          {formik.errors.password}
-        </Form.Control.Feedback>
-      </Form.Group>
-      {(authFailed)
-        ? (
-          <Form.Text className="text-danger m-2">
-            Неверные имя пользователя или пароль.
-          </Form.Text>
-        )
-        : null}
-      <Button variant="outline-primary" type="submit" disabled={formik.isSubmitting}>
-        Войти
-      </Button>
-    </Form>
+    <Row className=" h-100 align-items-center justify-content-center">
+      <Col xs={12} lg={6}>
+        <Form onSubmit={formik.handleSubmit}>
+          <Form.Group controlId="username">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              name="username"
+              type="name"
+              placeholder="Ваш логин"
+              value={formik.values.username}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              isInvalid={(formik.touched.username && formik.errors.username) || (authFailed === true)}
+            />
+            <Form.Control.Feedback
+              type="invalid"
+            >
+              {formik.errors.username}
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group controlId="password">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Пaроль"
+              name="password"
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              isInvalid={(formik.touched.password && formik.errors.password) || (authFailed === true)}
+            />
+            <Form.Control.Feedback
+              type="invalid"
+            >
+              {formik.errors.password}
+            </Form.Control.Feedback>
+          </Form.Group>
+          {(authFailed)
+            ? (
+              <Form.Text className="text-danger m-2">
+                Неверные имя пользователя или пароль.
+              </Form.Text>
+            )
+            : null}
+          <Button variant="outline-primary" type="submit" disabled={formik.isSubmitting}>
+            Войти
+          </Button>
+        </Form>
+      </Col>
+    </Row>
   );
 };
 

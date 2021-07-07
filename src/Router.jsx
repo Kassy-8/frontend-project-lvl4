@@ -6,7 +6,7 @@ import {
   Link,
   Redirect,
 } from 'react-router-dom';
-import { Button, Navbar } from 'react-bootstrap';
+import { Button, Col, Container, Navbar, Row } from 'react-bootstrap';
 import AuthProvider from './AuthProvider.jsx';
 import useAuth from './useAuth.jsx';
 import LoginPage from './LoginPage.jsx';
@@ -34,40 +34,72 @@ const NoMatchPage = () => (
     </span>
   </div>
 );
-
-// const Chat = () => (
-//   <div>
-//     <span>
-//       The Chat will be there soon
-//     </span>
-//   </div>
-// );
-
+// Кнопка появляется когда пользователь залогинился, иначе null
 const AppRouter = () => (
   <AuthProvider>
-    <Router>
-      <Navbar>
-        <Navbar.Brand as={Link} to="/">
-          Hexlet-Chat
-        </Navbar.Brand>
-        <Button>
-          Выйти
-        </Button>
-      </Navbar>
-
-      <Switch>
-        <Route path="/login">
-          <LoginPage />
-        </Route>
-        <PrivateRoute exact path="/">
-          <Chat />
-        </PrivateRoute>
-        <Route path="*">
-          <NoMatchPage />
-        </Route>
-      </Switch>
-    </Router>
+    <Container fluid className="h-100">
+      <Router>
+        <Row>
+          <Col>
+            <Navbar className="justify-content-between">
+              <Navbar.Brand as={Link} to="/">
+                Hexlet-Chat
+              </Navbar.Brand>
+              <Button>
+                Выйти
+              </Button>
+            </Navbar>
+          </Col>
+        </Row>
+        <Switch>
+          <Route path="/login">
+            <LoginPage />
+          </Route>
+          <Route exact path="/">
+            <Chat />
+          </Route>
+          <Route path="*">
+            <NoMatchPage />
+          </Route>
+        </Switch>
+      </Router>
+    </Container>
   </AuthProvider>
 );
 
 export default AppRouter;
+
+/*
+const AppRouter = () => (
+  <AuthProvider>
+    <Container fluid className="h-100">
+      <Router>
+        <Row>
+          <Col>
+            <Navbar className="justify-content-between">
+              <Navbar.Brand as={Link} to="/">
+                Hexlet-Chat
+              </Navbar.Brand>
+              <Button>
+                Выйти
+              </Button>
+            </Navbar>
+          </Col>
+        </Row>
+        <Switch>
+          <Route path="/login">
+            <LoginPage />
+          </Route>
+          <PrivateRoute exact path="/">
+            <Chat />
+          </PrivateRoute>
+          <Route path="*">
+            <NoMatchPage />
+          </Route>
+        </Switch>
+      </Router>
+    </Container>
+  </AuthProvider>
+);
+
+*/

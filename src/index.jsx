@@ -3,6 +3,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { io } from 'socket.io-client';
+
 import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
 
@@ -14,6 +16,14 @@ import store from './store.js';
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
+export const socket = io();
+socket.on('connect', () => {
+  console.log('socket connect', socket.connected);
+});
+
+socket.on('disconnect', () => {
+  console.log('socket connected on disconnected', socket.connected);
+});
 
 ReactDOM.render(
   <Provider store={store}>

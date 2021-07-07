@@ -10,8 +10,12 @@ export const fetchChannels = createAsyncThunk('channels/fetchChannels', async ()
 });
 
 const initStateChannels = {
-  items: {
+  channelsItems: {
     byId: {}, allIds: [],
+  },
+  messagesItems: {
+    byId: {},
+    allIds: [],
   },
   currentChannel: null,
   status: 'idle',
@@ -33,12 +37,18 @@ const channelsSlice = createSlice({
       state.status = 'loading';
     },
     [fetchChannels.fulfilled]: (state, action) => {
-      const { payload: { channels, currentChannelId } } = action;
+      const { payload: { channels, messages, currentChannelId } } = action;
       state.status = 'succeeded';
       state.currentChannel = currentChannelId;
-      state.items.allIds = channels.map((channel) => channel.id);
+
+      state.channelsItems.allIds = channels.map((channel) => channel.id);
       channels.forEach((channel) => {
-        state.items.byId[channel.id] = channel;
+        state.channelsItems.byId[channel.id] = channel;
+      });
+
+      state.messagesItems.allIds = messages.map((message) => message.id);
+      messages.forEach((message) => {
+        state.messagesItems.byId[message.id] = message;
       });
     },
     [fetchChannels.rejected]: (state, action) => {
@@ -49,5 +59,6 @@ const channelsSlice = createSlice({
 });
 
 export const { addChannel } = channelsSlice.actions;
-export const selectChannels = (state) => state.channels.items;
+export const selectChannels = (state) => state.channels.channelsItems;
+export const selectMessages = (state) => state.channels.messagesItems;
 export default channelsSlice.reducer;
