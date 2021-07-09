@@ -13,10 +13,7 @@ const initStateChannels = {
   channelsItems: {
     byId: {}, allIds: [],
   },
-  messagesItems: {
-    byId: {},
-    allIds: [],
-  },
+  messages: [],
   currentChannel: null,
   status: 'idle',
   error: null,
@@ -30,6 +27,10 @@ const channelsSlice = createSlice({
       const { payload: { channel } } = action;
       state.items.byId[channel.id] = channel;
       state.items.allIds.push(channel.id);
+    },
+    recieveNewMessage: (state, action) => {
+      const { payload } = action;
+      state.messages.push(payload);
     },
   },
   extraReducers: {
@@ -46,10 +47,7 @@ const channelsSlice = createSlice({
         state.channelsItems.byId[channel.id] = channel;
       });
 
-      state.messagesItems.allIds = messages.map((message) => message.id);
-      messages.forEach((message) => {
-        state.messagesItems.byId[message.id] = message;
-      });
+      state.messages = messages;
     },
     [fetchChannels.rejected]: (state, action) => {
       state.status = 'failed';
@@ -58,7 +56,7 @@ const channelsSlice = createSlice({
   },
 });
 
-export const { addChannel } = channelsSlice.actions;
+export const { recieveNewMessage } = channelsSlice.actions;
 export const selectChannels = (state) => state.channels.channelsItems;
-export const selectMessages = (state) => state.channels.messagesItems;
+export const selectMessages = (state) => state.channels.messages;
 export default channelsSlice.reducer;

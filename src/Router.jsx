@@ -8,7 +8,7 @@ import {
 } from 'react-router-dom';
 import { Button, Col, Container, Navbar, Row } from 'react-bootstrap';
 import AuthProvider from './AuthProvider.jsx';
-import useAuth from './useAuth.jsx';
+import useAuth from './useAuth.js';
 import LoginPage from './LoginPage.jsx';
 import Chat from './Chat.jsx';
 
@@ -55,9 +55,9 @@ const AppRouter = () => (
           <Route path="/login">
             <LoginPage />
           </Route>
-          <Route exact path="/">
+          <PrivateRoute exact path="/">
             <Chat />
-          </Route>
+          </PrivateRoute>
           <Route path="*">
             <NoMatchPage />
           </Route>

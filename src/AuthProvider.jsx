@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
-import authContext from './authContext.jsx';
+import authContext from './authContext.js';
 
 const AuthProvider = ({ children }) => {
-  const [userLoggedIn, setLoggedIn] = useState(false);
+  const [{
+    userLoggedIn, username,
+  }, setLoggedIn] = useState({ userLoggedIn: false, username: null });
 
-  const logIn = () => setLoggedIn(true);
-  const logOut = () => setLoggedIn(false);
+  const logIn = (user) => setLoggedIn({ userLoggedIn: true, username: user });
+  const logOut = () => setLoggedIn({ userLoggedIn: false, username: null });
 
   return (
-    <authContext.Provider value={{ userLoggedIn, logIn, logOut }}>
+    <authContext.Provider value={{
+      userLoggedIn, username, logIn, logOut,
+    }}
+    >
       {children}
     </authContext.Provider>
   );

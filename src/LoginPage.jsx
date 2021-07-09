@@ -6,7 +6,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import {
   Form, Button, Col, Row,
 } from 'react-bootstrap';
-import useAuth from './useAuth.jsx';
+import useAuth from './useAuth.js';
 import routes from './routes.js';
 
 const LoginPage = () => {
@@ -20,9 +20,10 @@ const LoginPage = () => {
     try {
       const response = await axios.post(routes.loginPath(), { username, password });
       // console.log('data from server', response.data);
+      // Разобраться здесь с джейсоном и что куда парсить и сохранять
       const token = JSON.stringify(response.data);
       localStorage.setItem('userId', token);
-      auth.logIn();
+      auth.logIn(response.data.username);
       const { from } = location.state || { from: { pathname: '/' } };
       history.replace(from);
     } catch (error) {

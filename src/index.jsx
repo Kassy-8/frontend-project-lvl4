@@ -3,7 +3,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { io } from 'socket.io-client';
 
 import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
@@ -12,22 +11,26 @@ import '../assets/application.scss';
 
 import AppRouter from './Router.jsx';
 import store from './store.js';
+import WebsocketProvider from './WebsocketProvider.jsx';
+import WebSocketProvider from './WebsocketProvider.jsx';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
-export const socket = io();
-socket.on('connect', () => {
-  console.log('socket connect', socket.connected);
-});
+// export const socket = io();
+// socket.on('connect', () => {
+//   console.log('socket connect', socket.connected);
+// });
 
-socket.on('disconnect', () => {
-  console.log('socket connected on disconnected', socket.connected);
-});
+// socket.on('disconnect', () => {
+//   console.log('socket connected on disconnected', socket.connected);
+// });
 
 ReactDOM.render(
   <Provider store={store}>
-    <AppRouter />
+    <WebSocketProvider>
+      <AppRouter />
+    </WebSocketProvider>
   </Provider>, document.getElementById('chat'),
 );
 /*
