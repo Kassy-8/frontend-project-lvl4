@@ -9,27 +9,18 @@ import 'regenerator-runtime/runtime.js';
 
 import '../assets/application.scss';
 
-import AppRouter from './Router.jsx';
 import store from './store.js';
-import WebsocketProvider from './WebsocketProvider.jsx';
-import WebSocketProvider from './WebsocketProvider.jsx';
+import Router from './components/Router.jsx';
+import WebSocketProvider from './components/WebsocketProvider.jsx';
 
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
-// export const socket = io();
-// socket.on('connect', () => {
-//   console.log('socket connect', socket.connected);
-// });
-
-// socket.on('disconnect', () => {
-//   console.log('socket connected on disconnected', socket.connected);
-// });
 
 ReactDOM.render(
   <Provider store={store}>
     <WebSocketProvider>
-      <AppRouter />
+      <Router />
     </WebSocketProvider>
   </Provider>, document.getElementById('chat'),
 );

@@ -6,9 +6,11 @@ import {
   Link,
   Redirect,
 } from 'react-router-dom';
-import { Button, Col, Container, Navbar, Row } from 'react-bootstrap';
+import {
+  Button, Col, Container, Navbar, Row,
+} from 'react-bootstrap';
+import useAuth from '../useAuth.js';
 import AuthProvider from './AuthProvider.jsx';
-import useAuth from './useAuth.js';
 import LoginPage from './LoginPage.jsx';
 import Chat from './Chat.jsx';
 

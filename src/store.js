@@ -1,12 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { usersSlice } from './reducers.js';
-import channelsSlice from './channelsSlice.js';
+import channelsSlice from './reducers/channelsSlice.js';
+import messagesSlice from './reducers/messagesSlice.js';
 
 export default configureStore({
   reducer: {
-    users: usersSlice,
     channels: channelsSlice,
+    messages: messagesSlice,
   },
 });
-
-// export default store;

@@ -6,8 +6,8 @@ import { useLocation, useHistory } from 'react-router-dom';
 import {
   Form, Button, Col, Row,
 } from 'react-bootstrap';
-import useAuth from './useAuth.js';
-import routes from './routes.js';
+import useAuth from '../useAuth.js';
+import routes from '../routes.js';
 
 const LoginPage = () => {
   const [authFailed, setAuthFailed] = useState(false);
@@ -61,7 +61,9 @@ const LoginPage = () => {
               value={formik.values.username}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              isInvalid={(formik.touched.username && formik.errors.username) || (authFailed === true)}
+              isInvalid={
+                (formik.touched.username && formik.errors.username) || (authFailed === true)
+              }
             />
             <Form.Control.Feedback
               type="invalid"
@@ -78,7 +80,9 @@ const LoginPage = () => {
               value={formik.values.password}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              isInvalid={(formik.touched.password && formik.errors.password) || (authFailed === true)}
+              isInvalid={
+                (formik.touched.password && formik.errors.password) || (authFailed === true)
+              }
             />
             <Form.Control.Feedback
               type="invalid"
