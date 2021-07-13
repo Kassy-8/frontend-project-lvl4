@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { createSlice, createEntityAdapter, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 // import axios from 'axios';
 // import routes from '../routes.js';
 
@@ -15,7 +15,7 @@ const channelsSlice = createSlice({
   name: 'channels',
   initialState: initState,
   reducers: {
-    addChannels: channelsAdapter.addOne,
+    addChannel: channelsAdapter.addOne,
     fetchChannels: (state, { payload }) => {
       channelsAdapter.upsertMany(state, payload);
     },
@@ -46,12 +46,13 @@ const channelsSlice = createSlice({
   // },
 });
 
-// export const selectChannelsAll = (state) => state.channels.entities;
-export const { fetchChannels, setCurrentChannel } = channelsSlice.actions;
+export const { addChannel, fetchChannels, setCurrentChannel } = channelsSlice.actions;
 export const {
   selectEntities: selectAllChannels,
   selectIds: selectChannelsIds,
   selectById: selectChannelById,
 } = channelsAdapter.getSelectors((state) => state.channels);
+export const selectCurrentChannelId = (state) => state.channels.currentChannelId;
+export const selectCurrentChannel = (state) => selectChannelById(state, selectCurrentChannelId(state));
 
 export default channelsSlice.reducer;

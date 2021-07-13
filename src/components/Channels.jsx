@@ -5,37 +5,64 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import cn from 'classnames';
-import { selectAllChannels, selectChannelsIds, selectChannelsAll } from '../reducers/channelsSlice.js';
+import {
+  selectAllChannels,
+  selectChannelsIds,
+  setCurrentChannel,
+  selectCurrentChannelId,
+  selectCurrentChannel,
+} from '../reducers/channelsSlice.js';
+import { showModal } from '../reducers/modalSlice.js';
+
+const modalTypes = {
+  adding: 'adding',
+  remove: 'remove',
+  rename: 'rename',
+};
 
 const Channels = () => {
-  // console.log('in Channels');
-  // console.log({ authInfo });
   const dispatch = useDispatch();
 
   const channels = useSelector(selectAllChannels);
-  // const channelsAll = useSelector(selectChannelsAll);
-  // console.log('channelsAll', channelsAll);
-
   const channelsIds = useSelector(selectChannelsIds);
+  // const currentChannelId = useSelector((state) => state.channels.currentChannelId);
+  const currentChannelId = useSelector(selectCurrentChannelId);
+  const currentChannel = useSelector(selectCurrentChannel);
 
-  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
-  // console.log('currentChannel', currentChannelId);
+  const toggleChannel = (id) => dispatch(setCurrentChannel(id));
+  const showModalWindow = (type, channel) => dispatch(showModal({
+    modalType: type, channelInfo: channel,
+  }));
 
   const renderChannels = () => {
     if (channelsIds.length === 0) {
       return null;
     }
 
-    const channelsList = channelsIds.map((id) => (
-      <Nav.Item id={id} key={id} as="li">
-        <Nav.Link>
-          {channels[id].name}
-        </Nav.Link>
-      </Nav.Item>
-    ));
+    const isActiveChannel = (id) => id === currentChannelId;
+
+    const channelsList = channelsIds.map((id) => {
+      const classes = cn({
+        'w-100 rounded-0 btn': true,
+        'btn-secondary text-light': isActiveChannel(id),
+      });
+      return (
+        <Nav.Item
+          id={id}
+          key={id}
+          as="li"
+          className="px-100"
+          onClick={() => toggleChannel(id)}
+        >
+          <Nav.Link className={classes}>
+            {`# ${channels[id].name}`}
+          </Nav.Link>
+        </Nav.Item>
+      );
+    });
 
     return (
-      <Nav className="flex-column" variant="pills" as="ul">
+      <Nav className="flex-column overflow-auto" fill variant="pills" as="ul">
         {channelsList}
       </Nav>
     );
@@ -45,7 +72,11 @@ const Channels = () => {
     <>
       <div className="d-flex justify-content-between m-2 p-2">
         <span>Каналы</span>
-        <Button variant="outline-primary" size="sm">
+        <Button
+          variant="outline-primary"
+          size="sm"
+          onClick={() => showModalWindow(modalTypes.adding, null)}
+        >
           +
         </Button>
       </div>
