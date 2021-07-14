@@ -34,7 +34,6 @@ const AddChannel = () => {
   const renderForm = () => (
     <Form onSubmit={formik.handleSubmit}>
       <Form.Group>
-        <Form.Label>Name</Form.Label>
         <Form.Control
           data-testid="input-body"
           name="name"
@@ -45,7 +44,7 @@ const AddChannel = () => {
           value={formik.values.name}
         />
       </Form.Group>
-      <Button variant="outline-secondary" onClick={() => dispatch(closeModal())}>
+      <Button variant="outline-secondary mr-2" onClick={() => dispatch(closeModal())}>
         Отменить
       </Button>
       <Button variant="outline-primary" type="submit" disabled={!formik.dirty}>
@@ -56,8 +55,11 @@ const AddChannel = () => {
 
   return (
     <Modal.Dialog>
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Modal.Title>Добавить канал</Modal.Title>
+        <Button className="close" onClick={() => dispatch(closeModal())}>
+          x
+        </Button>
       </Modal.Header>
       <Modal.Body>
         {renderForm()}

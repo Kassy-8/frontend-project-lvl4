@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   Col, Container, Row,
 } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import routes from '../routes.js';
 import { fetchChannels, setCurrentChannel } from '../reducers/channelsSlice.js';
@@ -10,39 +10,17 @@ import { fetchMessages } from '../reducers/messagesSlice.js';
 import Channels from './Channels.jsx';
 import ChatWindow from './ChatWindow.jsx';
 import getAuthHeader from '../getAuthHeader.js';
-import AddChannel from './modals/AddChannel.jsx';
-// import RenameChannel from './modals/RenameChannel.jsx';
-// import RemoveChannel from './modals/RemoveChannel.jsx';
-
-const modals = {
-  adding: AddChannel,
-  // remove: RemoveChannel,
-  // rename: RenameChannel,
-};
-
-const renderModal = (modalsInfo) => {
-  if (!modalsInfo) {
-    return null;
-  }
-
-  const Component = modals[modalsInfo.type];
-  return (
-    <Component />
-  );
-};
+import ModalWindow from './modals/ModalWindow.jsx';
 
 const Chat = () => {
-  // console.log('in Chat');
   const [networkError, setNetworkError] = useState(null);
   const dispatch = useDispatch();
-  const modalsInfo = useSelector((state) => state.modalsInfo);
 
   useEffect(() => {
     const fetchChatDatas = async () => {
       try {
         const { data } = await axios.get(routes.datasPath(), { headers: getAuthHeader() });
         const { channels, messages, currentChannelId } = data;
-        // console.log({ data });
         dispatch(fetchChannels(channels));
         dispatch(setCurrentChannel(currentChannelId));
         dispatch(fetchMessages(messages));
@@ -72,7 +50,8 @@ const Chat = () => {
   }
 
   return (
-    <Container fluid className=" border h-100 overflow-hidden">
+    <Container fluid className="border h-100 overflow-hidden">
+      <ModalWindow />
       <Row className="h-100">
         <Col lg={2} xs={2} className="h-100 d-flex flex-column border">
           <Channels />
@@ -81,7 +60,6 @@ const Chat = () => {
           <ChatWindow />
         </Col>
       </Row>
-      {renderModal(modalsInfo)}
     </Container>
   );
 };

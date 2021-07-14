@@ -30,6 +30,7 @@ const Channels = () => {
   const currentChannel = useSelector(selectCurrentChannel);
 
   const toggleChannel = (id) => dispatch(setCurrentChannel(id));
+
   const showModalWindow = (type, channel) => dispatch(showModal({
     modalType: type, channelInfo: channel,
   }));
