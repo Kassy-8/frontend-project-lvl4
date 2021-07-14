@@ -1,13 +1,13 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import AddChannel from './AddChannel.jsx';
-// import RenameChannel from './modals/RenameChannel.jsx';
-// import RemoveChannel from './modals/RemoveChannel.jsx';
+import RenameChannel from './RenameChannel.jsx';
+import RemoveChannel from './RemoveChannel.jsx';
 
 const modals = {
-  adding: AddChannel,
-  // remove: RemoveChannel,
-  // rename: RenameChannel,
+  addChannel: AddChannel,
+  removeChannel: RemoveChannel,
+  renameChannel: RenameChannel,
 };
 
 const ModalWindow = () => {

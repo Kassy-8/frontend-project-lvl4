@@ -5,8 +5,7 @@ import {
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import routes from '../routes.js';
-import { fetchChannels, setCurrentChannel } from '../reducers/channelsSlice.js';
-import { fetchMessages } from '../reducers/messagesSlice.js';
+import { fetchChannels } from '../reducers/channelsSlice.js';
 import Channels from './Channels.jsx';
 import ChatWindow from './ChatWindow.jsx';
 import getAuthHeader from '../getAuthHeader.js';
@@ -20,10 +19,7 @@ const Chat = () => {
     const fetchChatDatas = async () => {
       try {
         const { data } = await axios.get(routes.datasPath(), { headers: getAuthHeader() });
-        const { channels, messages, currentChannelId } = data;
-        dispatch(fetchChannels(channels));
-        dispatch(setCurrentChannel(currentChannelId));
-        dispatch(fetchMessages(messages));
+        dispatch(fetchChannels(data));
       } catch (error) {
         console.log('error in fetchChatDatas', error);
         if (error.isAxiosError) {
@@ -53,7 +49,7 @@ const Chat = () => {
     <Container fluid className="border h-100 overflow-hidden">
       <ModalWindow />
       <Row className="h-100">
-        <Col lg={2} xs={2} className="h-100 d-flex flex-column border">
+        <Col md={2} className="col-4 h-100 border-end pt-5 px-0">
           <Channels />
         </Col>
         <Col className="h-100 d-flex flex-column border">

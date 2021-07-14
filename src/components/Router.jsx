@@ -57,9 +57,9 @@ const AppRouter = () => (
           <Route path="/login">
             <LoginPage />
           </Route>
-          <PrivateRoute exact path="/">
+          <Route exact path="/">
             <Chat />
-          </PrivateRoute>
+          </Route>
           <Route path="*">
             <NoMatchPage />
           </Route>

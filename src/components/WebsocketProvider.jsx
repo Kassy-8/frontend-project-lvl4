@@ -3,12 +3,16 @@ import { useDispatch } from 'react-redux';
 import { io } from 'socket.io-client';
 import webSocketContext from '../webSocketContext.js';
 import { recieveNewMessage } from '../reducers/messagesSlice.js';
-import { addChannel } from '../reducers/channelsSlice.js';
+import {
+  addChannel, removeUsersChannel, renameUsersChannel,
+} from '../reducers/channelsSlice.js';
 
 const WebSocketProvider = ({ children }) => {
   const dispatch = useDispatch();
+
   const socket = io();
 
+  // Подумать над диспетчеризацией
   const sendMessage = (newMessage) => {
     socket.emit('newMessage', newMessage);
   };
@@ -25,15 +29,28 @@ const WebSocketProvider = ({ children }) => {
     dispatch(addChannel(channel));
   });
 
-  // check connection, development purpose
-  socket.on('connect', () => {
-    console.log('websocket connection on');
+  const removeChannel = (removingChannel) => {
+    socket.emit('removeChannel', removingChannel);
+  };
+
+  socket.on('removeChannel', (removingChannel) => {
+    dispatch(removeUsersChannel(removingChannel));
+  });
+
+  const renameChannel = (renamingChannel) => {
+    socket.emit('renameChannel', renamingChannel);
+  };
+
+  socket.on('renameChannel', (renamingChannel) => {
+    dispatch(renameUsersChannel(renamingChannel));
   });
 
   const socketContext = {
     socket,
     sendMessage,
     addNewChannel,
+    removeChannel,
+    renameChannel,
   };
 
   return (

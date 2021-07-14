@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useRef } from 'react';
 import {
   Button, Col, Form,
 } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import cn from 'classnames';
 import { selectAllMessages } from '../reducers/messagesSlice.js';
@@ -15,7 +15,6 @@ const ChatWindow = () => {
   const webSocket = useContext(webSocketContext);
   const authInfo = useAuth();
   // console.log({ authInfo });
-  const dispatch = useDispatch();
   const inputRef = useRef();
   const endElement = useRef();
 
@@ -27,7 +26,7 @@ const ChatWindow = () => {
   // console.log('currentChannelId', currentChannelId);
   const currentChannel = useSelector((state) => selectChannelById(state, currentChannelId));
 
-  const messagesForActiveChannel = Object.values(messages)
+  const messagesForActiveChannel = messages
     ?.filter((message) => message.channelId === currentChannelId);
   // console.log({ messagesForActiveChannel });
 

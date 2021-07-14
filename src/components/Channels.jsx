@@ -1,33 +1,29 @@
 import React from 'react';
 import {
-  Button, Form, Nav,
+  Button, Nav, Dropdown, ButtonGroup,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFormik } from 'formik';
 import cn from 'classnames';
 import {
-  selectAllChannels,
+  selectAllChannelsAsObject,
   selectChannelsIds,
   setCurrentChannel,
   selectCurrentChannelId,
-  selectCurrentChannel,
 } from '../reducers/channelsSlice.js';
 import { showModal } from '../reducers/modalSlice.js';
 
 const modalTypes = {
-  adding: 'adding',
-  remove: 'remove',
-  rename: 'rename',
+  add: 'addChannel',
+  remove: 'removeChannel',
+  rename: 'renameChannel',
 };
 
 const Channels = () => {
   const dispatch = useDispatch();
 
-  const channels = useSelector(selectAllChannels);
+  const channels = useSelector(selectAllChannelsAsObject);
   const channelsIds = useSelector(selectChannelsIds);
-  // const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   const currentChannelId = useSelector(selectCurrentChannelId);
-  const currentChannel = useSelector(selectCurrentChannel);
 
   const toggleChannel = (id) => dispatch(setCurrentChannel(id));
 
@@ -35,35 +31,62 @@ const Channels = () => {
     modalType: type, channelInfo: channel,
   }));
 
+  const isActiveChannel = (id) => id === currentChannelId;
+
+  const getChannelClasses = (id) => cn({
+    'btn w-100 rounded-0  text-left': true,
+    'btn-secondary': isActiveChannel(id),
+  });
+
+  const renderDefaultChannel = (id) => (
+    <Button variant={false} className={getChannelClasses(id)} onClick={() => toggleChannel(id)}>
+      {`# ${channels[id].name}`}
+    </Button>
+  );
+
+  const renderUsersChannel = (id) => (
+    <Dropdown as={ButtonGroup} className="d-flex">
+      <Button variant={false} className={getChannelClasses(id)} onClick={() => toggleChannel(id)}>
+        {`# ${channels[id].name}`}
+      </Button>
+
+      <Dropdown.Toggle className={(isActiveChannel(id)) ? 'btn-secondary' : 'btn-light'} variant={false} split id="dropdown-split-basic" />
+
+      <Dropdown.Menu align="end">
+        <Dropdown.Item
+          onClick={() => dispatch(showModalWindow(modalTypes.remove, channels[id]))}
+        >
+          Удалить
+        </Dropdown.Item>
+        <Dropdown.Item
+          onClick={() => dispatch(showModalWindow(modalTypes.rename, channels[id]))}
+        >
+          Переименовать
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
+  );
+
   const renderChannels = () => {
     if (channelsIds.length === 0) {
       return null;
     }
 
-    const isActiveChannel = (id) => id === currentChannelId;
-
-    const channelsList = channelsIds.map((id) => {
-      const classes = cn({
-        'w-100 rounded-0 btn': true,
-        'btn-secondary text-light': isActiveChannel(id),
-      });
-      return (
-        <Nav.Item
-          id={id}
-          key={id}
-          as="li"
-          className="px-100"
-          onClick={() => toggleChannel(id)}
-        >
-          <Nav.Link className={classes}>
-            {`# ${channels[id].name}`}
-          </Nav.Link>
-        </Nav.Item>
-      );
-    });
+    const channelsList = channelsIds.map((id) => (
+      <Nav.Item
+        id={id}
+        key={id}
+        as="li"
+        className="w-100"
+      >
+        {(channels[id].removable)
+          ? renderUsersChannel(id)
+          : renderDefaultChannel(id)}
+      </Nav.Item>
+    ));
 
     return (
-      <Nav className="flex-column overflow-auto" fill variant="pills" as="ul">
+      <Nav className="flex-column overflow-auto px-2" fill variant="pills" as="ul">
         {channelsList}
       </Nav>
     );
@@ -71,19 +94,18 @@ const Channels = () => {
 
   return (
     <>
-      <div className="d-flex justify-content-between m-2 p-2">
+      <div className="d-flex justify-content-between mb-2 pr-4 pl-2">
         <span>Каналы</span>
         <Button
           variant="outline-primary"
           size="sm"
-          onClick={() => showModalWindow(modalTypes.adding, null)}
+          className="p-1 text-primary"
+          onClick={() => showModalWindow(modalTypes.add, null)}
         >
           +
         </Button>
       </div>
-      <div className="d-flex">
-        {renderChannels()}
-      </div>
+      {renderChannels()}
     </>
   );
 };
