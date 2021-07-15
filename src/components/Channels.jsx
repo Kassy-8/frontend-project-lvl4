@@ -54,12 +54,12 @@ const Channels = () => {
 
       <Dropdown.Menu align="end">
         <Dropdown.Item
-          onClick={() => dispatch(showModalWindow(modalTypes.remove, channels[id]))}
+          onClick={() => showModalWindow(modalTypes.remove, channels[id])}
         >
           Удалить
         </Dropdown.Item>
         <Dropdown.Item
-          onClick={() => dispatch(showModalWindow(modalTypes.rename, channels[id]))}
+          onClick={() => showModalWindow(modalTypes.rename, channels[id])}
         >
           Переименовать
         </Dropdown.Item>

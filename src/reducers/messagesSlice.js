@@ -19,7 +19,6 @@ const messagesSlice = createSlice({
     },
     [removeUsersChannel]: (state, { payload }) => {
       const { id } = payload;
-      console.log('id from remove users from messages', id);
       state.messages = state.messages.filter(({ channelId }) => channelId !== id);
     },
   },

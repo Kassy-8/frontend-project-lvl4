@@ -4,9 +4,10 @@ import {
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
-import cn from 'classnames';
 import { selectAllMessages } from '../reducers/messagesSlice.js';
-import { selectChannelById } from '../reducers/channelsSlice.js';
+import {
+  selectCurrentChannelId, selectCurrentChannel,
+} from '../reducers/channelsSlice.js';
 import webSocketContext from '../webSocketContext.js';
 import useAuth from '../useAuth.js';
 
@@ -22,9 +23,9 @@ const ChatWindow = () => {
   // console.log('all messages in chat window', messages);
 
   // Есть селекторы для этих случаев
-  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
+  const currentChannelId = useSelector(selectCurrentChannelId);
   // console.log('currentChannelId', currentChannelId);
-  const currentChannel = useSelector((state) => selectChannelById(state, currentChannelId));
+  const currentChannel = useSelector(selectCurrentChannel);
 
   const messagesForActiveChannel = messages
     ?.filter((message) => message.channelId === currentChannelId);

@@ -2,36 +2,31 @@ import React, { useState, useRef } from 'react';
 import * as yup from 'yup';
 import axios from 'axios';
 import { useFormik } from 'formik';
-import { useLocation, useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import {
   Form, Button, Col, Row,
 } from 'react-bootstrap';
 import useAuth from '../useAuth.js';
 import routes from '../routes.js';
 
-const LoginPage = () => {
-  const [authFailed, setAuthFailed] = useState(false);
+const Registration = () => {
+  const [registrationFailed, setRegistrationFailed] = useState(false);
   const nameInputRef = useRef();
   const history = useHistory();
-  const location = useLocation();
   const auth = useAuth();
 
-  const logInUser = async (values) => {
+  const signUpUser = async (values) => {
     const { username, password } = values;
     try {
-      const response = await axios.post(routes.loginPath(), { username, password });
-      // console.log('data from server', response.data);
-      // Разобраться здесь с джейсоном и что куда парсить и сохранять
+      const response = await axios.post(routes.signupPath(), { username, password });
       const token = JSON.stringify(response.data);
       localStorage.setItem('userId', token);
       auth.logIn(response.data.username);
-      const { from } = location.state || { from: { pathname: '/' } };
-      history.replace(from);
+      history.replace({ pathname: '/' });
     } catch (error) {
-      if (error.isAxiosError && error.response.status === 401) {
-        setAuthFailed(true);
+      if (error.isAxiosError && error.response.status === 409) {
+        setRegistrationFailed(true);
         nameInputRef.current.select();
-        // select input with username
         return;
       }
       console.log(error);
@@ -42,31 +37,40 @@ const LoginPage = () => {
     initialValues: {
       username: '',
       password: '',
+      passwordConfirmation: '',
     },
     validationSchema: yup.object({
-      username: yup.string().trim().required('Required'),
-      password: yup.string().trim().required('Required'),
+      username: yup.string()
+        .required('Required')
+        .trim()
+        .min(3, 'От 3 до 20 символов')
+        .max(20, 'От 3 до 20 символов'),
+      password: yup.string()
+        .required('Required')
+        .min(6, 'Не менее 6 символов'),
+      passwordConfirmation: yup.string()
+        .required('Required')
+        .oneOf([yup.ref('password')], 'Пароли должны совпадать'),
     }),
-    onSubmit: logInUser,
+    onSubmit: signUpUser,
   });
 
   return (
-    <Row className=" h-100 align-items-center justify-content-center">
+    <Row className="h-100 align-items-center justify-content-center">
       <Col xs={12} lg={6}>
-        <h1 className="m-2 d-flex justify-content-center">Войти</h1>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group controlId="username">
-            <Form.Label>Name</Form.Label>
             <Form.Control
               name="username"
               type="name"
-              placeholder="Ваш логин"
+              placeholder="Имя пользователя"
               ref={nameInputRef}
               value={formik.values.username}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               isInvalid={
-                (formik.touched.username && formik.errors.username) || (authFailed === true)
+                (formik.touched.username && formik.errors.username)
+                || (registrationFailed === true)
               }
             />
             <Form.Control.Feedback
@@ -76,7 +80,6 @@ const LoginPage = () => {
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="password">
-            <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Пaроль"
@@ -85,7 +88,8 @@ const LoginPage = () => {
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               isInvalid={
-                (formik.touched.password && formik.errors.password) || (authFailed === true)
+                (formik.touched.password && formik.errors.password)
+                || (registrationFailed === true)
               }
             />
             <Form.Control.Feedback
@@ -94,10 +98,29 @@ const LoginPage = () => {
               {formik.errors.password}
             </Form.Control.Feedback>
           </Form.Group>
-          {(authFailed)
+          <Form.Group controlId="passwordConfirmation">
+            <Form.Control
+              type="password"
+              placeholder="Подтвердите пaроль"
+              name="passwordConfirmation"
+              value={formik.values.passwordConfirmation}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              isInvalid={
+                (formik.touched.passwordConfirmation && formik.errors.passwordConfirmation)
+                || (registrationFailed === true)
+              }
+            />
+            <Form.Control.Feedback
+              type="invalid"
+            >
+              {formik.errors.passwordConfirmation}
+            </Form.Control.Feedback>
+          </Form.Group>
+          {(registrationFailed)
             ? (
               <Form.Text className="text-danger m-2">
-                Неверные имя пользователя или пароль.
+                Такой пользователь уже существует.
               </Form.Text>
             )
             : null}
@@ -105,15 +128,9 @@ const LoginPage = () => {
             Войти
           </Button>
         </Form>
-        <div className="m-2 d-flex justify-content-center">
-          <p>
-            <span>Нет аккаунта? </span>
-            <Link to="signup">Регистрация</Link>
-          </p>
-        </div>
       </Col>
     </Row>
   );
 };
 
-export default LoginPage;
+export default Registration;

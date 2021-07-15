@@ -13,7 +13,7 @@ import {
 
 const AddChannel = () => {
   const channels = useSelector(selectAllChannels);
-  const channelsNames = channels.map(({ name }) => name);
+  const reservedChannelsNames = channels.map(({ name }) => name);
 
   const modalInfo = useSelector((state) => state.modalInfo);
   const { isOpen } = modalInfo;
@@ -39,7 +39,7 @@ const AddChannel = () => {
       name: '',
     },
     validationSchema: yup.object({
-      name: yup.mixed().notOneOf(channelsNames, 'Такой канал уже существует'),
+      name: yup.mixed().notOneOf(reservedChannelsNames, 'Такой канал уже существует'),
     }),
     onSubmit,
   });

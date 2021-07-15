@@ -13,7 +13,7 @@ import {
 
 const RenameChannel = () => {
   const channels = useSelector(selectAllChannels);
-  const channelsNames = channels.map(({ name }) => name);
+  const reservedChannelsNames = channels.map(({ name }) => name);
 
   const modalInfo = useSelector((state) => state.modalInfo);
   const { isOpen, info: channelInfo } = modalInfo;
@@ -22,10 +22,11 @@ const RenameChannel = () => {
   const inputRef = useRef();
   const webSocket = useContext(webSocketContext);
 
+  // не поняла, почему чтобы выделить текст, useEffect д/н запуститься дважды:(
   useEffect(() => {
     inputRef.current.focus();
     inputRef.current.select();
-  }, []);
+  }, [inputRef.current]);
 
   const onSubmit = (values) => {
     const updatedChannel = {
@@ -36,14 +37,14 @@ const RenameChannel = () => {
     dispatch(closeModal());
   };
 
-  // не работает отключение валидации при заполнении формы
   const formik = useFormik({
     initialValues: {
       name: channelInfo.name,
     },
     validateOnChange: false,
+    validateOnBlur: false,
     validationSchema: yup.object({
-      name: yup.mixed().notOneOf(channelsNames, 'Должно быть уникальным'),
+      name: yup.mixed().notOneOf(reservedChannelsNames, 'Должно быть уникальным'),
     }),
     onSubmit,
   });
@@ -60,7 +61,7 @@ const RenameChannel = () => {
           onBlur={formik.handleBlur}
           value={formik.values.name}
           isInvalid={
-            (formik.touched.name && formik.errors.name)
+            (formik.errors.name)
           }
         />
         <Form.Control.Feedback
@@ -79,7 +80,6 @@ const RenameChannel = () => {
       </div>
     </Form>
   );
-
   return (
     <Modal
       show={isOpen}
