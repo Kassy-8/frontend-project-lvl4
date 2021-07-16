@@ -4,6 +4,7 @@ import {
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
+import { useTranslation } from 'react-i18next';
 import { selectAllMessages } from '../reducers/messagesSlice.js';
 import {
   selectCurrentChannelId, selectCurrentChannel,
@@ -12,24 +13,19 @@ import webSocketContext from '../webSocketContext.js';
 import useAuth from '../useAuth.js';
 
 const ChatWindow = () => {
-  // console.log('in Chat');
   const webSocket = useContext(webSocketContext);
   const authInfo = useAuth();
-  // console.log({ authInfo });
   const inputRef = useRef();
   const endElement = useRef();
+  const { t } = useTranslation();
 
   const messages = useSelector(selectAllMessages);
-  // console.log('all messages in chat window', messages);
 
-  // Есть селекторы для этих случаев
   const currentChannelId = useSelector(selectCurrentChannelId);
-  // console.log('currentChannelId', currentChannelId);
   const currentChannel = useSelector(selectCurrentChannel);
 
   const messagesForActiveChannel = messages
     ?.filter((message) => message.channelId === currentChannelId);
-  // console.log({ messagesForActiveChannel });
 
   useEffect(() => {
     inputRef.current.focus();
@@ -45,8 +41,8 @@ const ChatWindow = () => {
     return (
       <div className="mb-3 p-2">
         <h6>
-          <b>{`# ${name}`}</b>
-          <p>{`${messagesForActiveChannel.length} сообщений`}</p>
+          <b>{t('chatWindow.title', { channelName: name })}</b>
+          <p>{t('chatWindow.messageCount.counter', { count: messagesForActiveChannel.length })}</p>
         </h6>
       </div>
     );
@@ -103,7 +99,7 @@ const ChatWindow = () => {
                   className="mb-2"
                   name="message"
                   id="message"
-                  placeholder="Введите сообщение"
+                  placeholder={t('chatWindow.messagePlaceholder')}
                   ref={inputRef}
                   value={formik.values.message}
                   onChange={formik.handleChange}
@@ -113,7 +109,7 @@ const ChatWindow = () => {
           </Col>
           <Col>
             <Button type="submit" className="mb-2" disabled={!formik.dirty}>
-              Отправить
+              {t('chatWindow.sendButton')}
             </Button>
           </Col>
         </Form.Row>
@@ -135,26 +131,3 @@ const ChatWindow = () => {
 };
 
 export default ChatWindow;
-
-// const renderMessages = () => {
-//   if (messages.length === 0) {
-//     return null;
-//   }
-
-//   const messagesForCurrentChannel = messages
-//     .filter((message) => message.channelId === currentChannelId)
-//     .map(({ body, username, id }) => (
-//       <div key={id}>
-//         <b>
-//           {`${username}: `}
-//         </b>
-//         {body}
-//       </div>
-//     ));
-
-//   return (
-//     <div>
-//       {messagesForCurrentChannel}
-//     </div>
-//   );
-// };

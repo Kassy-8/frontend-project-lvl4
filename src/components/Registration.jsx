@@ -6,14 +6,17 @@ import { useHistory } from 'react-router-dom';
 import {
   Form, Button, Col, Row,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import useAuth from '../useAuth.js';
 import routes from '../routes.js';
 
 const Registration = () => {
-  const [registrationFailed, setRegistrationFailed] = useState(false);
+  const { t } = useTranslation();
   const nameInputRef = useRef();
   const history = useHistory();
   const auth = useAuth();
+
+  const [registrationFailed, setRegistrationFailed] = useState(false);
 
   const signUpUser = async (values) => {
     const { username, password } = values;
@@ -41,16 +44,15 @@ const Registration = () => {
     },
     validationSchema: yup.object({
       username: yup.string()
-        .required('Required')
-        .trim()
-        .min(3, 'От 3 до 20 символов')
-        .max(20, 'От 3 до 20 символов'),
+        .required(t('registrationPage.validation.required'))
+        .min(3, t('registrationPage.validation.nameLength'))
+        .max(20, t('registrationPage.validation.nameLength')),
       password: yup.string()
-        .required('Required')
-        .min(6, 'Не менее 6 символов'),
+        .required(t('registrationPage.validation.required'))
+        .min(6, t('registrationPage.validation.passwordLength')),
       passwordConfirmation: yup.string()
-        .required('Required')
-        .oneOf([yup.ref('password')], 'Пароли должны совпадать'),
+        .required('registrationPage.validation.required')
+        .oneOf([yup.ref('password')], t('registrationPage.validation.passwordMatch')),
     }),
     onSubmit: signUpUser,
   });
@@ -63,7 +65,7 @@ const Registration = () => {
             <Form.Control
               name="username"
               type="name"
-              placeholder="Имя пользователя"
+              placeholder={t('registrationPage.namePlaceholder')}
               ref={nameInputRef}
               value={formik.values.username}
               onChange={formik.handleChange}
@@ -82,7 +84,7 @@ const Registration = () => {
           <Form.Group controlId="password">
             <Form.Control
               type="password"
-              placeholder="Пaроль"
+              placeholder={t('registrationPage.passwordPlaceholder')}
               name="password"
               value={formik.values.password}
               onChange={formik.handleChange}
@@ -101,7 +103,7 @@ const Registration = () => {
           <Form.Group controlId="passwordConfirmation">
             <Form.Control
               type="password"
-              placeholder="Подтвердите пaроль"
+              placeholder={t('registrationPage.confirmationPlaceholder')}
               name="passwordConfirmation"
               value={formik.values.passwordConfirmation}
               onChange={formik.handleChange}
@@ -120,12 +122,12 @@ const Registration = () => {
           {(registrationFailed)
             ? (
               <Form.Text className="text-danger m-2">
-                Такой пользователь уже существует.
+                {t('registrationPage.failedRegustrationFeedback')}
               </Form.Text>
             )
             : null}
           <Button variant="outline-primary" type="submit" disabled={formik.isSubmitting}>
-            Войти
+            {t('registrationPage.entranceButton')}
           </Button>
         </Form>
       </Col>

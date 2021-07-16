@@ -5,6 +5,7 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import webSocketContext from '../../webSocketContext.js';
 import { closeModal } from '../../reducers/modalSlice.js';
 import {
@@ -12,15 +13,16 @@ import {
 } from '../../reducers/channelsSlice.js';
 
 const AddChannel = () => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const inputRef = useRef();
+  const webSocket = useContext(webSocketContext);
+
   const channels = useSelector(selectAllChannels);
   const reservedChannelsNames = channels.map(({ name }) => name);
 
   const modalInfo = useSelector((state) => state.modalInfo);
   const { isOpen } = modalInfo;
-
-  const dispatch = useDispatch();
-  const inputRef = useRef();
-  const webSocket = useContext(webSocketContext);
 
   useEffect(() => {
     inputRef.current.focus();
@@ -39,7 +41,7 @@ const AddChannel = () => {
       name: '',
     },
     validationSchema: yup.object({
-      name: yup.mixed().notOneOf(reservedChannelsNames, 'Такой канал уже существует'),
+      name: yup.mixed().notOneOf(reservedChannelsNames, t('modalAddChannel.validation.noMatchName')),
     }),
     onSubmit,
   });
@@ -67,10 +69,10 @@ const AddChannel = () => {
       </Form.Group>
       <div className="d-flex justify-content-end">
         <Button variant="outline-secondary mr-2" onClick={() => dispatch(closeModal())}>
-          Отменить
+          {t('modalAddChannel.cancelButton')}
         </Button>
         <Button variant="outline-primary" type="submit" disabled={!formik.dirty}>
-          Отправить
+          {t('modalAddChannel.sendButton')}
         </Button>
       </div>
     </Form>
@@ -83,7 +85,7 @@ const AddChannel = () => {
       centered
     >
       <Modal.Header>
-        <Modal.Title>Добавить канал</Modal.Title>
+        <Modal.Title>{t('modalAddChannel.title')}</Modal.Title>
         <Button className="close" onClick={() => dispatch(closeModal())}>
           x
         </Button>

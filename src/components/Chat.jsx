@@ -4,6 +4,7 @@ import {
 } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
 import routes from '../routes.js';
 import { fetchChannels } from '../reducers/channelsSlice.js';
 import Channels from './Channels.jsx';
@@ -12,8 +13,10 @@ import getAuthHeader from '../getAuthHeader.js';
 import ModalWindow from './modals/ModalWindow.jsx';
 
 const Chat = () => {
-  const [networkError, setNetworkError] = useState(null);
+  const { t } = useTranslation();
   const dispatch = useDispatch();
+
+  const [networkError, setNetworkError] = useState(null);
 
   useEffect(() => {
     const fetchChatDatas = async () => {
@@ -36,7 +39,7 @@ const Chat = () => {
         <Row>
           <Col>
             <span>
-              Произошла ошибка подключения:
+              {t('networkError')}
               { networkError}
             </span>
           </Col>

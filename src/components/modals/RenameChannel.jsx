@@ -5,6 +5,7 @@ import {
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from 'react-i18next';
 import webSocketContext from '../../webSocketContext.js';
 import { closeModal } from '../../reducers/modalSlice.js';
 import {
@@ -12,15 +13,16 @@ import {
 } from '../../reducers/channelsSlice.js';
 
 const RenameChannel = () => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const inputRef = useRef();
+  const webSocket = useContext(webSocketContext);
+
   const channels = useSelector(selectAllChannels);
   const reservedChannelsNames = channels.map(({ name }) => name);
 
   const modalInfo = useSelector((state) => state.modalInfo);
   const { isOpen, info: channelInfo } = modalInfo;
-
-  const dispatch = useDispatch();
-  const inputRef = useRef();
-  const webSocket = useContext(webSocketContext);
 
   // не поняла, почему чтобы выделить текст, useEffect д/н запуститься дважды:(
   useEffect(() => {
@@ -44,7 +46,7 @@ const RenameChannel = () => {
     validateOnChange: false,
     validateOnBlur: false,
     validationSchema: yup.object({
-      name: yup.mixed().notOneOf(reservedChannelsNames, 'Должно быть уникальным'),
+      name: yup.mixed().notOneOf(reservedChannelsNames, t('modalRenameChannel.validation.noMatchName')),
     }),
     onSubmit,
   });
@@ -72,10 +74,10 @@ const RenameChannel = () => {
       </Form.Group>
       <div className="d-flex justify-content-end">
         <Button variant="outline-secondary mr-2" onClick={() => dispatch(closeModal())}>
-          Отменить
+          {t('modalRenameChannel.cancelButton')}
         </Button>
         <Button variant="outline-primary" type="submit" disabled={!formik.dirty}>
-          Отправить
+          {t('modalRenameChannel.sendButton')}
         </Button>
       </div>
     </Form>
@@ -87,7 +89,7 @@ const RenameChannel = () => {
       centered
     >
       <Modal.Header>
-        <Modal.Title>Переименовать канал</Modal.Title>
+        <Modal.Title>{t('modalRenameChannel.title')}</Modal.Title>
         <Button className="close" onClick={() => dispatch(closeModal())}>
           x
         </Button>

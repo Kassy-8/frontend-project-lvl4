@@ -6,22 +6,23 @@ import { useLocation, useHistory, Link } from 'react-router-dom';
 import {
   Form, Button, Col, Row,
 } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 import useAuth from '../useAuth.js';
 import routes from '../routes.js';
 
 const LoginPage = () => {
-  const [authFailed, setAuthFailed] = useState(false);
   const nameInputRef = useRef();
   const history = useHistory();
   const location = useLocation();
   const auth = useAuth();
+  const { t } = useTranslation();
+
+  const [authFailed, setAuthFailed] = useState(false);
 
   const logInUser = async (values) => {
     const { username, password } = values;
     try {
       const response = await axios.post(routes.loginPath(), { username, password });
-      // console.log('data from server', response.data);
-      // Разобраться здесь с джейсоном и что куда парсить и сохранять
       const token = JSON.stringify(response.data);
       localStorage.setItem('userId', token);
       auth.logIn(response.data.username);
@@ -44,8 +45,8 @@ const LoginPage = () => {
       password: '',
     },
     validationSchema: yup.object({
-      username: yup.string().trim().required('Required'),
-      password: yup.string().trim().required('Required'),
+      username: yup.string().trim().required(t('loginPage.validation.required')),
+      password: yup.string().trim().required(t('loginPage.validation.required')),
     }),
     onSubmit: logInUser,
   });
@@ -53,14 +54,13 @@ const LoginPage = () => {
   return (
     <Row className=" h-100 align-items-center justify-content-center">
       <Col xs={12} lg={6}>
-        <h1 className="m-2 d-flex justify-content-center">Войти</h1>
+        <h1 className="m-2 d-flex justify-content-center">{t('loginPage.title')}</h1>
         <Form onSubmit={formik.handleSubmit}>
           <Form.Group controlId="username">
-            <Form.Label>Name</Form.Label>
             <Form.Control
               name="username"
               type="name"
-              placeholder="Ваш логин"
+              placeholder={t('loginPage.namePlaceholder')}
               ref={nameInputRef}
               value={formik.values.username}
               onChange={formik.handleChange}
@@ -76,10 +76,9 @@ const LoginPage = () => {
             </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="password">
-            <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
-              placeholder="Пaроль"
+              placeholder={t('loginPage.passwordPlaceholder')}
               name="password"
               value={formik.values.password}
               onChange={formik.handleChange}
@@ -97,18 +96,19 @@ const LoginPage = () => {
           {(authFailed)
             ? (
               <Form.Text className="text-danger m-2">
-                Неверные имя пользователя или пароль.
+                {t('loginPage.failedAuthFeedback')}
               </Form.Text>
             )
             : null}
           <Button variant="outline-primary" type="submit" disabled={formik.isSubmitting}>
-            Войти
+            {t('loginPage.entranceButton')}
           </Button>
         </Form>
         <div className="m-2 d-flex justify-content-center">
           <p>
-            <span>Нет аккаунта? </span>
-            <Link to="signup">Регистрация</Link>
+            <span>{t('loginPage.questionNoAcc')}</span>
+            {' '}
+            <Link to="signup">{t('loginPage.registrationLink')}</Link>
           </p>
         </div>
       </Col>
