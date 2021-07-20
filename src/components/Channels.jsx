@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Button, Nav, Dropdown, ButtonGroup, SplitButton,
+  Button, Nav, Dropdown, ButtonGroup,
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
@@ -36,34 +36,48 @@ const Channels = () => {
   const isActiveChannel = (id) => id === currentChannelId;
 
   const getChannelClasses = (id) => cn({
-    'btn w-100 rounded-0  text-left': true,
+    'btn w-100 rounded text-left': true,
     'btn-secondary': isActiveChannel(id),
   });
 
   // меню выпадает не в контейнер, но надо выровнять
   const renderDefaultChannel = (id) => (
-    <Button variant={false} className={getChannelClasses(id)} onClick={() => toggleChannel(id)}>
-      {t('channelsMenu.channelsName', { channel: channels[id].name })}
-    </Button>
-  );
-  const renderUsersChannel = (id) => (
-    <SplitButton
+    <Button
       variant={false}
       className={getChannelClasses(id)}
       onClick={() => toggleChannel(id)}
-      title={t('channelsMenu.channelsName', { channel: channels[id].name })}
     >
-      <Dropdown.Item
-        onClick={() => showModalWindow(modalTypes.remove, channels[id])}
-      >
-        {t('channelsMenu.deleteButton')}
-      </Dropdown.Item>
-      <Dropdown.Item
-        onClick={() => showModalWindow(modalTypes.rename, channels[id])}
-      >
-        {t('channelsMenu.renameButton')}
-      </Dropdown.Item>
-    </SplitButton>
+      {t('channelsMenu.channelsName', { channel: channels[id].name })}
+    </Button>
+  );
+
+  const renderUsersChannel = (id) => (
+    <Dropdown as={ButtonGroup} className="d-flex">
+      <Button variant={false} className={getChannelClasses(id)} onClick={() => toggleChannel(id)}>
+        {t('channelsMenu.channelsName', { channel: channels[id].name })}
+      </Button>
+
+      <Dropdown.Toggle
+        className={(isActiveChannel(id)) ? 'btn-secondary' : 'btn-light'}
+        variant={false}
+        split
+        drop="down"
+        id="dropdown-split-basic"
+      />
+
+      <Dropdown.Menu align="end">
+        <Dropdown.Item
+          onClick={() => showModalWindow(modalTypes.remove, channels[id])}
+        >
+          {t('channelsMenu.deleteButton')}
+        </Dropdown.Item>
+        <Dropdown.Item
+          onClick={() => showModalWindow(modalTypes.rename, channels[id])}
+        >
+          {t('channelsMenu.renameButton')}
+        </Dropdown.Item>
+      </Dropdown.Menu>
+    </Dropdown>
   );
 
   const renderChannels = () => {
@@ -111,7 +125,8 @@ const Channels = () => {
 
 export default Channels;
 
-{/* <Dropdown as={ButtonGroup} className="d-flex">
+/*
+<Dropdown as={ButtonGroup} className="d-flex">
       <Button variant={false} className={getChannelClasses(id)} onClick={() => toggleChannel(id)}>
         {t('channelsMenu.channelsName', { channel: channels[id].name })}
       </Button>
@@ -135,4 +150,24 @@ export default Channels;
           {t('channelsMenu.renameButton')}
         </Dropdown.Item>
       </Dropdown.Menu>
-    </Dropdown> */}
+    </Dropdown> */
+
+/*
+    <SplitButton
+      variant={false}
+      className={getChannelClasses(id)}
+      onClick={() => toggleChannel(id)}
+      title={t('channelsMenu.channelsName', { channel: channels[id].name })}
+    >
+      <Dropdown.Item
+        onClick={() => showModalWindow(modalTypes.remove, channels[id])}
+      >
+        {t('channelsMenu.deleteButton')}
+      </Dropdown.Item>
+      <Dropdown.Item
+        onClick={() => showModalWindow(modalTypes.rename, channels[id])}
+      >
+        {t('channelsMenu.renameButton')}
+      </Dropdown.Item>
+    </SplitButton>
+    */

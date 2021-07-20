@@ -1,10 +1,13 @@
 import React, { useContext, useEffect, useRef } from 'react';
 import {
-  Button, Col, Form,
+  Button, Form, InputGroup, FormControl,
 } from 'react-bootstrap';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
+
+// import { useRollbar } from '@rollbar/react';
+
 import { selectAllMessages } from '../reducers/messagesSlice.js';
 import {
   selectCurrentChannelId, selectCurrentChannel,
@@ -13,6 +16,8 @@ import webSocketContext from '../webSocketContext.js';
 import useAuth from '../useAuth.js';
 
 const ChatWindow = () => {
+  // const rollbar = useRollbar();
+
   const webSocket = useContext(webSocketContext);
   const authInfo = useAuth();
   const inputRef = useRef();
@@ -83,6 +88,12 @@ const ChatWindow = () => {
           channelId: currentChannelId,
         };
 
+        if (newMessage.body === 'ктулху фхтагн') {
+          // rollbar.log("It's hello");
+          // rollbar.error('unacceptable message');
+          throw new Error();
+        }
+
         webSocket.sendMessage(newMessage);
         formik.resetForm();
         inputRef.current.focus();
@@ -91,28 +102,27 @@ const ChatWindow = () => {
 
     return (
       <Form onSubmit={formik.handleSubmit}>
-        <Form.Row>
-          <Col>
-            <Form.Group>
-              <Form.Label htmlFor="message">
-                <Form.Control
-                  className="mb-2"
-                  name="message"
-                  id="message"
-                  placeholder={t('chatWindow.messagePlaceholder')}
-                  ref={inputRef}
-                  value={formik.values.message}
-                  onChange={formik.handleChange}
-                />
-              </Form.Label>
-            </Form.Group>
-          </Col>
-          <Col>
-            <Button type="submit" className="mb-2" disabled={!formik.dirty}>
+        <InputGroup className="mb-2">
+          <FormControl
+            name="message"
+            id="message"
+            placeholder={t('chatWindow.messagePlaceholder')}
+            ref={inputRef}
+            value={formik.values.message}
+            onChange={formik.handleChange}
+            aria-label="message"
+            aria-describedby="basic-addon2"
+          />
+          <InputGroup.Append>
+            <Button
+              variant="primary"
+              type="submit"
+              disabled={!formik.dirty}
+            >
               {t('chatWindow.sendButton')}
             </Button>
-          </Col>
-        </Form.Row>
+          </InputGroup.Append>
+        </InputGroup>
       </Form>
     );
   };
