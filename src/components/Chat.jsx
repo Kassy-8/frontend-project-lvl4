@@ -55,7 +55,7 @@ const Chat = () => {
         <Col md={2} className="col-4 h-100 border-end pt-5 px-0">
           <Channels />
         </Col>
-        <Col className="h-100 d-flex flex-column border">
+        <Col className="h-100 d-flex border-left flex-column">
           <ChatWindow />
         </Col>
       </Row>
