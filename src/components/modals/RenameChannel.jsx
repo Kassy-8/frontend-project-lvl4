@@ -55,13 +55,13 @@ const RenameChannel = () => {
     <Form onSubmit={formik.handleSubmit}>
       <Form.Group>
         <Form.Control
-          data-testid="input-body"
           name="name"
           ref={inputRef}
           required
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.name}
+          data-testid="rename-channel"
           isInvalid={
             (formik.errors.name)
           }

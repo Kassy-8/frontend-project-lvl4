@@ -50,13 +50,13 @@ const AddChannel = () => {
     <Form onSubmit={formik.handleSubmit}>
       <Form.Group>
         <Form.Control
-          data-testid="input-body"
           name="name"
           ref={inputRef}
           required
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           value={formik.values.name}
+          data-testid="add-channel"
           isInvalid={
             (formik.touched.name && formik.errors.name)
           }

@@ -49,7 +49,7 @@ const Chat = () => {
   }
 
   return (
-    <Container fluid className="border h-100 overflow-hidden">
+    <Container fluid className="border h-100 my-4 overflow-hidden">
       <ModalWindow />
       <Row className="h-100">
         <Col md={2} className="col-4 h-100 border-end pt-5 px-0">

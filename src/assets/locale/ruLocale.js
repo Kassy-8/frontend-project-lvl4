@@ -1,7 +1,7 @@
 export default {
   translation: {
     header: {
-      title: 'Hexlet Chat',
+      title: 'Hexlet-Chat',
       exitButton: 'Выйти',
     },
     loginPage: {
@@ -27,7 +27,7 @@ export default {
       passwordPlaceholder: 'Пароль',
       confirmationPlaceholder: 'Подтвердите пароль',
       failedRegustrationFeedback: 'Такой пользователь уже существует',
-      entranceButton: 'Войти',
+      entranceButton: 'Зарегистрироваться',
     },
     channelsMenu: {
       deleteButton: 'Удалить',
@@ -65,7 +65,6 @@ export default {
         counter_2: '{{count}} сообщений',
       },
       messagePlaceholder: 'Введите сообщение',
-      sendButton: 'Отправить',
     },
     networkError: 'Произошла ошибка подключения:',
   },

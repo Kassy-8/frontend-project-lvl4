@@ -4,12 +4,12 @@ import axios from 'axios';
 import { useFormik } from 'formik';
 import { useLocation, useHistory, Link } from 'react-router-dom';
 import {
-  Form, Button, Col, Row, Card, Image,
+  Form, Button, Col, Row, Card,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../useAuth.js';
 import routes from '../routes.js';
-import loginPageImage from '../../assets/images/hexlet_chat.jpeg';
+import loginPageImage from '../assets/images/hexlet_chat.jpeg';
 
 const LoginPage = () => {
   const nameInputRef = useRef();
@@ -53,6 +53,7 @@ const LoginPage = () => {
 
   const renderLoginForm = () => (
     <Form onSubmit={formik.handleSubmit}>
+      <h1 className="mb-4 text-center">{t('loginPage.title')}</h1>
       <Form.Group controlId="username">
         <Form.Control
           name="username"
@@ -106,8 +107,8 @@ const LoginPage = () => {
   );
 
   const renderLoginFooter = () => (
-    <div className="m-2 pt-2 d-flex justify-content-center">
-      <p>
+    <div className="p-4 d-flex justify-content-center">
+      <p className="m-0">
         <span>{t('loginPage.questionNoAcc')}</span>
         {' '}
         <Link to="signup">{t('loginPage.registrationLink')}</Link>
@@ -118,18 +119,19 @@ const LoginPage = () => {
   return (
     <Row className="h-100 align-items-center justify-content-center">
       <Col>
-        <Card className="shadow-sm p-5">
-          <Row className="h-100 align-items-center justify-content-center">
-            <Col>
-              <Image src={loginPageImage} roundedCircle alt="loginPageImage" />
+        <Card className="shadow-sm">
+          <Row className="h-100 p-5 align-items-center justify-content-center">
+            <Col className="d-flex justify-content-center">
+              <img src={loginPageImage} className="rounded" alt="loginPageImage" />
             </Col>
-            <Col xs={12} lg={6}>
-              <h1 className="m-2 d-flex justify-content-center">{t('loginPage.title')}</h1>
+            <Col className="mt-3 mb-t-mb-0">
               {renderLoginForm()}
             </Col>
           </Row>
+          <Card.Footer>
+            {renderLoginFooter()}
+          </Card.Footer>
         </Card>
-        {renderLoginFooter()}
       </Col>
     </Row>
   );

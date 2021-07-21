@@ -90,17 +90,15 @@ const ChatWindow = () => {
           channelId: currentChannelId,
         };
 
-        if (newMessage.body === 'ктулху фхтагн') {
-          // rollbar.log("It's hello");
-          // rollbar.error('unacceptable message');
-          throw new Error();
-        }
-
         webSocket.sendMessage(newMessage);
         formik.resetForm();
         inputRef.current.focus();
       },
     });
+
+    // if (formik.values.message === 'ктулху фхтагн') {
+    //   return new Error('no Ktulhu!');
+    // }
 
     return (
       <Form
@@ -118,6 +116,7 @@ const ChatWindow = () => {
             onChange={formik.handleChange}
             aria-label="message"
             aria-describedby="basic-addon2"
+            data-testid="new-message"
           />
           <InputGroup.Append>
             <Button
@@ -151,11 +150,3 @@ const ChatWindow = () => {
 };
 
 export default ChatWindow;
-
-/* <Button
-              variant="primary"
-              type="submit"
-              disabled={!formik.dirty}
-            >
-              {t('chatWindow.sendButton')}
-            </Button> */

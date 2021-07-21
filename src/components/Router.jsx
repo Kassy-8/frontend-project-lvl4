@@ -4,7 +4,6 @@ import {
   Switch,
   Route,
 } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
 import AuthProvider from './AuthProvider.jsx';
 import LoginPage from './LoginPage.jsx';
 import Chat from './Chat.jsx';
@@ -15,25 +14,23 @@ import NoMatchPage from './NoMatchPage.jsx';
 
 const AppRouter = () => (
   <AuthProvider>
-    <Container fluid className="h-100">
-      <Router>
-        <Header />
-        <Switch>
-          <Route path="/login">
-            <LoginPage />
-          </Route>
-          <Route path="/signup">
-            <Registration />
-          </Route>
-          <PrivateRoute exact path="/">
-            <Chat />
-          </PrivateRoute>
-          <Route path="*">
-            <NoMatchPage />
-          </Route>
-        </Switch>
-      </Router>
-    </Container>
+    <Router>
+      <Header />
+      <Switch>
+        <Route path="/login">
+          <LoginPage />
+        </Route>
+        <Route path="/signup">
+          <Registration />
+        </Route>
+        <PrivateRoute exact path="/">
+          <Chat />
+        </PrivateRoute>
+        <Route path="*">
+          <NoMatchPage />
+        </Route>
+      </Switch>
+    </Router>
   </AuthProvider>
 );
 

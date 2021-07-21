@@ -10,7 +10,7 @@ const Header = () => {
   const { t } = useTranslation();
   const auth = useAuth();
   return (
-    <Row>
+    <Row className="border-bottom">
       <Col>
         <Navbar className="justify-content-between">
           <Navbar.Brand as={Link} to="/">
