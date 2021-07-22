@@ -1,7 +1,7 @@
 export default {
   translation: {
     header: {
-      title: 'Hexlet-Chat',
+      title: 'Hexlet Chat',
       exitButton: 'Выйти',
     },
     loginPage: {
