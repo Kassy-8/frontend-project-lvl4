@@ -57,10 +57,11 @@ const LoginPage = () => {
       <Form onSubmit={formik.handleSubmit}>
         <h1 className="mb-4 text-center">{t('loginPage.title')}</h1>
         <Form.Group controlId="username">
+          <Form.Label>{t('loginPage.nameLabel')}</Form.Label>
           <Form.Control
             name="username"
             type="name"
-            placeholder={t('loginPage.namePlaceholder')}
+            placeholder={t('loginPage.nameLabel')}
             ref={nameInputRef}
             value={formik.values.username}
             onChange={formik.handleChange}
@@ -76,9 +77,10 @@ const LoginPage = () => {
           </Form.Control.Feedback>
         </Form.Group>
         <Form.Group controlId="password">
+          <Form.Label>{t('loginPage.passwordLabel')}</Form.Label>
           <Form.Control
             type="password"
-            placeholder={t('loginPage.passwordPlaceholder')}
+            placeholder={t('loginPage.passwordLabel')}
             name="password"
             value={formik.values.password}
             onChange={formik.handleChange}

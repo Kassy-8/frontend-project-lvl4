@@ -64,10 +64,11 @@ const Registration = () => {
       <Form onSubmit={formik.handleSubmit}>
         <h1 className="mb-4 text-center">{t('registrationPage.title')}</h1>
         <Form.Group controlId="username">
+          <Form.Label>{t('registrationPage.nameLabel')}</Form.Label>
           <Form.Control
             name="username"
             type="name"
-            placeholder={t('registrationPage.namePlaceholder')}
+            placeholder={t('registrationPage.nameLabel')}
             ref={nameInputRef}
             value={formik.values.username}
             onChange={formik.handleChange}
@@ -84,9 +85,10 @@ const Registration = () => {
           </Form.Control.Feedback>
         </Form.Group>
         <Form.Group controlId="password">
+          <Form.Label>{t('registrationPage.passwordLabel')}</Form.Label>
           <Form.Control
             type="password"
-            placeholder={t('registrationPage.passwordPlaceholder')}
+            placeholder={t('registrationPage.passwordLabel')}
             name="password"
             value={formik.values.password}
             onChange={formik.handleChange}
@@ -103,9 +105,10 @@ const Registration = () => {
           </Form.Control.Feedback>
         </Form.Group>
         <Form.Group controlId="passwordConfirmation">
+          <Form.Label>{t('registrationPage.confirmationLabel')}</Form.Label>
           <Form.Control
             type="password"
-            placeholder={t('registrationPage.confirmationPlaceholder')}
+            placeholder={t('registrationPage.confirmationLabel')}
             name="passwordConfirmation"
             value={formik.values.passwordConfirmation}
             onChange={formik.handleChange}
