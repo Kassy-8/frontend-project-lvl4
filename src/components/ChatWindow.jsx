@@ -31,7 +31,7 @@ const ChatWindow = () => {
 
   useEffect(() => {
     inputRef.current.focus();
-    endElement.current?.scrollIntoView({ behavior: 'smooth' });
+    // endElement.current?.scrollIntoView({ behavior: 'smooth' });
   });
 
   const renderHeader = () => {
