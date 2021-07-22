@@ -23,6 +23,7 @@ export default {
         passwordLength: 'Не менее 6 символов',
         passwordMatch: 'Пароли должны совпадать',
       },
+      title: 'Регистрация',
       namePlaceholder: 'Имя пользователя',
       passwordPlaceholder: 'Пароль',
       confirmationPlaceholder: 'Подтвердите пароль',

@@ -39,72 +39,75 @@ const LoginPage = () => {
       throw error;
     }
   };
-  const formik = useFormik({
-    initialValues: {
-      username: '',
-      password: '',
-    },
-    validationSchema: yup.object({
-      username: yup.string().trim().required(t('loginPage.validation.required')),
-      password: yup.string().trim().required(t('loginPage.validation.required')),
-    }),
-    onSubmit: logInUser,
-  });
 
-  const renderLoginForm = () => (
-    <Form onSubmit={formik.handleSubmit}>
-      <h1 className="mb-4 text-center">{t('loginPage.title')}</h1>
-      <Form.Group controlId="username">
-        <Form.Control
-          name="username"
-          type="name"
-          placeholder={t('loginPage.namePlaceholder')}
-          ref={nameInputRef}
-          value={formik.values.username}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={
-            (formik.touched.username && formik.errors.username) || (authFailed === true)
-          }
-        />
-        <Form.Control.Feedback
-          type="invalid"
-        >
-          {formik.errors.username}
-        </Form.Control.Feedback>
-      </Form.Group>
-      <Form.Group controlId="password">
-        <Form.Control
-          type="password"
-          placeholder={t('loginPage.passwordPlaceholder')}
-          name="password"
-          value={formik.values.password}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          isInvalid={
-            (formik.touched.password && formik.errors.password) || (authFailed === true)
-          }
-        />
-        <Form.Control.Feedback
-          type="invalid"
-        >
-          {formik.errors.password}
-        </Form.Control.Feedback>
-      </Form.Group>
-      {(authFailed)
-        ? (
-          <Form.Text className="text-danger m-2">
-            {t('loginPage.failedAuthFeedback')}
-          </Form.Text>
-        )
-        : null}
-      <div className="d-flex justify-content-center">
-        <Button className="w-100" variant="outline-primary" type="submit" disabled={formik.isSubmitting}>
-          {t('loginPage.entranceButton')}
-        </Button>
-      </div>
-    </Form>
-  );
+  const renderLoginForm = () => {
+    const formik = useFormik({
+      initialValues: {
+        username: '',
+        password: '',
+      },
+      validationSchema: yup.object({
+        username: yup.string().trim().required(t('loginPage.validation.required')),
+        password: yup.string().trim().required(t('loginPage.validation.required')),
+      }),
+      onSubmit: logInUser,
+    });
+
+    return (
+      <Form onSubmit={formik.handleSubmit}>
+        <h1 className="mb-4 text-center">{t('loginPage.title')}</h1>
+        <Form.Group controlId="username">
+          <Form.Control
+            name="username"
+            type="name"
+            placeholder={t('loginPage.namePlaceholder')}
+            ref={nameInputRef}
+            value={formik.values.username}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            isInvalid={
+              (formik.touched.username && formik.errors.username) || (authFailed === true)
+            }
+          />
+          <Form.Control.Feedback
+            type="invalid"
+          >
+            {formik.errors.username}
+          </Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group controlId="password">
+          <Form.Control
+            type="password"
+            placeholder={t('loginPage.passwordPlaceholder')}
+            name="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            isInvalid={
+              (formik.touched.password && formik.errors.password) || (authFailed === true)
+            }
+          />
+          <Form.Control.Feedback
+            type="invalid"
+          >
+            {formik.errors.password}
+          </Form.Control.Feedback>
+        </Form.Group>
+        {(authFailed)
+          ? (
+            <Form.Text className="text-danger m-2">
+              {t('loginPage.failedAuthFeedback')}
+            </Form.Text>
+          )
+          : null}
+        <div className="d-flex justify-content-center">
+          <Button className="w-100" variant="outline-primary" type="submit" disabled={formik.isSubmitting}>
+            {t('loginPage.entranceButton')}
+          </Button>
+        </div>
+      </Form>
+    );
+  };
 
   const renderLoginFooter = () => (
     <div className="p-4 d-flex justify-content-center">
