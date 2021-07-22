@@ -1,8 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, createEntityAdapter } from '@reduxjs/toolkit';
 import _ from 'lodash';
-// import axios from 'axios';
-// import routes from '../routes.js';
 
 const channelsAdapter = createEntityAdapter({
   sortComparer: (channel1, channel2) => channel1.id - channel2.id,
@@ -60,38 +58,3 @@ export const selectCurrentChannel = (state) => selectChannelById(
 );
 
 export default channelsSlice.reducer;
-
-// channelsAdapter.addOne,
-// fetchChannels: (state, { payload }) => {
-//   const { channels, currentChannelId } = payload;
-//   channelsAdapter.upsertMany(state, channels);
-//   state.currentChannelId = currentChannelId;
-// },
-// setCurrentChannel: (state, { payload }) => {
-//   state.currentChannelId = payload;
-// },
-// removeUsersChannel: (state, { payload }) => {
-//   state
-// }
-
-// extraReducers: {
-//   [fetchChannels.pending]: (state) => {
-//     state.status = 'loading';
-//   },
-//   [fetchChannels.fulfilled]: (state, action) => {
-//     const { payload: { channels, messages, currentChannelId } } = action;
-//     state.status = 'succeeded';
-//     state.currentChannel = currentChannelId;
-
-//     state.channelsItems.allIds = channels.map((channel) => channel.id);
-//     channels.forEach((channel) => {
-//       state.channelsItems.byId[channel.id] = channel;
-//     });
-
-//     state.messages = messages;
-//   },
-//   [fetchChannels.rejected]: (state, action) => {
-//     state.status = 'failed';
-//     state.error = action.error.message;
-//   },
-// },

@@ -2,10 +2,10 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { io } from 'socket.io-client';
 import webSocketContext from '../webSocketContext.js';
-import { recieveNewMessage } from '../reducers/messagesSlice.js';
+import { recieveNewMessage } from '../slices/messagesSlice.js';
 import {
   addChannel, removeUsersChannel, renameUsersChannel,
-} from '../reducers/channelsSlice.js';
+} from '../slices/channelsSlice.js';
 
 const WebSocketProvider = ({ children }) => {
   const dispatch = useDispatch();
