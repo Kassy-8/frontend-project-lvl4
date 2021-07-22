@@ -6,10 +6,10 @@ import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 
-import { selectAllMessages } from '../reducers/messagesSlice.js';
+import { selectAllMessages } from '../slices/messagesSlice.js';
 import {
   selectCurrentChannelId, selectCurrentChannel,
-} from '../reducers/channelsSlice.js';
+} from '../slices/channelsSlice.js';
 import webSocketContext from '../webSocketContext.js';
 import useAuth from '../useAuth.js';
 import sendMessageLogo from '../assets/images/sendLogo.svg';

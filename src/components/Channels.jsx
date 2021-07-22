@@ -10,8 +10,8 @@ import {
   selectChannelsIds,
   setCurrentChannel,
   selectCurrentChannelId,
-} from '../reducers/channelsSlice.js';
-import { showModal } from '../reducers/modalSlice.js';
+} from '../slices/channelsSlice.js';
+import { showModal } from '../slices/modalSlice.js';
 import addChannelLogo from '../assets/images/addLogo.svg';
 
 const modalTypes = {

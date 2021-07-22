@@ -3,7 +3,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import webSocketContext from '../../webSocketContext.js';
-import { closeModal } from '../../reducers/modalSlice.js';
+import { closeModal } from '../../slices/modalSlice.js';
 
 const RemoveChannel = () => {
   const { t } = useTranslation();

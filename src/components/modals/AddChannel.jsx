@@ -7,10 +7,10 @@ import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import webSocketContext from '../../webSocketContext.js';
-import { closeModal } from '../../reducers/modalSlice.js';
+import { closeModal } from '../../slices/modalSlice.js';
 import {
   selectAllChannels,
-} from '../../reducers/channelsSlice.js';
+} from '../../slices/channelsSlice.js';
 
 const AddChannel = () => {
   const { t } = useTranslation();

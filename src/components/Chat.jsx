@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import routes from '../routes.js';
-import { fetchChannels } from '../reducers/channelsSlice.js';
+import { fetchChannels } from '../slices/channelsSlice.js';
 import Channels from './Channels.jsx';
 import ChatWindow from './ChatWindow.jsx';
 import getAuthHeader from '../getAuthHeader.js';
