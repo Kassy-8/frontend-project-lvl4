@@ -1,7 +1,7 @@
 // @ts-check
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+// import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import i18n from 'i18next';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
@@ -40,19 +40,17 @@ export default (socketClient) => {
     captureUnhandledRejections: true,
   };
 
-  document.addEventListener('DOMContentLoaded', () => {
-    ReactDOM.render(
-      <I18nextProvider i18n={i18nInstance}>
-        <RollbarProvider config={rollbarConfig}>
-          <ErrorBoundary level={LEVEL_WARN} fallbackUI={ErrorBoundaryWindow}>
-            <Provider store={store}>
-              <WebSocketProvider socket={socketClient}>
-                <Router />
-              </WebSocketProvider>
-            </Provider>
-          </ErrorBoundary>
-        </RollbarProvider>
-      </I18nextProvider>, document.getElementById('chat'),
-    );
-  });
+  return (
+    <I18nextProvider i18n={i18nInstance}>
+      <RollbarProvider config={rollbarConfig}>
+        <ErrorBoundary level={LEVEL_WARN} fallbackUI={ErrorBoundaryWindow}>
+          <Provider store={store}>
+            <WebSocketProvider socket={socketClient}>
+              <Router />
+            </WebSocketProvider>
+          </Provider>
+        </ErrorBoundary>
+      </RollbarProvider>
+    </I18nextProvider>
+  );
 };
