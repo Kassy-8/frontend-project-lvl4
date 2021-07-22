@@ -36,13 +36,15 @@ export default () => {
     captureUnhandledRejections: true,
   };
 
-  ReactDOM.render(
-    <I18nextProvider i18n={i18nInstance}>
-      <RollbarProvider config={rollbarConfig}>
-        <ErrorBoundary level={LEVEL_WARN} fallbackUI={ErrorBoundaryWindow}>
-          <App />
-        </ErrorBoundary>
-      </RollbarProvider>
-    </I18nextProvider>, document.getElementById('chat'),
-  );
+  document.addEventListener('DOMContentLoaded', () => {
+    ReactDOM.render(
+      <I18nextProvider i18n={i18nInstance}>
+        <RollbarProvider config={rollbarConfig}>
+          <ErrorBoundary level={LEVEL_WARN} fallbackUI={ErrorBoundaryWindow}>
+            <App />
+          </ErrorBoundary>
+        </RollbarProvider>
+      </I18nextProvider>, document.getElementById('chat'),
+    );
+  });
 };
