@@ -31,6 +31,7 @@ export default {
       entranceButton: 'Зарегистрироваться',
     },
     channelsMenu: {
+      addButton: 'Добавить',
       deleteButton: 'Удалить',
       renameButton: 'Переименовать',
       title: 'Каналы',
@@ -66,6 +67,7 @@ export default {
         counter_2: '{{count}} сообщений',
       },
       messagePlaceholder: 'Введите сообщение',
+      sendMessageButton: 'Отправить',
     },
     networkError: 'Произошла ошибка подключения:',
   },
