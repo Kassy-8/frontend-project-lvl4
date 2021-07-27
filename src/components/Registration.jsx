@@ -38,105 +38,103 @@ const Registration = () => {
     }
   };
 
-  const renderRegistrationForm = () => {
-    const formik = useFormik({
-      initialValues: {
-        username: '',
-        password: '',
-        passwordConfirmation: '',
-      },
-      validationSchema: yup.object({
-        username: yup.string()
-          .required(t('registrationPage.validation.required'))
-          .min(3, t('registrationPage.validation.nameLength'))
-          .max(20, t('registrationPage.validation.nameLength')),
-        password: yup.string()
-          .required(t('registrationPage.validation.required'))
-          .min(6, t('registrationPage.validation.passwordLength')),
-        passwordConfirmation: yup.string()
-          .required(t('registrationPage.validation.required'))
-          .oneOf([yup.ref('password')], t('registrationPage.validation.passwordMatch')),
-      }),
-      onSubmit: signUpUser,
-    });
+  const formikInstance = useFormik({
+    initialValues: {
+      username: '',
+      password: '',
+      passwordConfirmation: '',
+    },
+    validationSchema: yup.object({
+      username: yup.string()
+        .required(t('registrationPage.validation.required'))
+        .min(3, t('registrationPage.validation.nameLength'))
+        .max(20, t('registrationPage.validation.nameLength')),
+      password: yup.string()
+        .required(t('registrationPage.validation.required'))
+        .min(6, t('registrationPage.validation.passwordLength')),
+      passwordConfirmation: yup.string()
+        .required(t('registrationPage.validation.required'))
+        .oneOf([yup.ref('password')], t('registrationPage.validation.passwordMatch')),
+    }),
+    onSubmit: signUpUser,
+  });
 
-    return (
-      <Form onSubmit={formik.handleSubmit}>
-        <h1 className="mb-4 text-center">{t('registrationPage.title')}</h1>
-        <Form.Group controlId="username">
-          <Form.Label>{t('registrationPage.nameLabel')}</Form.Label>
-          <Form.Control
-            name="username"
-            type="name"
-            placeholder={t('registrationPage.nameLabel')}
-            ref={nameInputRef}
-            value={formik.values.username}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            isInvalid={
-              (formik.touched.username && formik.errors.username)
-              || (registrationFailed === true)
-            }
-          />
-          <Form.Control.Feedback
-            type="invalid"
-          >
-            {formik.errors.username}
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group controlId="password">
-          <Form.Label>{t('registrationPage.passwordLabel')}</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder={t('registrationPage.passwordLabel')}
-            name="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            isInvalid={
-              (formik.touched.password && formik.errors.password)
-              || (registrationFailed === true)
-            }
-          />
-          <Form.Control.Feedback
-            type="invalid"
-          >
-            {formik.errors.password}
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group controlId="passwordConfirmation">
-          <Form.Label>{t('registrationPage.confirmationLabel')}</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder={t('registrationPage.confirmationLabel')}
-            name="passwordConfirmation"
-            value={formik.values.passwordConfirmation}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            isInvalid={
-              (formik.touched.passwordConfirmation && formik.errors.passwordConfirmation)
-              || (registrationFailed === true)
-            }
-          />
-          <Form.Control.Feedback
-            type="invalid"
-          >
-            {formik.errors.passwordConfirmation}
-          </Form.Control.Feedback>
-        </Form.Group>
-        {(registrationFailed)
-          ? (
-            <Form.Text className="text-danger m-2">
-              {t('registrationPage.failedRegustrationFeedback')}
-            </Form.Text>
-          )
-          : null}
-        <Button variant="outline-primary" type="submit" disabled={formik.isSubmitting}>
-          {t('registrationPage.entranceButton')}
-        </Button>
-      </Form>
-    );
-  };
+  const renderRegistrationForm = (formik) => (
+    <Form onSubmit={formik.handleSubmit}>
+      <h1 className="mb-4 text-center">{t('registrationPage.title')}</h1>
+      <Form.Group controlId="username">
+        <Form.Label>{t('registrationPage.nameLabel')}</Form.Label>
+        <Form.Control
+          name="username"
+          type="name"
+          placeholder={t('registrationPage.nameLabel')}
+          ref={nameInputRef}
+          value={formik.values.username}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          isInvalid={
+            (formik.touched.username && formik.errors.username)
+            || (registrationFailed === true)
+          }
+        />
+        <Form.Control.Feedback
+          type="invalid"
+        >
+          {formik.errors.username}
+        </Form.Control.Feedback>
+      </Form.Group>
+      <Form.Group controlId="password">
+        <Form.Label>{t('registrationPage.passwordLabel')}</Form.Label>
+        <Form.Control
+          type="password"
+          placeholder={t('registrationPage.passwordLabel')}
+          name="password"
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          isInvalid={
+            (formik.touched.password && formik.errors.password)
+            || (registrationFailed === true)
+          }
+        />
+        <Form.Control.Feedback
+          type="invalid"
+        >
+          {formik.errors.password}
+        </Form.Control.Feedback>
+      </Form.Group>
+      <Form.Group controlId="passwordConfirmation">
+        <Form.Label>{t('registrationPage.confirmationLabel')}</Form.Label>
+        <Form.Control
+          type="password"
+          placeholder={t('registrationPage.confirmationLabel')}
+          name="passwordConfirmation"
+          value={formik.values.passwordConfirmation}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          isInvalid={
+            (formik.touched.passwordConfirmation && formik.errors.passwordConfirmation)
+            || (registrationFailed === true)
+          }
+        />
+        <Form.Control.Feedback
+          type="invalid"
+        >
+          {formik.errors.passwordConfirmation}
+        </Form.Control.Feedback>
+      </Form.Group>
+      {(registrationFailed)
+        ? (
+          <Form.Text className="text-danger m-2">
+            {t('registrationPage.failedRegustrationFeedback')}
+          </Form.Text>
+        )
+        : null}
+      <Button variant="outline-primary" type="submit" disabled={formik.isSubmitting}>
+        {t('registrationPage.entranceButton')}
+      </Button>
+    </Form>
+  );
 
   return (
     <Row className="h-100 align-items-center justify-content-center">
@@ -147,7 +145,7 @@ const Registration = () => {
               <img src={registrationImage} className="rounded" alt="registrationPageImage" />
             </Col>
             <Col className="mt-3 mb-t-mb-0">
-              {renderRegistrationForm()}
+              {renderRegistrationForm(formikInstance)}
             </Col>
           </Row>
         </Card>

@@ -1,8 +1,8 @@
 import ReactDOM from 'react-dom';
-import app from './init.jsx';
+import App from './init.jsx';
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    app(), document.getElementById('chat'),
+    App(), document.getElementById('chat'),
   );
 });

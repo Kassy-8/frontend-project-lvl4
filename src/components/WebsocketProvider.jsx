@@ -1,6 +1,5 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-// import { io } from 'socket.io-client';
 import webSocketContext from '../webSocketContext.js';
 import { recieveNewMessage } from '../slices/messagesSlice.js';
 import {
@@ -10,8 +9,6 @@ import { closeModal } from '../slices/modalSlice.js';
 
 const WebSocketProvider = ({ socket, children }) => {
   const dispatch = useDispatch();
-
-  // const socket = io();
 
   // Подумать над диспетчеризацией
   const sendMessage = (newMessage) => {

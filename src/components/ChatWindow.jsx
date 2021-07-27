@@ -75,61 +75,55 @@ const ChatWindow = () => {
     );
   };
 
-  const renderTextInput = () => {
-    const formik = useFormik({
-      initialValues: {
-        message: '',
-      },
-      onSubmit: (values) => {
-        const newMessage = {
-          username: authInfo.username,
-          body: values.message,
-          channelId: currentChannelId,
-        };
+  const formikInstance = useFormik({
+    initialValues: {
+      message: '',
+    },
+    onSubmit: (values) => {
+      const newMessage = {
+        username: authInfo.username,
+        body: values.message,
+        channelId: currentChannelId,
+      };
 
-        webSocket.sendMessage(newMessage);
-        formik.resetForm();
-        inputRef.current.focus();
-      },
-    });
+      webSocket.sendMessage(newMessage);
+      formikInstance.resetForm();
+      inputRef.current.focus();
+    },
+  });
 
-    // if (formik.values.message === 'ктулху фхтагн') {
-    //   return new Error('no Ktulhu!');
-    // }
-
-    return (
-      <Form
-        className="border rounded-2"
-        onSubmit={formik.handleSubmit}
-      >
-        <InputGroup>
-          <FormControl
-            className="border-0 p-0 pl-2"
-            name="message"
-            id="message"
-            placeholder={t('chatWindow.messagePlaceholder')}
-            ref={inputRef}
-            value={formik.values.message}
-            onChange={formik.handleChange}
-            aria-label="message"
-            aria-describedby="basic-addon2"
-            data-testid="new-message"
-          />
-          <InputGroup.Append>
-            <Button
-              variant={false}
-              className="py-1 px-3 text-secondary"
-              type="submit"
-              disabled={!formik.dirty}
-            >
-              <img src={sendMessageLogo} alt="sendMessageLogo" />
-              <span className="d-none">{t('chatWindow.sendMessageButton')}</span>
-            </Button>
-          </InputGroup.Append>
-        </InputGroup>
-      </Form>
-    );
-  };
+  const renderTextInput = (formik) => (
+    <Form
+      className="border rounded-2"
+      onSubmit={formik.handleSubmit}
+    >
+      <InputGroup>
+        <FormControl
+          className="border-0 p-0 pl-2"
+          name="message"
+          id="message"
+          placeholder={t('chatWindow.messagePlaceholder')}
+          ref={inputRef}
+          value={formik.values.message}
+          onChange={formik.handleChange}
+          aria-label="message"
+          aria-describedby="basic-addon2"
+          data-testid="new-message"
+        />
+        <InputGroup.Append>
+          <Button
+            variant={false}
+            className="py-1 px-3 text-secondary"
+            type="submit"
+            disabled={!formik.dirty}
+          >
+            <img src={sendMessageLogo} alt="sendMessageLogo" />
+            <span className="d-none">{t('chatWindow.sendMessageButton')}</span>
+          </Button>
+        </InputGroup.Append>
+      </InputGroup>
+    </Form>
+  );
 
   return (
     <>
@@ -137,7 +131,7 @@ const ChatWindow = () => {
         {renderHeader()}
         {renderMessages()}
         <div className="mt-auto px-5 py-3">
-          {renderTextInput()}
+          {renderTextInput(formikInstance)}
         </div>
       </div>
     </>

@@ -18,7 +18,7 @@ import WebSocketProvider from './components/WebsocketProvider.jsx';
 import ErrorBoundaryWindow from './components/ErrorBoundaryWindow.jsx';
 import translation from './assets/locale/ruLocale.js';
 
-export default (socketClient = io()) => {
+const App = (socketClient = io()) => {
   const i18nInstance = i18n.createInstance();
   i18nInstance
     .use(initReactI18next)
@@ -54,3 +54,5 @@ export default (socketClient = io()) => {
     </I18nextProvider>
   );
 };
+
+export default App;
