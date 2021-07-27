@@ -30,13 +30,13 @@ const RenameChannel = () => {
     inputRef.current.select();
   }, [inputRef.current]);
 
-  const onSubmit = async (values) => {
+  const onSubmit = (values) => {
     const updatedChannel = {
       id: channelInfo.id,
       name: values.name,
     };
-    await webSocket.renameChannel(updatedChannel);
-    dispatch(closeModal());
+    webSocket.renameChannel(updatedChannel);
+    // dispatch(closeModal());
   };
 
   const formik = useFormik({

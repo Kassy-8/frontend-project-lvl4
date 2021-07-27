@@ -28,12 +28,12 @@ const AddChannel = () => {
     inputRef.current.focus();
   }, []);
 
-  const onSubmit = async (values) => {
+  const onSubmit = (values) => {
     const newChannel = {
       name: values.name,
     };
-    await webSocket.addNewChannel(newChannel);
-    dispatch(closeModal());
+    webSocket.addNewChannel(newChannel);
+    // dispatch(closeModal());
   };
 
   const formik = useFormik({

@@ -15,11 +15,11 @@ const RemoveChannel = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const confirmRemoving = async () => {
+  const confirmRemoving = () => {
     setIsSubmitting(true);
-    await webSocket.removeChannel(info);
+    webSocket.removeChannel(info);
     setIsSubmitting(false);
-    dispatch(closeModal());
+    // dispatch(closeModal());
   };
 
   return (

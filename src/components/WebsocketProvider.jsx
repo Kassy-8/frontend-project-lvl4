@@ -6,6 +6,7 @@ import { recieveNewMessage } from '../slices/messagesSlice.js';
 import {
   addChannel, removeUsersChannel, renameUsersChannel,
 } from '../slices/channelsSlice.js';
+import { closeModal } from '../slices/modalSlice.js';
 
 const WebSocketProvider = ({ socket, children }) => {
   const dispatch = useDispatch();
@@ -22,7 +23,11 @@ const WebSocketProvider = ({ socket, children }) => {
   });
 
   const addNewChannel = (newChannel) => {
-    socket.emit('newChannel', newChannel);
+    socket.emit('newChannel', newChannel, ({ status }) => {
+      if (status === 'ok') {
+        dispatch(closeModal());
+      }
+    });
   };
 
   socket.on('newChannel', (channel) => {
@@ -30,7 +35,11 @@ const WebSocketProvider = ({ socket, children }) => {
   });
 
   const removeChannel = (removingChannel) => {
-    socket.emit('removeChannel', removingChannel);
+    socket.emit('removeChannel', removingChannel, ({ status }) => {
+      if (status === 'ok') {
+        dispatch(closeModal());
+      }
+    });
   };
 
   socket.on('removeChannel', (removingChannel) => {
@@ -38,7 +47,11 @@ const WebSocketProvider = ({ socket, children }) => {
   });
 
   const renameChannel = (renamingChannel) => {
-    socket.emit('renameChannel', renamingChannel);
+    socket.emit('renameChannel', renamingChannel, ({ status }) => {
+      if (status === 'ok') {
+        dispatch(closeModal());
+      }
+    });
   };
 
   socket.on('renameChannel', (renamingChannel) => {

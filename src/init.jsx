@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import i18n from 'i18next';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
 import { Provider as RollbarProvider, ErrorBoundary, LEVEL_WARN } from '@rollbar/react';
-// import { io } from 'socket.io-client';
+import { io } from 'socket.io-client';
 
 import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
@@ -18,7 +18,7 @@ import WebSocketProvider from './components/WebsocketProvider.jsx';
 import ErrorBoundaryWindow from './components/ErrorBoundaryWindow.jsx';
 import translation from './assets/locale/ruLocale.js';
 
-export default (socketClient) => {
+export default (socketClient = io()) => {
   const i18nInstance = i18n.createInstance();
   i18nInstance
     .use(initReactI18next)
