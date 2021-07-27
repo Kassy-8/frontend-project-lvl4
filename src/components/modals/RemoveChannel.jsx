@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
@@ -13,8 +13,12 @@ const RemoveChannel = () => {
   const modalInfo = useSelector((state) => state.modalInfo);
   const { isOpen, info } = modalInfo;
 
-  const confirmRemoving = () => {
-    webSocket.removeChannel(info);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const confirmRemoving = async () => {
+    setIsSubmitting(true);
+    await webSocket.removeChannel(info);
+    setIsSubmitting(false);
     dispatch(closeModal());
   };
 
@@ -35,7 +39,7 @@ const RemoveChannel = () => {
           <Button variant="outline-secondary mr-2" onClick={() => dispatch(closeModal())}>
             {t('modalRemoveChannel.cancelButton')}
           </Button>
-          <Button variant="outline-danger" onClick={() => confirmRemoving()}>
+          <Button variant="outline-danger" onClick={() => confirmRemoving()} disabled={isSubmitting}>
             {t('modalRemoveChannel.sendButton')}
           </Button>
         </div>

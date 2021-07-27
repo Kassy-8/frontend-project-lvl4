@@ -28,11 +28,11 @@ const AddChannel = () => {
     inputRef.current.focus();
   }, []);
 
-  const onSubmit = (values) => {
+  const onSubmit = async (values) => {
     const newChannel = {
       name: values.name,
     };
-    webSocket.addNewChannel(newChannel);
+    await webSocket.addNewChannel(newChannel);
     dispatch(closeModal());
   };
 
@@ -71,7 +71,7 @@ const AddChannel = () => {
         <Button variant="outline-secondary mr-2" onClick={() => dispatch(closeModal())}>
           {t('modalAddChannel.cancelButton')}
         </Button>
-        <Button variant="outline-primary" type="submit" disabled={!formik.dirty}>
+        <Button variant="outline-primary" type="submit" disabled={!formik.dirty || formik.isSubmitting}>
           {t('modalAddChannel.sendButton')}
         </Button>
       </div>

@@ -36,7 +36,7 @@ const Channels = () => {
   const isActiveChannel = (id) => id === currentChannelId;
 
   const getChannelClasses = (id) => cn({
-    'w-100 rounded text-left': true,
+    'w-100 text-left': true,
     'btn-secondary': isActiveChannel(id),
   });
 

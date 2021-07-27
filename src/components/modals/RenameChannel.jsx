@@ -30,12 +30,12 @@ const RenameChannel = () => {
     inputRef.current.select();
   }, [inputRef.current]);
 
-  const onSubmit = (values) => {
+  const onSubmit = async (values) => {
     const updatedChannel = {
       id: channelInfo.id,
       name: values.name,
     };
-    webSocket.renameChannel(updatedChannel);
+    await webSocket.renameChannel(updatedChannel);
     dispatch(closeModal());
   };
 
@@ -76,7 +76,7 @@ const RenameChannel = () => {
         <Button variant="outline-secondary mr-2" onClick={() => dispatch(closeModal())}>
           {t('modalRenameChannel.cancelButton')}
         </Button>
-        <Button variant="outline-primary" type="submit" disabled={!formik.dirty}>
+        <Button variant="outline-primary" type="submit" disabled={!formik.dirty || formik.isSubmitting}>
           {t('modalRenameChannel.sendButton')}
         </Button>
       </div>
