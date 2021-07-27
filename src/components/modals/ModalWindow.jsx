@@ -4,7 +4,7 @@ import AddChannel from './AddChannel.jsx';
 import RenameChannel from './RenameChannel.jsx';
 import RemoveChannel from './RemoveChannel.jsx';
 
-const modals = {
+const modalsMapping = {
   addChannel: AddChannel,
   removeChannel: RemoveChannel,
   renameChannel: RenameChannel,
@@ -16,7 +16,7 @@ const ModalWindow = () => {
   if (!modalInfo.type) {
     return null;
   }
-  const Component = modals[modalInfo.type];
+  const Component = modalsMapping[modalInfo.type];
 
   return (
     <Component />

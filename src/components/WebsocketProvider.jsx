@@ -7,52 +7,46 @@ import {
 } from '../slices/channelsSlice.js';
 import { closeModal } from '../slices/modalSlice.js';
 
+const socketIdentifiers = {
+  newMessage: 'newMessage',
+  newChannel: 'newChannel',
+  removeChannel: 'removeChannel',
+  renameChannel: 'renameChannel',
+};
+
 const WebSocketProvider = ({ socket, children }) => {
   const dispatch = useDispatch();
 
-  // Подумать над диспетчеризацией
-  const sendMessage = (newMessage) => {
-    socket.emit('newMessage', newMessage);
-  };
-
-  socket.on('newMessage', (message) => {
-    dispatch(recieveNewMessage(message));
-  });
-
-  const addNewChannel = (newChannel) => {
-    socket.emit('newChannel', newChannel, ({ status }) => {
+  const manageChannel = (action) => (data) => {
+    socket.emit(action, data, ({ status }) => {
       if (status === 'ok') {
         dispatch(closeModal());
       }
     });
   };
 
-  socket.on('newChannel', (channel) => {
+  const addNewChannel = manageChannel(socketIdentifiers.newChannel);
+  const removeChannel = manageChannel(socketIdentifiers.removeChannel);
+  const renameChannel = manageChannel(socketIdentifiers.renameChannel);
+
+  const sendMessage = (newMessage) => {
+    socket.emit(socketIdentifiers.newMessage, newMessage);
+  };
+
+  socket.on(socketIdentifiers.newChannel, (channel) => {
     dispatch(addChannel(channel));
   });
 
-  const removeChannel = (removingChannel) => {
-    socket.emit('removeChannel', removingChannel, ({ status }) => {
-      if (status === 'ok') {
-        dispatch(closeModal());
-      }
-    });
-  };
-
-  socket.on('removeChannel', (removingChannel) => {
+  socket.on(socketIdentifiers.removeChannel, (removingChannel) => {
     dispatch(removeUsersChannel(removingChannel));
   });
 
-  const renameChannel = (renamingChannel) => {
-    socket.emit('renameChannel', renamingChannel, ({ status }) => {
-      if (status === 'ok') {
-        dispatch(closeModal());
-      }
-    });
-  };
-
-  socket.on('renameChannel', (renamingChannel) => {
+  socket.on(socketIdentifiers.renameChannel, (renamingChannel) => {
     dispatch(renameUsersChannel(renamingChannel));
+  });
+
+  socket.on(socketIdentifiers.newMessage, (message) => {
+    dispatch(recieveNewMessage(message));
   });
 
   const socketContext = {

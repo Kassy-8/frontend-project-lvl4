@@ -18,15 +18,17 @@ const LoginPage = () => {
   const auth = useAuth();
   const { t } = useTranslation();
 
-  const [authFailed, setAuthFailed] = useState(false);
+  const [authFailed, setAuthFailed] = useState(null);
 
   const logInUser = async (values) => {
     const { username, password } = values;
     try {
       const response = await axios.post(routes.loginPath(), { username, password });
+
       const token = JSON.stringify(response.data);
       localStorage.setItem('userId', token);
       auth.logIn(response.data.username);
+
       const { from } = location.state || { from: { pathname: '/' } };
       history.replace(from);
     } catch (error) {
@@ -60,13 +62,12 @@ const LoginPage = () => {
         <Form.Control
           name="username"
           type="name"
-          placeholder={t('loginPage.nameLabel')}
           ref={nameInputRef}
           value={formik.values.username}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           isInvalid={
-            (formik.touched.username && formik.errors.username) || (authFailed === true)
+            (formik.touched.username && formik.errors.username) || (authFailed)
           }
         />
         <Form.Control.Feedback
@@ -79,13 +80,12 @@ const LoginPage = () => {
         <Form.Label>{t('loginPage.passwordLabel')}</Form.Label>
         <Form.Control
           type="password"
-          placeholder={t('loginPage.passwordLabel')}
           name="password"
           value={formik.values.password}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           isInvalid={
-            (formik.touched.password && formik.errors.password) || (authFailed === true)
+            (formik.touched.password && formik.errors.password) || (authFailed)
           }
         />
         <Form.Control.Feedback
@@ -94,15 +94,18 @@ const LoginPage = () => {
           {formik.errors.password}
         </Form.Control.Feedback>
       </Form.Group>
-      {(authFailed)
-        ? (
-          <Form.Text className="text-danger m-2">
-            {t('loginPage.failedAuthFeedback')}
-          </Form.Text>
-        )
-        : null}
+      {(authFailed) && (
+        <Form.Text className="text-danger m-2">
+          {t('loginPage.failedAuthFeedback')}
+        </Form.Text>
+      )}
       <div className="d-flex justify-content-center">
-        <Button className="w-100" variant="outline-primary" type="submit" disabled={formik.isSubmitting}>
+        <Button
+          className="w-100"
+          variant="outline-primary"
+          type="submit"
+          disabled={formik.isSubmitting}
+        >
           {t('loginPage.entranceButton')}
         </Button>
       </div>

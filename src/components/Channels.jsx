@@ -50,9 +50,14 @@ const Channels = () => {
     </Button>
   );
 
+  // дропдаун почему то выпадает в контейнере для каналов, почему - не могу постигнуть
   const renderUsersChannel = (id) => (
     <Dropdown as={ButtonGroup} className="d-flex">
-      <Button variant={false} className={getChannelClasses(id)} onClick={() => toggleChannel(id)}>
+      <Button
+        variant={false}
+        className={getChannelClasses(id)}
+        onClick={() => toggleChannel(id)}
+      >
         {t('channelsMenu.channelsName', { channel: channels[id].name })}
       </Button>
 

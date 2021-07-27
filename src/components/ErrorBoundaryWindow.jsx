@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ErrorBoundaryWindow = () => (
-  <div>
+  <div className="m-2">
     <span>
       Sorry for error, please, back to the
       {'  '}

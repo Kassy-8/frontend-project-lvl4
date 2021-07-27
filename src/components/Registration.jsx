@@ -17,15 +17,17 @@ const Registration = () => {
   const history = useHistory();
   const auth = useAuth();
 
-  const [registrationFailed, setRegistrationFailed] = useState(false);
+  const [registrationFailed, setRegistrationFailed] = useState(null);
 
   const signUpUser = async (values) => {
     const { username, password } = values;
     try {
       const response = await axios.post(routes.signupPath(), { username, password });
+
       const token = JSON.stringify(response.data);
       localStorage.setItem('userId', token);
       auth.logIn(response.data.username);
+
       history.replace({ pathname: '/' });
     } catch (error) {
       if (error.isAxiosError && error.response.status === 409) {
@@ -67,14 +69,13 @@ const Registration = () => {
         <Form.Control
           name="username"
           type="name"
-          placeholder={t('registrationPage.nameLabel')}
           ref={nameInputRef}
           value={formik.values.username}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           isInvalid={
             (formik.touched.username && formik.errors.username)
-            || (registrationFailed === true)
+            || (registrationFailed)
           }
         />
         <Form.Control.Feedback
@@ -87,14 +88,13 @@ const Registration = () => {
         <Form.Label>{t('registrationPage.passwordLabel')}</Form.Label>
         <Form.Control
           type="password"
-          placeholder={t('registrationPage.passwordLabel')}
           name="password"
           value={formik.values.password}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           isInvalid={
             (formik.touched.password && formik.errors.password)
-            || (registrationFailed === true)
+            || (registrationFailed)
           }
         />
         <Form.Control.Feedback
@@ -107,14 +107,13 @@ const Registration = () => {
         <Form.Label>{t('registrationPage.confirmationLabel')}</Form.Label>
         <Form.Control
           type="password"
-          placeholder={t('registrationPage.confirmationLabel')}
           name="passwordConfirmation"
           value={formik.values.passwordConfirmation}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           isInvalid={
             (formik.touched.passwordConfirmation && formik.errors.passwordConfirmation)
-            || (registrationFailed === true)
+            || (registrationFailed)
           }
         />
         <Form.Control.Feedback
@@ -123,13 +122,11 @@ const Registration = () => {
           {formik.errors.passwordConfirmation}
         </Form.Control.Feedback>
       </Form.Group>
-      {(registrationFailed)
-        ? (
-          <Form.Text className="text-danger m-2">
-            {t('registrationPage.failedRegustrationFeedback')}
-          </Form.Text>
-        )
-        : null}
+      {(registrationFailed) && (
+        <Form.Text className="text-danger m-2">
+          {t('registrationPage.failedRegustrationFeedback')}
+        </Form.Text>
+      )}
       <Button variant="outline-primary" type="submit" disabled={formik.isSubmitting}>
         {t('registrationPage.entranceButton')}
       </Button>

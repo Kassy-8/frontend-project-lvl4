@@ -29,6 +29,6 @@ https://mighty-bastion-65317.herokuapp.com/
 
     `npm ci`
 
-* Build project:
+* Build project (app starts on localhost: 5000):
 
     `make start`

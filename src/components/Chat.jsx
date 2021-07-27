@@ -35,16 +35,12 @@ const Chat = () => {
 
   if (networkError) {
     return (
-      <Container>
-        <Row>
-          <Col>
-            <span>
-              {t('networkError')}
-              { networkError}
-            </span>
-          </Col>
-        </Row>
-      </Container>
+      <div className="m-2">
+        <span>
+          {t('networkError')}
+          { networkError}
+        </span>
+      </div>
     );
   }
 

@@ -19,7 +19,6 @@ const RemoveChannel = () => {
     setIsSubmitting(true);
     webSocket.removeChannel(info);
     setIsSubmitting(false);
-    // dispatch(closeModal());
   };
 
   return (
@@ -36,10 +35,17 @@ const RemoveChannel = () => {
       <Modal.Body>
         <p className="lead">{t('modalRemoveChannel.confirmation')}</p>
         <div className="d-flex justify-content-end">
-          <Button variant="outline-secondary mr-2" onClick={() => dispatch(closeModal())}>
+          <Button
+            variant="outline-secondary mr-2"
+            onClick={() => dispatch(closeModal())}
+          >
             {t('modalRemoveChannel.cancelButton')}
           </Button>
-          <Button variant="outline-danger" onClick={() => confirmRemoving()} disabled={isSubmitting}>
+          <Button
+            variant="outline-danger"
+            onClick={() => confirmRemoving()}
+            disabled={isSubmitting}
+          >
             {t('modalRemoveChannel.sendButton')}
           </Button>
         </div>

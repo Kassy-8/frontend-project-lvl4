@@ -33,10 +33,9 @@ const AddChannel = () => {
       name: values.name,
     };
     webSocket.addNewChannel(newChannel);
-    // dispatch(closeModal());
   };
 
-  const formik = useFormik({
+  const formikInstance = useFormik({
     initialValues: {
       name: '',
     },
@@ -46,7 +45,7 @@ const AddChannel = () => {
     onSubmit,
   });
 
-  const renderForm = () => (
+  const renderForm = (formik) => (
     <Form onSubmit={formik.handleSubmit}>
       <Form.Group>
         <Form.Control
@@ -68,10 +67,17 @@ const AddChannel = () => {
         </Form.Control.Feedback>
       </Form.Group>
       <div className="d-flex justify-content-end">
-        <Button variant="outline-secondary mr-2" onClick={() => dispatch(closeModal())}>
+        <Button
+          variant="outline-secondary mr-2"
+          onClick={() => dispatch(closeModal())}
+        >
           {t('modalAddChannel.cancelButton')}
         </Button>
-        <Button variant="outline-primary" type="submit" disabled={!formik.dirty || formik.isSubmitting}>
+        <Button
+          variant="outline-primary"
+          type="submit"
+          disabled={!formik.dirty || formik.isSubmitting}
+        >
           {t('modalAddChannel.sendButton')}
         </Button>
       </div>
@@ -91,7 +97,7 @@ const AddChannel = () => {
         </Button>
       </Modal.Header>
       <Modal.Body>
-        {renderForm()}
+        {renderForm(formikInstance)}
       </Modal.Body>
     </Modal>
   );

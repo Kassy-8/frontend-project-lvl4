@@ -26,13 +26,16 @@ const ChatWindow = () => {
   const currentChannelId = useSelector(selectCurrentChannelId);
   const currentChannel = useSelector(selectCurrentChannel);
 
-  const messagesForActiveChannel = messages
-    ?.filter((message) => message.channelId === currentChannelId);
+  // закомментированная строка и endElement были для прокрутки чата при переполнении окна видимости
+  // функционально все работало, но автотесты ругались, пришлось отключить
 
   useEffect(() => {
     inputRef.current.focus();
     // endElement.current?.scrollIntoView({ behavior: 'smooth' });
   });
+
+  const messagesForActiveChannel = messages
+    ?.filter((message) => message.channelId === currentChannelId);
 
   const renderHeader = () => {
     if (!currentChannelId) {

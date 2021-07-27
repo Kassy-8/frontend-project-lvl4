@@ -1,7 +1,7 @@
 {
   "name": "@hexlet/code",
   "version": "0.0.1",
-  "description": "chat app in browser",
+  "description": "browser's chat app",
   "main": "src/init.jsx",
   "type": "module",
   "engines": {

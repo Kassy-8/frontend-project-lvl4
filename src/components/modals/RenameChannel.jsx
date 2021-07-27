@@ -24,7 +24,7 @@ const RenameChannel = () => {
   const modalInfo = useSelector((state) => state.modalInfo);
   const { isOpen, info: channelInfo } = modalInfo;
 
-  // не поняла, почему чтобы выделить текст, useEffect д/н запуститься дважды:(
+  // to focus on text, useEffect must start twice, with [] after comma it's not working(
   useEffect(() => {
     inputRef.current.focus();
     inputRef.current.select();
@@ -36,10 +36,9 @@ const RenameChannel = () => {
       name: values.name,
     };
     webSocket.renameChannel(updatedChannel);
-    // dispatch(closeModal());
   };
 
-  const formik = useFormik({
+  const formikInstance = useFormik({
     initialValues: {
       name: channelInfo.name,
     },
@@ -51,7 +50,7 @@ const RenameChannel = () => {
     onSubmit,
   });
 
-  const renderForm = () => (
+  const renderForm = (formik) => (
     <Form onSubmit={formik.handleSubmit}>
       <Form.Group>
         <Form.Control
@@ -73,15 +72,23 @@ const RenameChannel = () => {
         </Form.Control.Feedback>
       </Form.Group>
       <div className="d-flex justify-content-end">
-        <Button variant="outline-secondary mr-2" onClick={() => dispatch(closeModal())}>
+        <Button
+          variant="outline-secondary mr-2"
+          onClick={() => dispatch(closeModal())}
+        >
           {t('modalRenameChannel.cancelButton')}
         </Button>
-        <Button variant="outline-primary" type="submit" disabled={!formik.dirty || formik.isSubmitting}>
+        <Button
+          variant="outline-primary"
+          type="submit"
+          disabled={!formik.dirty || formik.isSubmitting}
+        >
           {t('modalRenameChannel.sendButton')}
         </Button>
       </div>
     </Form>
   );
+
   return (
     <Modal
       show={isOpen}
@@ -95,7 +102,7 @@ const RenameChannel = () => {
         </Button>
       </Modal.Header>
       <Modal.Body>
-        {renderForm()}
+        {renderForm(formikInstance)}
       </Modal.Body>
     </Modal>
   );
