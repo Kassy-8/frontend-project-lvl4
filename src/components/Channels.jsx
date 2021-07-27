@@ -12,7 +12,6 @@ import {
   selectCurrentChannelId,
 } from '../slices/channelsSlice.js';
 import { showModal } from '../slices/modalSlice.js';
-import addChannelLogo from '../assets/images/addLogo.svg';
 
 const modalTypes = {
   add: 'addChannel',
@@ -110,12 +109,11 @@ const Channels = () => {
       <div className="d-flex justify-content-between mb-2 pr-2 pl-4">
         <span>{t('channelsMenu.title')}</span>
         <Button
-          variant={false}
-          className="p-0 text-primary"
+          variant="outline-primary"
+          className="py-0 px-1"
           onClick={() => showModalWindow(modalTypes.add, null)}
         >
-          <img src={addChannelLogo} alt="addChannelLogo" />
-          <span className="d-none">{t('channelsMenu.addButton')}</span>
+          {t('channelsMenu.addButton')}
         </Button>
       </div>
       {renderChannels()}
