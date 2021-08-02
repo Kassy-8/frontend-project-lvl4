@@ -1,8 +1,11 @@
 import ReactDOM from 'react-dom';
-import App from './init.jsx';
+import init from './init.jsx';
 
-document.addEventListener('DOMContentLoaded', () => {
+const render = async () => {
+  const dom = await init();
   ReactDOM.render(
-    App(), document.getElementById('chat'),
+    dom, document.getElementById('chat'),
   );
-});
+};
+
+render();

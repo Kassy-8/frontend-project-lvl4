@@ -2,7 +2,6 @@ import React, { useState, useRef } from 'react';
 import * as yup from 'yup';
 import axios from 'axios';
 import { useFormik } from 'formik';
-import { useHistory } from 'react-router-dom';
 import {
   Form, Button, Col, Row, Card,
 } from 'react-bootstrap';
@@ -14,7 +13,6 @@ import registrationImage from '../assets/images/registration.jpeg';
 const Registration = () => {
   const { t } = useTranslation();
   const nameInputRef = useRef();
-  const history = useHistory();
   const auth = useAuth();
 
   const [registrationFailed, setRegistrationFailed] = useState(null);
@@ -27,8 +25,6 @@ const Registration = () => {
       const token = JSON.stringify(response.data);
       localStorage.setItem('userId', token);
       auth.logIn(response.data.username);
-
-      history.replace({ pathname: '/' });
     } catch (error) {
       if (error.isAxiosError && error.response.status === 409) {
         setRegistrationFailed(true);

@@ -6,10 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import {
-  selectAllChannelsAsObject,
-  selectChannelsIds,
-  setCurrentChannel,
+  selectChannels,
   selectCurrentChannelId,
+  setCurrentChannel,
 } from '../slices/channelsSlice.js';
 import { showModal } from '../slices/modalSlice.js';
 
@@ -23,8 +22,7 @@ const Channels = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const channels = useSelector(selectAllChannelsAsObject);
-  const channelsIds = useSelector(selectChannelsIds);
+  const channels = useSelector(selectChannels);
   const currentChannelId = useSelector(selectCurrentChannelId);
 
   const toggleChannel = (id) => dispatch(setCurrentChannel(id));
@@ -85,11 +83,7 @@ const Channels = () => {
   );
 
   const renderChannels = () => {
-    if (channelsIds.length === 0) {
-      return null;
-    }
-
-    const channelsList = channelsIds.map((id) => (
+    const channelsList = Object.keys(channels).map((id) => (
       <Nav.Item
         id={id}
         key={id}

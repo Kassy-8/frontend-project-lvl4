@@ -12,14 +12,13 @@ import 'regenerator-runtime/runtime.js';
 import '../assets/application.scss';
 
 import store from './store';
-import Router from './components/Router.jsx';
-import WebSocketProvider from './components/WebsocketProvider.jsx';
+import App from './App.jsx';
 import ErrorBoundaryWindow from './components/ErrorBoundaryWindow.jsx';
 import translation from './assets/locale/ruLocale.js';
 
-const App = (socketClient = io()) => {
+const init = async (socketClient = io()) => {
   const i18nInstance = i18n.createInstance();
-  i18nInstance
+  await i18nInstance
     .use(initReactI18next)
     .init({
       lng: 'ru',
@@ -33,7 +32,7 @@ const App = (socketClient = io()) => {
     });
 
   const rollbarConfig = {
-    accessToken: '90cd99e1620d4d088f9921fe33520b6e',
+    accessToken: 'process.env.ROLLBAR_ACCESS_TOKEN',
     environment: 'production',
     captureUncaught: true,
     captureUnhandledRejections: true,
@@ -44,9 +43,7 @@ const App = (socketClient = io()) => {
       <RollbarProvider config={rollbarConfig}>
         <ErrorBoundary level={LEVEL_WARN} fallbackUI={ErrorBoundaryWindow}>
           <Provider store={store}>
-            <WebSocketProvider socket={socketClient}>
-              <Router />
-            </WebSocketProvider>
+            <App socketClient={socketClient} />
           </Provider>
         </ErrorBoundary>
       </RollbarProvider>
@@ -54,4 +51,4 @@ const App = (socketClient = io()) => {
   );
 };
 
-export default App;
+export default init;

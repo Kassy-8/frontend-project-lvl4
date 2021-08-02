@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import * as yup from 'yup';
 import axios from 'axios';
 import { useFormik } from 'formik';
-import { useLocation, useHistory, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   Form, Button, Col, Row, Card,
 } from 'react-bootstrap';
@@ -13,8 +13,6 @@ import loginPageImage from '../assets/images/hexlet_chat.jpeg';
 
 const LoginPage = () => {
   const nameInputRef = useRef();
-  const history = useHistory();
-  const location = useLocation();
   const auth = useAuth();
   const { t } = useTranslation();
 
@@ -28,9 +26,6 @@ const LoginPage = () => {
       const token = JSON.stringify(response.data);
       localStorage.setItem('userId', token);
       auth.logIn(response.data.username);
-
-      const { from } = location.state || { from: { pathname: '/' } };
-      history.replace(from);
     } catch (error) {
       if (error.isAxiosError && error.response.status === 401) {
         setAuthFailed(true);

@@ -7,10 +7,19 @@ import axios from 'axios';
 import { useTranslation } from 'react-i18next';
 import routes from '../routes.js';
 import { fetchChannels } from '../slices/channelsSlice.js';
-import Channels from './Channels.jsx';
-import ChatWindow from './ChatWindow.jsx';
-import getAuthHeader from '../getAuthHeader.js';
-import ModalWindow from './modals/ModalWindow.jsx';
+import Channels from '../components/Channels.jsx';
+import ChatWindow from '../components/ChatWindow.jsx';
+import ModalWindow from '../components/modals/ModalWindow.jsx';
+
+const getHeaderForAuth = () => {
+  const userId = JSON.parse(localStorage.getItem('userId'));
+
+  if (userId && userId.token) {
+    return { Authorization: `Bearer ${userId.token}` };
+  }
+
+  return {};
+};
 
 const Chat = () => {
   const { t } = useTranslation();
@@ -21,7 +30,7 @@ const Chat = () => {
   useEffect(() => {
     const fetchChatDatas = async () => {
       try {
-        const { data } = await axios.get(routes.datasPath(), { headers: getAuthHeader() });
+        const { data } = await axios.get(routes.datasPath(), { headers: getHeaderForAuth() });
         dispatch(fetchChannels(data));
       } catch (error) {
         console.log('error in fetchChatDatas', error);

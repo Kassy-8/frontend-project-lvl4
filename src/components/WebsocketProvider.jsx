@@ -1,6 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import webSocketContext from '../webSocketContext.js';
+import webSocketContext from '../contexts/webSocketContext.js';
 import { recieveNewMessage } from '../slices/messagesSlice.js';
 import {
   addChannel, removeUsersChannel, renameUsersChannel,

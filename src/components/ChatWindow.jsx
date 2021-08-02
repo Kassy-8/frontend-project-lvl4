@@ -8,9 +8,9 @@ import { useTranslation } from 'react-i18next';
 
 import { selectAllMessages } from '../slices/messagesSlice.js';
 import {
-  selectCurrentChannelId, selectCurrentChannel,
+  selectCurrentChannelId,
 } from '../slices/channelsSlice.js';
-import webSocketContext from '../webSocketContext.js';
+import webSocketContext from '../contexts/webSocketContext.js';
 import useAuth from '../useAuth.js';
 import sendMessageLogo from '../assets/images/sendLogo.svg';
 
@@ -24,7 +24,7 @@ const ChatWindow = () => {
   const messages = useSelector(selectAllMessages);
 
   const currentChannelId = useSelector(selectCurrentChannelId);
-  const currentChannel = useSelector(selectCurrentChannel);
+  const currentChannel = useSelector((state) => state.channelsInfo.channels[currentChannelId]);
 
   // закомментированная строка и endElement были для прокрутки чата при переполнении окна видимости
   // функционально все работало, но автотесты ругались, пришлось отключить

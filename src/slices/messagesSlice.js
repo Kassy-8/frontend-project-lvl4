@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
+import _ from 'lodash';
 import { fetchChannels, removeUsersChannel } from './channelsSlice.js';
 
 const messagesSlice = createSlice({
@@ -19,7 +20,8 @@ const messagesSlice = createSlice({
     },
     [removeUsersChannel]: (state, { payload }) => {
       const { id } = payload;
-      state.messages = state.messages.filter(({ channelId }) => channelId !== id);
+      _.remove(state.messages, ({ channelId }) => channelId === id);
+      // state.messages = state.messages.filter(({ channelId }) => channelId !== id);
     },
   },
 });

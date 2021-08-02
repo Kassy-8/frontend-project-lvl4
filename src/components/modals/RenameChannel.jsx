@@ -6,10 +6,10 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import webSocketContext from '../../webSocketContext.js';
+import webSocketContext from '../../contexts/webSocketContext.js';
 import { closeModal } from '../../slices/modalSlice.js';
 import {
-  selectAllChannels,
+  selectChannels,
 } from '../../slices/channelsSlice.js';
 
 const RenameChannel = () => {
@@ -18,7 +18,7 @@ const RenameChannel = () => {
   const inputRef = useRef();
   const webSocket = useContext(webSocketContext);
 
-  const channels = useSelector(selectAllChannels);
+  const channels = useSelector(selectChannels);
   const reservedChannelsNames = channels.map(({ name }) => name);
 
   const modalInfo = useSelector((state) => state.modalInfo);
