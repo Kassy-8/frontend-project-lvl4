@@ -3,6 +3,9 @@ import { useSelector } from 'react-redux';
 import AddChannel from './AddChannel.jsx';
 import RenameChannel from './RenameChannel.jsx';
 import RemoveChannel from './RemoveChannel.jsx';
+import {
+  selectChannels,
+} from '../../slices/channelsSlice.js';
 
 const modalsMapping = {
   addChannel: AddChannel,
@@ -12,14 +15,21 @@ const modalsMapping = {
 
 const ModalWindow = () => {
   const modalInfo = useSelector((state) => state.modalInfo);
+  const channels = useSelector(selectChannels);
 
   if (!modalInfo.type) {
     return null;
   }
+
+  const reservedChannelsNames = Object.values(channels).map(({ name }) => name);
+
   const Component = modalsMapping[modalInfo.type];
 
   return (
-    <Component />
+    <Component
+      modalInfo={modalInfo}
+      reservedChannelsNames={(modalInfo.type !== 'removeChannel') ? reservedChannelsNames : null}
+    />
   );
 };
 

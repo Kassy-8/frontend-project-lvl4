@@ -1,15 +1,14 @@
 import React, { useState, useRef } from 'react';
 import * as yup from 'yup';
-import axios from 'axios';
 import { useFormik } from 'formik';
 import { Link } from 'react-router-dom';
 import {
-  Form, Button, Col, Row, Card,
+  Form, Button, Col, Row, Card, Container,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../useAuth.js';
-import routes from '../routes.js';
 import loginPageImage from '../assets/images/hexlet_chat.jpeg';
+import Header from '../components/Header.jsx';
 
 const LoginPage = () => {
   const nameInputRef = useRef();
@@ -17,39 +16,40 @@ const LoginPage = () => {
   const { t } = useTranslation();
 
   const [authFailed, setAuthFailed] = useState(null);
+  const [networkError, setNetworkError] = useState(null);
 
-  const logInUser = async (values) => {
-    const { username, password } = values;
-    try {
-      const response = await axios.post(routes.loginPath(), { username, password });
-
-      const token = JSON.stringify(response.data);
-      localStorage.setItem('userId', token);
-      auth.logIn(response.data.username);
-    } catch (error) {
-      if (error.isAxiosError && error.response.status === 401) {
-        setAuthFailed(true);
-        nameInputRef.current.select();
-        return;
-      }
-      console.log(error);
-      throw error;
-    }
-  };
-
-  const formikInstance = useFormik({
+  const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
     },
+    validateOnBlur: false,
     validationSchema: yup.object({
       username: yup.string().trim().required(t('loginPage.validation.required')),
       password: yup.string().trim().required(t('loginPage.validation.required')),
     }),
-    onSubmit: logInUser,
+    onSubmit: async (values) => {
+      try {
+        await auth.logIn(values);
+      } catch (error) {
+        if (error.isAxiosError) {
+          if (error.response && error.response.status === 401) {
+            setNetworkError(null);
+            setAuthFailed(true);
+            nameInputRef.current.select();
+            return;
+          }
+          setAuthFailed(false);
+          setNetworkError(true);
+        }
+      }
+    },
   });
 
-  const renderLoginForm = (formik) => (
+  const isNameInvalid = (formik.touched.username && formik.errors.username) || authFailed;
+  const isPasswordInvalid = (formik.touched.password && formik.errors.password) || authFailed;
+
+  const loginFormNode = (
     <Form onSubmit={formik.handleSubmit}>
       <h1 className="mb-4 text-center">{t('loginPage.title')}</h1>
       <Form.Group controlId="username">
@@ -61,9 +61,8 @@ const LoginPage = () => {
           value={formik.values.username}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          isInvalid={
-            (formik.touched.username && formik.errors.username) || (authFailed)
-          }
+          required
+          isInvalid={isNameInvalid}
         />
         <Form.Control.Feedback
           type="invalid"
@@ -79,9 +78,8 @@ const LoginPage = () => {
           value={formik.values.password}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          isInvalid={
-            (formik.touched.password && formik.errors.password) || (authFailed)
-          }
+          required
+          isInvalid={isPasswordInvalid}
         />
         <Form.Control.Feedback
           type="invalid"
@@ -92,6 +90,11 @@ const LoginPage = () => {
       {(authFailed) && (
         <Form.Text className="text-danger m-2">
           {t('loginPage.failedAuthFeedback')}
+        </Form.Text>
+      )}
+      {(networkError) && (
+        <Form.Text className="text-danger m-2">
+          {t('networkError')}
         </Form.Text>
       )}
       <div className="d-flex justify-content-center">
@@ -107,7 +110,7 @@ const LoginPage = () => {
     </Form>
   );
 
-  const renderLoginFooter = () => (
+  const loginFooterNode = (
     <div className="p-4 d-flex justify-content-center">
       <p className="m-0">
         <span>{t('loginPage.questionNoAcc')}</span>
@@ -118,23 +121,28 @@ const LoginPage = () => {
   );
 
   return (
-    <Row className="h-100 align-items-center justify-content-center">
-      <Col>
-        <Card className="shadow-sm">
-          <Row className="h-100 p-5 align-items-center justify-content-center">
-            <Col className="d-flex justify-content-center">
-              <img src={loginPageImage} className="rounded" alt="loginPageImage" />
-            </Col>
-            <Col className="mt-3 mb-t-mb-0">
-              {renderLoginForm(formikInstance)}
-            </Col>
-          </Row>
-          <Card.Footer>
-            {renderLoginFooter()}
-          </Card.Footer>
-        </Card>
-      </Col>
-    </Row>
+    <div className="h-100 d-flex flex-column">
+      <Header />
+      <Container fluid className="h-100">
+        <Row className="h-100 align-items-center justify-content-center">
+          <Col>
+            <Card className="shadow-sm">
+              <Row className="h-100 p-5 align-items-center justify-content-center">
+                <Col className="d-flex justify-content-center">
+                  <img src={loginPageImage} className="rounded" alt="loginPageImage" />
+                </Col>
+                <Col className="mt-3 mb-t-mb-0">
+                  {loginFormNode}
+                </Col>
+              </Row>
+              <Card.Footer>
+                {loginFooterNode}
+              </Card.Footer>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 };
 

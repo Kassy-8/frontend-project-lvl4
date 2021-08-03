@@ -4,24 +4,17 @@ import {
 } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import webSocketContext from '../../contexts/webSocketContext.js';
 import { closeModal } from '../../slices/modalSlice.js';
-import {
-  selectChannels,
-} from '../../slices/channelsSlice.js';
 
-const RenameChannel = () => {
+const RenameChannel = ({ modalInfo, reservedChannelsNames }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const inputRef = useRef();
   const webSocket = useContext(webSocketContext);
 
-  const channels = useSelector(selectChannels);
-  const reservedChannelsNames = channels.map(({ name }) => name);
-
-  const modalInfo = useSelector((state) => state.modalInfo);
   const { isOpen, info: channelInfo } = modalInfo;
 
   // to focus on text, useEffect must start twice, with [] after comma it's not working(
@@ -38,7 +31,7 @@ const RenameChannel = () => {
     webSocket.renameChannel(updatedChannel);
   };
 
-  const formikInstance = useFormik({
+  const formik = useFormik({
     initialValues: {
       name: channelInfo.name,
     },
@@ -50,7 +43,7 @@ const RenameChannel = () => {
     onSubmit,
   });
 
-  const renderForm = (formik) => (
+  const formNode = (
     <Form onSubmit={formik.handleSubmit}>
       <Form.Group>
         <Form.Control
@@ -102,7 +95,7 @@ const RenameChannel = () => {
         </Button>
       </Modal.Header>
       <Modal.Body>
-        {renderForm(formikInstance)}
+        {formNode}
       </Modal.Body>
     </Modal>
   );

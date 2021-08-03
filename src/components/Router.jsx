@@ -9,12 +9,11 @@ import ChatPage from '../pages/ChatPage.jsx';
 import PrivateRoute from './PrivateRoute.jsx';
 import PublicRoute from './PublicRoute.jsx';
 import Registration from '../pages/Registration.jsx';
-import Header from './Header.jsx';
+// import Header from './Header.jsx';
 import NoMatchPage from '../pages/NoMatchPage.jsx';
 
 const AppRouter = () => (
   <Router>
-    <Header />
     <Switch>
       <PublicRoute path="/login">
         <LoginPage />

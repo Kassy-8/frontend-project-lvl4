@@ -28,6 +28,6 @@ const messagesSlice = createSlice({
 
 export const { fetchMessages, recieveNewMessage } = messagesSlice.actions;
 
-export const selectAllMessages = (state) => state.messagesInfo.messages;
+export const selectMessages = (state) => state.messagesInfo.messages;
 
 export default messagesSlice.reducer;

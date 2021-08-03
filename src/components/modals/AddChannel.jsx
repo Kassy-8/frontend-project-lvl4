@@ -4,24 +4,17 @@ import {
 } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import webSocketContext from '../../contexts/webSocketContext.js';
 import { closeModal } from '../../slices/modalSlice.js';
-import {
-  selectChannels,
-} from '../../slices/channelsSlice.js';
 
-const AddChannel = () => {
+const AddChannel = ({ modalInfo, reservedChannelsNames }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const inputRef = useRef();
   const webSocket = useContext(webSocketContext);
 
-  const channels = useSelector(selectChannels);
-  const reservedChannelsNames = channels.map(({ name }) => name);
-
-  const modalInfo = useSelector((state) => state.modalInfo);
   const { isOpen } = modalInfo;
 
   useEffect(() => {
@@ -35,7 +28,7 @@ const AddChannel = () => {
     webSocket.addNewChannel(newChannel);
   };
 
-  const formikInstance = useFormik({
+  const formik = useFormik({
     initialValues: {
       name: '',
     },
@@ -45,7 +38,7 @@ const AddChannel = () => {
     onSubmit,
   });
 
-  const renderForm = (formik) => (
+  const formNode = (
     <Form onSubmit={formik.handleSubmit}>
       <Form.Group>
         <Form.Control
@@ -97,7 +90,7 @@ const AddChannel = () => {
         </Button>
       </Modal.Header>
       <Modal.Body>
-        {renderForm(formikInstance)}
+        {formNode}
       </Modal.Body>
     </Modal>
   );

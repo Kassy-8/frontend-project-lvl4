@@ -35,7 +35,7 @@ const channelsSlice = createSlice({
     },
     renameUsersChannel: (state, { payload }) => {
       const { name, id } = payload;
-      state.chanels[id].name = name;
+      state.channels[id].name = name;
     },
   },
 });

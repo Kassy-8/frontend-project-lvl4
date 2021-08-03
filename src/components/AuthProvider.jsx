@@ -1,19 +1,38 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import routes from '../routes.js';
 import authContext from '../contexts/authContext.js';
 
 const AuthProvider = ({ children }) => {
   const [
     {
-      userLoggedIn, username,
+      userLoggedIn, user,
     },
-    setLoggedIn] = useState({ userLoggedIn: false, username: null });
+    setLoggedIn] = useState({ userLoggedIn: false, user: null });
 
-  const logIn = (user) => setLoggedIn({ userLoggedIn: true, username: user });
-  const logOut = () => setLoggedIn({ userLoggedIn: false, username: null });
+  const logIn = async (values) => {
+    const { username, password } = values;
+    const response = await axios.post(routes.loginPath(), { username, password });
+
+    const token = JSON.stringify(response.data);
+    localStorage.setItem('userId', token);
+    setLoggedIn({ userLoggedIn: true, user: response.data.username });
+  };
+
+  const signUp = async (values) => {
+    const { username, password } = values;
+    const response = await axios.post(routes.signupPath(), { username, password });
+
+    const token = JSON.stringify(response.data);
+    localStorage.setItem('userId', token);
+    setLoggedIn({ userLoggedIn: true, user: response.data.username });
+  };
+
+  const logOut = () => setLoggedIn({ userLoggedIn: false, user: null });
 
   return (
     <authContext.Provider value={{
-      userLoggedIn, username, logIn, logOut,
+      userLoggedIn, username: user, logIn, logOut, signUp,
     }}
     >
       {children}

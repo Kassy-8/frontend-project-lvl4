@@ -1,14 +1,13 @@
 import React, { useState, useRef } from 'react';
 import * as yup from 'yup';
-import axios from 'axios';
 import { useFormik } from 'formik';
 import {
-  Form, Button, Col, Row, Card,
+  Form, Button, Col, Row, Card, Container,
 } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import useAuth from '../useAuth.js';
-import routes from '../routes.js';
 import registrationImage from '../assets/images/registration.jpeg';
+import Header from '../components/Header.jsx';
 
 const Registration = () => {
   const { t } = useTranslation();
@@ -16,32 +15,15 @@ const Registration = () => {
   const auth = useAuth();
 
   const [registrationFailed, setRegistrationFailed] = useState(null);
+  const [networkError, setNetworkError] = useState(null);
 
-  const signUpUser = async (values) => {
-    const { username, password } = values;
-    try {
-      const response = await axios.post(routes.signupPath(), { username, password });
-
-      const token = JSON.stringify(response.data);
-      localStorage.setItem('userId', token);
-      auth.logIn(response.data.username);
-    } catch (error) {
-      if (error.isAxiosError && error.response.status === 409) {
-        setRegistrationFailed(true);
-        nameInputRef.current.select();
-        return;
-      }
-      console.log(error);
-      throw error;
-    }
-  };
-
-  const formikInstance = useFormik({
+  const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
       passwordConfirmation: '',
     },
+    validateOnBlur: false,
     validationSchema: yup.object({
       username: yup.string()
         .required(t('registrationPage.validation.required'))
@@ -54,10 +36,31 @@ const Registration = () => {
         .required(t('registrationPage.validation.required'))
         .oneOf([yup.ref('password')], t('registrationPage.validation.passwordMatch')),
     }),
-    onSubmit: signUpUser,
+    onSubmit: async (values) => {
+      try {
+        await auth.signUp(values);
+      } catch (error) {
+        if (error.isAxiosError) {
+          if (error.response && error.response.status === 409) {
+            setNetworkError(null);
+            setRegistrationFailed(true);
+            nameInputRef.current.select();
+            return;
+          }
+          setRegistrationFailed(false);
+          setNetworkError(true);
+        }
+      }
+    },
   });
 
-  const renderRegistrationForm = (formik) => (
+  const isNameInvalid = (formik.touched.username && formik.errors.username) || registrationFailed;
+  const isPasswordInvalid = (formik.touched.password && formik.errors.password)
+    || registrationFailed;
+  const isConfirmationInvalid = (formik.touched.passwordConfirmation
+      && formik.errors.passwordConfirmation) || registrationFailed;
+
+  const registrationFormNode = (
     <Form onSubmit={formik.handleSubmit}>
       <h1 className="mb-4 text-center">{t('registrationPage.title')}</h1>
       <Form.Group controlId="username">
@@ -69,10 +72,8 @@ const Registration = () => {
           value={formik.values.username}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          isInvalid={
-            (formik.touched.username && formik.errors.username)
-            || (registrationFailed)
-          }
+          required
+          isInvalid={isNameInvalid}
         />
         <Form.Control.Feedback
           type="invalid"
@@ -88,10 +89,8 @@ const Registration = () => {
           value={formik.values.password}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          isInvalid={
-            (formik.touched.password && formik.errors.password)
-            || (registrationFailed)
-          }
+          required
+          isInvalid={isPasswordInvalid}
         />
         <Form.Control.Feedback
           type="invalid"
@@ -107,10 +106,8 @@ const Registration = () => {
           value={formik.values.passwordConfirmation}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          isInvalid={
-            (formik.touched.passwordConfirmation && formik.errors.passwordConfirmation)
-            || (registrationFailed)
-          }
+          required
+          isInvalid={isConfirmationInvalid}
         />
         <Form.Control.Feedback
           type="invalid"
@@ -123,27 +120,41 @@ const Registration = () => {
           {t('registrationPage.failedRegustrationFeedback')}
         </Form.Text>
       )}
-      <Button variant="outline-primary" type="submit" disabled={formik.isSubmitting}>
+      {(networkError) && (
+        <Form.Text className="text-danger m-2">
+          {t('networkError')}
+        </Form.Text>
+      )}
+      <Button
+        variant="outline-primary"
+        type="submit"
+        disabled={formik.isSubmitting}
+      >
         {t('registrationPage.entranceButton')}
       </Button>
     </Form>
   );
 
   return (
-    <Row className="h-100 align-items-center justify-content-center">
-      <Col>
-        <Card className="shadow-sm">
-          <Row className="h-100 p-5 align-items-center justify-content-center">
-            <Col className="d-flex justify-content-center">
-              <img src={registrationImage} className="rounded" alt="registrationPageImage" />
-            </Col>
-            <Col className="mt-3 mb-t-mb-0">
-              {renderRegistrationForm(formikInstance)}
-            </Col>
-          </Row>
-        </Card>
-      </Col>
-    </Row>
+    <div className="h-100 d-flex flex-column">
+      <Header />
+      <Container fluid className="h-100">
+        <Row className="h-100 align-items-center justify-content-center">
+          <Col>
+            <Card className="shadow-sm">
+              <Row className="h-100 p-5 align-items-center justify-content-center">
+                <Col className="d-flex justify-content-center">
+                  <img src={registrationImage} className="rounded" alt="registrationPageImage" />
+                </Col>
+                <Col className="mt-3 mb-t-mb-0">
+                  {registrationFormNode}
+                </Col>
+              </Row>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
+    </div>
   );
 };
 

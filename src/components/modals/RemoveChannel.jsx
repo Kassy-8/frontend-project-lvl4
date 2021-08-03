@@ -1,16 +1,15 @@
 import React, { useContext, useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import webSocketContext from '../../contexts/webSocketContext.js';
 import { closeModal } from '../../slices/modalSlice.js';
 
-const RemoveChannel = () => {
+const RemoveChannel = ({ modalInfo }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const webSocket = useContext(webSocketContext);
 
-  const modalInfo = useSelector((state) => state.modalInfo);
   const { isOpen, info } = modalInfo;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,7 +27,10 @@ const RemoveChannel = () => {
     >
       <Modal.Header>
         <Modal.Title>{t('modalRemoveChannel.title')}</Modal.Title>
-        <Button className="close" onClick={() => dispatch(closeModal())}>
+        <Button
+          className="close"
+          onClick={() => dispatch(closeModal())}
+        >
           x
         </Button>
       </Modal.Header>

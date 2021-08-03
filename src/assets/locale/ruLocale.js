@@ -69,6 +69,6 @@ export default {
       messagePlaceholder: 'Введите сообщение',
       sendMessageButton: 'Отправить',
     },
-    networkError: 'Произошла ошибка подключения:',
+    networkError: 'Произошла ошибка подключения',
   },
 };
