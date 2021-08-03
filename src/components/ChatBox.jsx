@@ -32,7 +32,7 @@ const ChatBox = () => {
 
   useEffect(() => {
     inputRef.current.focus();
-    endElement.current.scrollIntoView({ behavior: 'smooth' });
+    // endElement.current.scrollIntoView({ behavior: 'smooth' });
   });
 
   const messagesForActiveChannel = messages
@@ -88,7 +88,7 @@ const ChatBox = () => {
     </Form>
   );
 
-  const chatBoxHeader = (
+  const chatHeader = (
     <div className="mb-4 p-3 border-bottom">
       <h6 className="m-0">
         <b>{t('chatWindow.title', { channelName })}</b>
@@ -112,7 +112,7 @@ const ChatBox = () => {
   return (
     <>
       <div className="d-flex flex-column h-100">
-        {chatBoxHeader}
+        {chatHeader}
         <div className="overflow-auto">
           {chatMessages}
           <div ref={endElement} />

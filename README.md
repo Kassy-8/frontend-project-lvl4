@@ -10,7 +10,7 @@ It's reposytory of browser's chat, when you can anonymously talk to other people
 https://mighty-bastion-65317.herokuapp.com/
 ![LoginPage](https://i.imgur.com/ZMLFd38.png)
 
-2. To enjoy chat you need to register new user (only once of course^^):
+2. To enjoy chat you need to register new user or just log in if you have one already:
 ![RegistrationPage](https://i.imgur.com/dufvyb2.png)
 
 3. After registration you can send message immediately in some of two default channels:

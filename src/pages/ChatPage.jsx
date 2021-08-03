@@ -30,20 +30,26 @@ const Chat = () => {
   const [networkError, setNetworkError] = useState(null);
 
   useEffect(() => {
+    // eslint-disable-next-line functional/no-let
+    let isMounted = true;
     const fetchChatData = async () => {
       try {
         const { data } = await axios.get(routes.datasPath(), { headers: getHeaderForAuth() });
         dispatch(fetchChannels(data));
-        setIsLoading(false);
+        if (isMounted) {
+          setIsLoading(false);
+        }
       } catch (error) {
         console.log('error in fetchChatData', error);
         if (error.isAxiosError) {
-          setIsLoading(false);
           setNetworkError(error);
         }
       }
     };
     fetchChatData();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   if (networkError) {

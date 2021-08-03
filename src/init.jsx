@@ -6,6 +6,7 @@ import i18n from 'i18next';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
 import { Provider as RollbarProvider, ErrorBoundary, LEVEL_WARN } from '@rollbar/react';
 import { io } from 'socket.io-client';
+// import 'dotenv/config';
 
 import 'core-js/stable/index.js';
 import 'regenerator-runtime/runtime.js';
