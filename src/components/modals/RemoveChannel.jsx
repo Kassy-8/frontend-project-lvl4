@@ -10,13 +10,13 @@ const RemoveChannel = ({ modalInfo }) => {
   const dispatch = useDispatch();
   const webSocket = useContext(webSocketContext);
 
-  const { isOpen, info } = modalInfo;
+  const { isOpen, extra } = modalInfo;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const confirmRemoving = () => {
     setIsSubmitting(true);
-    webSocket.removeChannel(info);
+    webSocket.removeChannel(extra);
     setIsSubmitting(false);
   };
 

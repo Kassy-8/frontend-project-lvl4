@@ -4,8 +4,8 @@ import AddChannel from './AddChannel.jsx';
 import RenameChannel from './RenameChannel.jsx';
 import RemoveChannel from './RemoveChannel.jsx';
 import {
-  selectChannels,
-} from '../../slices/channelsSlice.js';
+  selectChannels, selectModalInfo,
+} from '../../selectors.js';
 
 const modalsMapping = {
   addChannel: AddChannel,
@@ -14,7 +14,7 @@ const modalsMapping = {
 };
 
 const ModalWindow = () => {
-  const modalInfo = useSelector((state) => state.modalInfo);
+  const modalInfo = useSelector(selectModalInfo);
   const channels = useSelector(selectChannels);
 
   if (!modalInfo.type) {

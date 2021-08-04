@@ -11,9 +11,9 @@ import loginPageImage from '../assets/images/hexlet_chat.jpeg';
 import Header from '../components/Header.jsx';
 
 const LoginPage = () => {
-  const nameInputRef = useRef();
   const auth = useAuth();
   const { t } = useTranslation();
+  const nameInputRef = useRef();
 
   const [authFailed, setAuthFailed] = useState(null);
   const [networkError, setNetworkError] = useState(null);

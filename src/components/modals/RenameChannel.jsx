@@ -15,7 +15,7 @@ const RenameChannel = ({ modalInfo, reservedChannelsNames }) => {
   const inputRef = useRef();
   const webSocket = useContext(webSocketContext);
 
-  const { isOpen, info: channelInfo } = modalInfo;
+  const { isOpen, extra: channelInfo } = modalInfo;
 
   useEffect(() => {
     inputRef.current.focus();

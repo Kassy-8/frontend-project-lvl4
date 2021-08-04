@@ -14,10 +14,10 @@ const Page404 = () => {
         <Row className="h-100 align-items-center justify-content-center">
           <Col className="text-center">
             <span>
-              {t('errorPages.message404')}
+              {t('page404.message')}
             </span>
             <a href="/">
-              {t('errorPages.link')}
+              {t('page404.link')}
             </a>
           </Col>
         </Row>

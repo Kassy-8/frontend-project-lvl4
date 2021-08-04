@@ -2,7 +2,7 @@
 
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
+const Dotenv = require('dotenv-webpack');
 
 const mode = process.env.NODE_ENV || 'development';
 
@@ -10,9 +10,6 @@ module.exports = {
   mode,
   resolve: {
     extensions: ['.js', '.jsx'],
-    fallback: {
-      fs: false,
-    },
   },
   output: {
     path: path.join(__dirname, 'dist', 'public'),
@@ -27,7 +24,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
-    new NodePolyfillPlugin(),
+    new Dotenv(),
   ],
   module: {
     rules: [

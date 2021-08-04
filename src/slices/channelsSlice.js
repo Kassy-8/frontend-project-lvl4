@@ -2,10 +2,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
 
-// const channelsAdapter = createEntityAdapter({
-//   sortComparer: (channel1, channel2) => channel1.id - channel2.id,
-// });
-
 const channelsSlice = createSlice({
   name: 'channels',
   initialState: {
@@ -43,8 +39,5 @@ const channelsSlice = createSlice({
 export const {
   addChannel, fetchChannels, setCurrentChannel, removeUsersChannel, renameUsersChannel,
 } = channelsSlice.actions;
-
-export const selectChannels = (state) => state.channelsInfo.channels;
-export const selectCurrentChannelId = (state) => state.channelsInfo.currentChannelId;
 
 export default channelsSlice.reducer;

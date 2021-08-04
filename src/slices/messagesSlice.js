@@ -21,13 +21,10 @@ const messagesSlice = createSlice({
     [removeUsersChannel]: (state, { payload }) => {
       const { id } = payload;
       _.remove(state.messages, ({ channelId }) => channelId === id);
-      // state.messages = state.messages.filter(({ channelId }) => channelId !== id);
     },
   },
 });
 
 export const { fetchMessages, recieveNewMessage } = messagesSlice.actions;
-
-export const selectMessages = (state) => state.messagesInfo.messages;
 
 export default messagesSlice.reducer;

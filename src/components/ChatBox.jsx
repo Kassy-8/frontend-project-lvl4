@@ -6,13 +6,12 @@ import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
 
-import { selectMessages } from '../slices/messagesSlice.js';
-import {
-  selectCurrentChannelId,
-} from '../slices/channelsSlice.js';
 import webSocketContext from '../contexts/webSocketContext.js';
 import useAuth from '../useAuth.js';
 import sendMessageLogo from '../assets/images/sendLogo.svg';
+import {
+  selectCurrentChannelId, selectChannel, selectMessagesForActiveChannel,
+} from '../selectors.js';
 
 const ChatBox = () => {
   const webSocket = useContext(webSocketContext);
@@ -21,12 +20,9 @@ const ChatBox = () => {
   const endElement = useRef();
   const { t } = useTranslation();
 
-  const messages = useSelector(selectMessages);
-
   const currentChannelId = useSelector(selectCurrentChannelId);
-  const currentChannel = useSelector((state) => state.channelsInfo.channels[currentChannelId]);
-
-  const { name: channelName } = currentChannel;
+  const currentChannel = useSelector(selectChannel(currentChannelId));
+  const messagesForActiveChannel = useSelector(selectMessagesForActiveChannel(currentChannelId));
 
   // закомментированная строка и endElement были для прокрутки чата при переполнении окна видимости
   // функционально все работало, но автотесты ругались, пришлось отключить
@@ -35,9 +31,6 @@ const ChatBox = () => {
     inputRef.current.focus();
     // endElement.current.scrollIntoView({ behavior: 'smooth' });
   });
-
-  const messagesForActiveChannel = messages
-    .filter((message) => message.channelId === currentChannelId);
 
   const formik = useFormik({
     initialValues: {
@@ -55,6 +48,11 @@ const ChatBox = () => {
       inputRef.current.focus();
     },
   });
+
+  // for rollbar checkin:) delete later
+  if (formik.values.message === 'ктулху фтагн') {
+    throw new Error();
+  }
 
   const textInput = (
     <Form
@@ -92,7 +90,7 @@ const ChatBox = () => {
   const chatHeader = (
     <div className="mb-4 p-3 border-bottom">
       <h6 className="m-0">
-        <b>{t('chatBox.title', { channelName })}</b>
+        <b>{t('chatBox.title', { channelName: currentChannel.name })}</b>
       </h6>
       <span className="text-muted small">
         {t('chatBox.messageCount.counter', { count: messagesForActiveChannel.length })}

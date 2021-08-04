@@ -4,9 +4,7 @@ import {
 } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import {
-  selectChannels,
-} from '../slices/channelsSlice.js';
+import { selectChannels } from '../selectors.js';
 import { showModal } from '../slices/modalSlice.js';
 import Channel from './Channel.jsx';
 
@@ -17,7 +15,7 @@ const Channels = () => {
   const channels = useSelector(selectChannels);
 
   const showModalWindow = (type, channel) => dispatch(showModal({
-    modalType: type, channelInfo: channel,
+    modalType: type, extra: channel,
   }));
 
   const renderChannels = () => Object.keys(channels)
