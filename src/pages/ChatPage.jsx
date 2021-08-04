@@ -30,15 +30,11 @@ const Chat = () => {
   const [networkError, setNetworkError] = useState(null);
 
   useEffect(() => {
-    // eslint-disable-next-line functional/no-let
-    let isMounted = true;
     const fetchChatData = async () => {
       try {
         const { data } = await axios.get(routes.datasPath(), { headers: getHeaderForAuth() });
         dispatch(fetchChannels(data));
-        if (isMounted) {
-          setIsLoading(false);
-        }
+        setIsLoading(false);
       } catch (error) {
         console.log('error in fetchChatData', error);
         if (error.isAxiosError) {
@@ -47,9 +43,6 @@ const Chat = () => {
       }
     };
     fetchChatData();
-    return () => {
-      isMounted = false;
-    };
   }, []);
 
   if (networkError) {
@@ -72,7 +65,7 @@ const Chat = () => {
     <Row className="h-100 align-items-center justify-content-center">
       <Col md={{ span: 4, offset: 4 }}>
         <Spinner animation="grow" role="status" variant="primary">
-          <span className="sr-only">Loading...</span>
+          <span className="sr-only">{t('loadingSpinner')}</span>
         </Spinner>
       </Col>
     </Row>

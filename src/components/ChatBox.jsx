@@ -25,6 +25,7 @@ const ChatBox = () => {
 
   const currentChannelId = useSelector(selectCurrentChannelId);
   const currentChannel = useSelector((state) => state.channelsInfo.channels[currentChannelId]);
+
   const { name: channelName } = currentChannel;
 
   // закомментированная строка и endElement были для прокрутки чата при переполнении окна видимости
@@ -65,7 +66,7 @@ const ChatBox = () => {
           className="border-0 p-0 pl-2"
           name="message"
           id="message"
-          placeholder={t('chatWindow.messagePlaceholder')}
+          placeholder={t('chatBox.messagePlaceholder')}
           ref={inputRef}
           value={formik.values.message}
           onChange={formik.handleChange}
@@ -81,7 +82,7 @@ const ChatBox = () => {
             disabled={!formik.dirty}
           >
             <img src={sendMessageLogo} alt="sendMessageLogo" />
-            <span className="d-none">{t('chatWindow.sendMessageButton')}</span>
+            <span className="d-none">{t('sendingButton')}</span>
           </Button>
         </InputGroup.Append>
       </InputGroup>
@@ -91,10 +92,10 @@ const ChatBox = () => {
   const chatHeader = (
     <div className="mb-4 p-3 border-bottom">
       <h6 className="m-0">
-        <b>{t('chatWindow.title', { channelName })}</b>
+        <b>{t('chatBox.title', { channelName })}</b>
       </h6>
       <span className="text-muted small">
-        {t('chatWindow.messageCount.counter', { count: messagesForActiveChannel.length })}
+        {t('chatBox.messageCount.counter', { count: messagesForActiveChannel.length })}
       </span>
     </div>
   );

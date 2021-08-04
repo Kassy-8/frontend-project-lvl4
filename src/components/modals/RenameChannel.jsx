@@ -17,7 +17,6 @@ const RenameChannel = ({ modalInfo, reservedChannelsNames }) => {
 
   const { isOpen, info: channelInfo } = modalInfo;
 
-  // to focus on text, useEffect must start twice, with [] after comma it's not working(
   useEffect(() => {
     inputRef.current.focus();
     inputRef.current.select();
@@ -69,14 +68,14 @@ const RenameChannel = ({ modalInfo, reservedChannelsNames }) => {
           variant="outline-secondary mr-2"
           onClick={() => dispatch(closeModal())}
         >
-          {t('modalRenameChannel.cancelButton')}
+          {t('cancelButton')}
         </Button>
         <Button
           variant="outline-primary"
           type="submit"
           disabled={!formik.dirty || formik.isSubmitting}
         >
-          {t('modalRenameChannel.sendButton')}
+          {t('sendingButton')}
         </Button>
       </div>
     </Form>

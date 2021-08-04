@@ -26,15 +26,15 @@ const Registration = () => {
     validateOnBlur: false,
     validationSchema: yup.object({
       username: yup.string()
-        .required(t('registrationPage.validation.required'))
-        .min(3, t('registrationPage.validation.nameLength'))
-        .max(20, t('registrationPage.validation.nameLength')),
+        .required(t('auth.validation.required'))
+        .min(3, t('auth.validation.nameLength'))
+        .max(20, t('auth.validation.nameLength')),
       password: yup.string()
-        .required(t('registrationPage.validation.required'))
-        .min(6, t('registrationPage.validation.passwordLength')),
+        .required(t('auth.validation.required'))
+        .min(6, t('auth.validation.passwordLength')),
       passwordConfirmation: yup.string()
-        .required(t('registrationPage.validation.required'))
-        .oneOf([yup.ref('password')], t('registrationPage.validation.passwordMatch')),
+        .required(t('auth.validation.required'))
+        .oneOf([yup.ref('password')], t('auth.validation.passwordMatch')),
     }),
     onSubmit: async (values) => {
       try {
@@ -62,9 +62,9 @@ const Registration = () => {
 
   const registrationFormNode = (
     <Form onSubmit={formik.handleSubmit}>
-      <h1 className="mb-4 text-center">{t('registrationPage.title')}</h1>
+      <h1 className="mb-4 text-center">{t('auth.registrationPage.title')}</h1>
       <Form.Group controlId="username">
-        <Form.Label>{t('registrationPage.nameLabel')}</Form.Label>
+        <Form.Label>{t('auth.registrationPage.nameLabel')}</Form.Label>
         <Form.Control
           name="username"
           type="name"
@@ -82,7 +82,7 @@ const Registration = () => {
         </Form.Control.Feedback>
       </Form.Group>
       <Form.Group controlId="password">
-        <Form.Label>{t('registrationPage.passwordLabel')}</Form.Label>
+        <Form.Label>{t('auth.passwordLabel')}</Form.Label>
         <Form.Control
           type="password"
           name="password"
@@ -99,7 +99,7 @@ const Registration = () => {
         </Form.Control.Feedback>
       </Form.Group>
       <Form.Group controlId="passwordConfirmation">
-        <Form.Label>{t('registrationPage.confirmationLabel')}</Form.Label>
+        <Form.Label>{t('auth.registrationPage.confirmationLabel')}</Form.Label>
         <Form.Control
           type="password"
           name="passwordConfirmation"
@@ -117,7 +117,7 @@ const Registration = () => {
       </Form.Group>
       {(registrationFailed) && (
         <Form.Text className="text-danger m-2">
-          {t('registrationPage.failedRegustrationFeedback')}
+          {t('auth.registrationPage.failedRegustrationFeedback')}
         </Form.Text>
       )}
       {(networkError) && (
@@ -126,11 +126,12 @@ const Registration = () => {
         </Form.Text>
       )}
       <Button
+        className="w-100"
         variant="outline-primary"
         type="submit"
         disabled={formik.isSubmitting}
       >
-        {t('registrationPage.entranceButton')}
+        {t('auth.registrationPage.entranceButton')}
       </Button>
     </Form>
   );

@@ -25,8 +25,8 @@ const LoginPage = () => {
     },
     validateOnBlur: false,
     validationSchema: yup.object({
-      username: yup.string().trim().required(t('loginPage.validation.required')),
-      password: yup.string().trim().required(t('loginPage.validation.required')),
+      username: yup.string().trim().required(t('auth.validation.required')),
+      password: yup.string().trim().required(t('auth.validation.required')),
     }),
     onSubmit: async (values) => {
       try {
@@ -51,9 +51,9 @@ const LoginPage = () => {
 
   const loginFormNode = (
     <Form onSubmit={formik.handleSubmit}>
-      <h1 className="mb-4 text-center">{t('loginPage.title')}</h1>
+      <h1 className="mb-4 text-center">{t('auth.loginPage.title')}</h1>
       <Form.Group controlId="username">
-        <Form.Label>{t('loginPage.nameLabel')}</Form.Label>
+        <Form.Label>{t('auth.loginPage.nameLabel')}</Form.Label>
         <Form.Control
           name="username"
           type="name"
@@ -71,7 +71,7 @@ const LoginPage = () => {
         </Form.Control.Feedback>
       </Form.Group>
       <Form.Group controlId="password">
-        <Form.Label>{t('loginPage.passwordLabel')}</Form.Label>
+        <Form.Label>{t('auth.passwordLabel')}</Form.Label>
         <Form.Control
           type="password"
           name="password"
@@ -89,7 +89,7 @@ const LoginPage = () => {
       </Form.Group>
       {(authFailed) && (
         <Form.Text className="text-danger m-2">
-          {t('loginPage.failedAuthFeedback')}
+          {t('auth.loginPage.failedAuthFeedback')}
         </Form.Text>
       )}
       {(networkError) && (
@@ -104,7 +104,7 @@ const LoginPage = () => {
           type="submit"
           disabled={formik.isSubmitting}
         >
-          {t('loginPage.entranceButton')}
+          {t('auth.loginPage.entranceButton')}
         </Button>
       </div>
     </Form>
@@ -113,9 +113,9 @@ const LoginPage = () => {
   const loginFooterNode = (
     <div className="p-4 d-flex justify-content-center">
       <p className="m-0">
-        <span>{t('loginPage.questionNoAcc')}</span>
+        <span>{t('auth.loginPage.questionNoAcc')}</span>
         {' '}
-        <Link to="signup">{t('loginPage.registrationLink')}</Link>
+        <Link to="signup">{t('auth.loginPage.registrationLink')}</Link>
       </p>
     </div>
   );

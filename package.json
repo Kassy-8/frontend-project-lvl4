@@ -41,6 +41,7 @@
     "i18next": "^20.3.3",
     "jquery": "^3.6.0",
     "lodash": "^4.17.21",
+    "node-polyfill-webpack-plugin": "^1.1.4",
     "pino-pretty": "^4.8.0",
     "point-of-view": "^4.14.0",
     "popper.js": "^1.16.1",

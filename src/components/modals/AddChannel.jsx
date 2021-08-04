@@ -64,14 +64,14 @@ const AddChannel = ({ modalInfo, reservedChannelsNames }) => {
           variant="outline-secondary mr-2"
           onClick={() => dispatch(closeModal())}
         >
-          {t('modalAddChannel.cancelButton')}
+          {t('cancelButton')}
         </Button>
         <Button
           variant="outline-primary"
           type="submit"
           disabled={!formik.dirty || formik.isSubmitting}
         >
-          {t('modalAddChannel.sendButton')}
+          {t('sendingButton')}
         </Button>
       </div>
     </Form>

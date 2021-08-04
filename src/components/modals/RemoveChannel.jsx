@@ -41,14 +41,14 @@ const RemoveChannel = ({ modalInfo }) => {
             variant="outline-secondary mr-2"
             onClick={() => dispatch(closeModal())}
           >
-            {t('modalRemoveChannel.cancelButton')}
+            {t('cancelButton')}
           </Button>
           <Button
             variant="outline-danger"
             onClick={() => confirmRemoving()}
             disabled={isSubmitting}
           >
-            {t('modalRemoveChannel.sendButton')}
+            {t('sendingButton')}
           </Button>
         </div>
       </Modal.Body>

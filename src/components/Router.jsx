@@ -9,8 +9,7 @@ import ChatPage from '../pages/ChatPage.jsx';
 import PrivateRoute from './PrivateRoute.jsx';
 import PublicRoute from './PublicRoute.jsx';
 import Registration from '../pages/Registration.jsx';
-// import Header from './Header.jsx';
-import NoMatchPage from '../pages/NoMatchPage.jsx';
+import Page404 from '../pages/Page404.jsx';
 
 const AppRouter = () => (
   <Router>
@@ -25,7 +24,7 @@ const AppRouter = () => (
         <ChatPage />
       </PrivateRoute>
       <Route path="*">
-        <NoMatchPage />
+        <Page404 />
       </Route>
     </Switch>
   </Router>
