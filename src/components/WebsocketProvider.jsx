@@ -1,9 +1,9 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import webSocketContext from '../contexts/webSocketContext.js';
-import { recieveNewMessage } from '../slices/messagesSlice.js';
+import { receiveNewMessage } from '../slices/messagesSlice.js';
 import {
-  addChannel, removeUsersChannel, renameUsersChannel,
+  addChannel, removeUserChannel, renameUserChannel,
 } from '../slices/channelsSlice.js';
 import { closeModal } from '../slices/modalSlice.js';
 
@@ -38,15 +38,15 @@ const WebSocketProvider = ({ socket, children }) => {
   });
 
   socket.on(socketIdentifiers.removeChannel, (removingChannel) => {
-    dispatch(removeUsersChannel(removingChannel));
+    dispatch(removeUserChannel(removingChannel));
   });
 
   socket.on(socketIdentifiers.renameChannel, (renamingChannel) => {
-    dispatch(renameUsersChannel(renamingChannel));
+    dispatch(renameUserChannel(renamingChannel));
   });
 
   socket.on(socketIdentifiers.newMessage, (message) => {
-    dispatch(recieveNewMessage(message));
+    dispatch(receiveNewMessage(message));
   });
 
   const socketContext = {

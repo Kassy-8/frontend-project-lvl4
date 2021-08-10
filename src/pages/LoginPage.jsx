@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import useAuth from '../useAuth.js';
 import loginPageImage from '../assets/images/hexlet_chat.jpeg';
 import Header from '../components/Header.jsx';
+import styles from '../styles.js';
 
 const LoginPage = () => {
   const auth = useAuth();
@@ -46,8 +47,8 @@ const LoginPage = () => {
     },
   });
 
-  const isNameInvalid = (formik.touched.username && formik.errors.username) || authFailed;
-  const isPasswordInvalid = (formik.touched.password && formik.errors.password) || authFailed;
+  const isNameInvalid = formik.touched.username && formik.errors.username;
+  const isPasswordInvalid = formik.touched.password && formik.errors.password;
 
   const loginFormNode = (
     <Form onSubmit={formik.handleSubmit}>
@@ -62,13 +63,9 @@ const LoginPage = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           required
-          isInvalid={isNameInvalid}
+          isInvalid={isNameInvalid || authFailed}
         />
-        <Form.Control.Feedback
-          type="invalid"
-        >
-          {formik.errors.username}
-        </Form.Control.Feedback>
+        <div style={styles.formErrorBlock}>{isNameInvalid}</div>
       </Form.Group>
       <Form.Group controlId="password">
         <Form.Label>{t('auth.passwordLabel')}</Form.Label>
@@ -79,24 +76,14 @@ const LoginPage = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           required
-          isInvalid={isPasswordInvalid}
+          isInvalid={isPasswordInvalid || authFailed}
         />
-        <Form.Control.Feedback
-          type="invalid"
-        >
-          {formik.errors.password}
-        </Form.Control.Feedback>
+        <div style={styles.formErrorBlock}>{isPasswordInvalid}</div>
       </Form.Group>
-      {(authFailed) && (
-        <Form.Text className="text-danger m-2">
-          {t('auth.loginPage.failedAuthFeedback')}
-        </Form.Text>
-      )}
-      {(networkError) && (
-        <Form.Text className="text-danger m-2">
-          {t('networkError')}
-        </Form.Text>
-      )}
+      <Form.Text className="text-danger m-2">
+        {authFailed && t('auth.loginPage.failedAuthFeedback')}
+        {networkError && t('networkError')}
+      </Form.Text>
       <div className="d-flex justify-content-center">
         <Button
           className="w-100"
@@ -129,15 +116,15 @@ const LoginPage = () => {
             <Card className="shadow-sm">
               <Row className="h-100 p-5 align-items-center justify-content-center">
                 <Col className="d-flex justify-content-center">
-                  <img src={loginPageImage} className="rounded" alt="loginPageImage" />
+                  <img
+                    src={loginPageImage}
+                    className="rounded"
+                    alt="loginPageImage"
+                  />
                 </Col>
-                <Col className="mt-3 mb-t-mb-0">
-                  {loginFormNode}
-                </Col>
+                <Col className="mt-3 mb-t-mb-0">{loginFormNode}</Col>
               </Row>
-              <Card.Footer>
-                {loginFooterNode}
-              </Card.Footer>
+              <Card.Footer>{loginFooterNode}</Card.Footer>
             </Card>
           </Col>
         </Row>

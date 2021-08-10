@@ -4,11 +4,12 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import i18n from 'i18next';
 import { initReactI18next, I18nextProvider } from 'react-i18next';
-import { Provider as RollbarProvider, ErrorBoundary, LEVEL_WARN } from '@rollbar/react';
+import {
+  Provider as RollbarProvider,
+  ErrorBoundary,
+  LEVEL_WARN,
+} from '@rollbar/react';
 import { io } from 'socket.io-client';
-
-import 'core-js/stable/index.js';
-import 'regenerator-runtime/runtime.js';
 import '../assets/application.scss';
 
 import store from './store';
@@ -18,21 +19,20 @@ import translation from './assets/locale/ruLocale.js';
 
 const init = async (socketClient = io()) => {
   const i18nInstance = i18n.createInstance();
-  await i18nInstance
-    .use(initReactI18next)
-    .init({
-      lng: 'ru',
-      debug: process.env.NODE_ENV === 'development',
-      interpolation: {
-        escapeValue: false,
-      },
-      resources: {
-        ru: translation,
-      },
-    });
+  await i18nInstance.use(initReactI18next).init({
+    lng: 'ru',
+    debug: process.env.NODE_ENV === 'development',
+    interpolation: {
+      escapeValue: false,
+    },
+    resources: {
+      ru: translation,
+    },
+  });
 
   const rollbarConfig = {
-    accessToken: (process.env.NODE_ENV === 'production') ? process.env.ROLLBAR_ACCESS_TOKEN : null,
+    accessToken: process.env.ROLLBAR_ACCESS_TOKEN,
+    enabled: process.env.NODE_ENV === 'production',
     environment: 'production',
     captureUncaught: true,
     captureUnhandledRejections: true,

@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Button, Nav,
-} from 'react-bootstrap';
+import { Button, Nav } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import { selectChannels } from '../selectors.js';
@@ -19,7 +17,7 @@ const Channels = () => {
   }));
 
   const renderChannels = () => Object.keys(channels)
-    .map((id) => parseInt(id, 10))
+    .map(Number)
     .sort((id1, id2) => id1 - id2)
     .map((id) => (
       <Channel key={id} id={id} showModalWindow={showModalWindow} />
@@ -37,7 +35,7 @@ const Channels = () => {
           {t('channelsMenu.addButton')}
         </Button>
       </div>
-      <Nav className="flex-column overflow-auto px-2" fill variant="pills" as="ul">
+      <Nav className="flex-column px-2" fill variant="pills" as="ul">
         {renderChannels()}
       </Nav>
     </>

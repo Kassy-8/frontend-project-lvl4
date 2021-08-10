@@ -3,9 +3,7 @@ import { useSelector } from 'react-redux';
 import AddChannel from './AddChannel.jsx';
 import RenameChannel from './RenameChannel.jsx';
 import RemoveChannel from './RemoveChannel.jsx';
-import {
-  selectChannels, selectModalInfo,
-} from '../../selectors.js';
+import { selectChannels, selectModalInfo } from '../../selectors.js';
 
 const modalsMapping = {
   addChannel: AddChannel,

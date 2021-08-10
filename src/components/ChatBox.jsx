@@ -10,7 +10,9 @@ import webSocketContext from '../contexts/webSocketContext.js';
 import useAuth from '../useAuth.js';
 import sendMessageLogo from '../assets/images/sendLogo.svg';
 import {
-  selectCurrentChannelId, selectChannel, selectMessagesForActiveChannel,
+  selectCurrentChannelId,
+  selectChannel,
+  selectMessagesForActiveChannel,
 } from '../selectors.js';
 
 const ChatBox = () => {
@@ -48,11 +50,6 @@ const ChatBox = () => {
       inputRef.current.focus();
     },
   });
-
-  // for rollbar checkin:) delete later
-  if (formik.values.message === 'ктулху фтагн') {
-    throw new Error();
-  }
 
   const textInput = (
     <Form
@@ -93,7 +90,9 @@ const ChatBox = () => {
         <b>{t('chatBox.title', { channelName: currentChannel.name })}</b>
       </h6>
       <span className="text-muted small">
-        {t('chatBox.messageCount.counter', { count: messagesForActiveChannel.length })}
+        {t('chatBox.messageCount.counter', {
+          count: messagesForActiveChannel.length,
+        })}
       </span>
     </div>
   );
@@ -101,9 +100,7 @@ const ChatBox = () => {
   const chatMessages = messagesForActiveChannel
     .map(({ body, username, id }) => (
       <div key={id} className="mb-2">
-        <b>
-          {`${username}: `}
-        </b>
+        <b>{`${username}: `}</b>
         {body}
       </div>
     ));

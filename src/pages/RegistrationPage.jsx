@@ -8,8 +8,9 @@ import { useTranslation } from 'react-i18next';
 import useAuth from '../useAuth.js';
 import registrationImage from '../assets/images/registration.jpeg';
 import Header from '../components/Header.jsx';
+import styles from '../styles.js';
 
-const Registration = () => {
+const RegistrationPage = () => {
   const { t } = useTranslation();
   const nameInputRef = useRef();
   const auth = useAuth();
@@ -25,14 +26,17 @@ const Registration = () => {
     },
     validateOnBlur: false,
     validationSchema: yup.object({
-      username: yup.string()
+      username: yup
+        .string()
         .required(t('auth.validation.required'))
         .min(3, t('auth.validation.nameLength'))
         .max(20, t('auth.validation.nameLength')),
-      password: yup.string()
+      password: yup
+        .string()
         .required(t('auth.validation.required'))
         .min(6, t('auth.validation.passwordLength')),
-      passwordConfirmation: yup.string()
+      passwordConfirmation: yup
+        .string()
         .required(t('auth.validation.required'))
         .oneOf([yup.ref('password')], t('auth.validation.passwordMatch')),
     }),
@@ -54,15 +58,14 @@ const Registration = () => {
     },
   });
 
-  const isNameInvalid = (formik.touched.username && formik.errors.username) || registrationFailed;
-  const isPasswordInvalid = (formik.touched.password && formik.errors.password)
-    || registrationFailed;
-  const isConfirmationInvalid = (formik.touched.passwordConfirmation
-      && formik.errors.passwordConfirmation) || registrationFailed;
+  const isNameInvalid = formik.touched.username && formik.errors.username;
+  const isPasswordInvalid = formik.touched.password && formik.errors.password;
+  const isConfirmationInvalid = formik.touched.passwordConfirmation
+    && formik.errors.passwordConfirmation;
 
   const registrationFormNode = (
     <Form onSubmit={formik.handleSubmit}>
-      <h1 className="mb-4 text-center">{t('auth.registrationPage.title')}</h1>
+      <h1 className="mb-3 text-center">{t('auth.registrationPage.title')}</h1>
       <Form.Group controlId="username">
         <Form.Label>{t('auth.registrationPage.nameLabel')}</Form.Label>
         <Form.Control
@@ -73,13 +76,13 @@ const Registration = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           required
-          isInvalid={isNameInvalid}
+          isInvalid={isNameInvalid || registrationFailed}
         />
-        <Form.Control.Feedback
-          type="invalid"
-        >
-          {formik.errors.username}
-        </Form.Control.Feedback>
+        <div style={styles.formErrorBlock}>
+          {isNameInvalid}
+          {registrationFailed
+            && t('auth.registrationPage.failedRegustrationFeedback')}
+        </div>
       </Form.Group>
       <Form.Group controlId="password">
         <Form.Label>{t('auth.passwordLabel')}</Form.Label>
@@ -90,13 +93,9 @@ const Registration = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           required
-          isInvalid={isPasswordInvalid}
+          isInvalid={isPasswordInvalid || registrationFailed}
         />
-        <Form.Control.Feedback
-          type="invalid"
-        >
-          {formik.errors.password}
-        </Form.Control.Feedback>
+        <div style={styles.formErrorBlock}>{isPasswordInvalid}</div>
       </Form.Group>
       <Form.Group controlId="passwordConfirmation">
         <Form.Label>{t('auth.registrationPage.confirmationLabel')}</Form.Label>
@@ -107,24 +106,14 @@ const Registration = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           required
-          isInvalid={isConfirmationInvalid}
+          isInvalid={isConfirmationInvalid || registrationFailed}
         />
-        <Form.Control.Feedback
-          type="invalid"
-        >
-          {formik.errors.passwordConfirmation}
-        </Form.Control.Feedback>
+        <div style={styles.formErrorBlock}>
+          {isConfirmationInvalid}
+          {networkError && t('networkError')}
+        </div>
       </Form.Group>
-      {(registrationFailed) && (
-        <Form.Text className="text-danger m-2">
-          {t('auth.registrationPage.failedRegustrationFeedback')}
-        </Form.Text>
-      )}
-      {(networkError) && (
-        <Form.Text className="text-danger m-2">
-          {t('networkError')}
-        </Form.Text>
-      )}
+
       <Button
         className="w-100"
         variant="outline-primary"
@@ -143,13 +132,15 @@ const Registration = () => {
         <Row className="h-100 align-items-center justify-content-center">
           <Col>
             <Card className="shadow-sm">
-              <Row className="h-100 p-5 align-items-center justify-content-center">
+              <Row className="h-100 p-2 align-items-center justify-content-center">
                 <Col className="d-flex justify-content-center">
-                  <img src={registrationImage} className="rounded" alt="registrationPageImage" />
+                  <img
+                    src={registrationImage}
+                    className="rounded"
+                    alt="registrationPageImage"
+                  />
                 </Col>
-                <Col className="mt-3 mb-t-mb-0">
-                  {registrationFormNode}
-                </Col>
+                <Col className="mt-3 mb-t-mb-0">{registrationFormNode}</Col>
               </Row>
             </Card>
           </Col>
@@ -159,4 +150,4 @@ const Registration = () => {
   );
 };
 
-export default Registration;
+export default RegistrationPage;

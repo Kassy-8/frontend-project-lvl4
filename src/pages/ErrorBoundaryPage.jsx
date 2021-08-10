@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  Col, Container, Row,
-} from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 
 const ErrorBoundaryPage = () => (
   <div className="h-100 d-flex flex-column">
@@ -12,9 +10,7 @@ const ErrorBoundaryPage = () => (
             Просим прощения, произошла ошибка, пожалуйста, вернитесь на
             {' '}
           </span>
-          <a href="/">
-            главную страницу
-          </a>
+          <a href="/">главную страницу</a>
         </Col>
       </Row>
     </Container>

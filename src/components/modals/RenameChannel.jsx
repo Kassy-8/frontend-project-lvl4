@@ -1,7 +1,5 @@
 import React, { useRef, useEffect, useContext } from 'react';
-import {
-  Button, Form, Modal,
-} from 'react-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
@@ -37,7 +35,12 @@ const RenameChannel = ({ modalInfo, reservedChannelsNames }) => {
     validateOnChange: false,
     validateOnBlur: false,
     validationSchema: yup.object({
-      name: yup.mixed().notOneOf(reservedChannelsNames, t('modalRenameChannel.validation.noMatchName')),
+      name: yup
+        .mixed()
+        .notOneOf(
+          reservedChannelsNames,
+          t('modalRenameChannel.validation.noMatchName'),
+        ),
     }),
     onSubmit,
   });
@@ -53,13 +56,9 @@ const RenameChannel = ({ modalInfo, reservedChannelsNames }) => {
           onBlur={formik.handleBlur}
           value={formik.values.name}
           data-testid="rename-channel"
-          isInvalid={
-            (formik.errors.name)
-          }
+          isInvalid={formik.errors.name}
         />
-        <Form.Control.Feedback
-          type="invalid"
-        >
+        <Form.Control.Feedback type="invalid">
           {formik.errors.name}
         </Form.Control.Feedback>
       </Form.Group>
@@ -82,20 +81,14 @@ const RenameChannel = ({ modalInfo, reservedChannelsNames }) => {
   );
 
   return (
-    <Modal
-      show={isOpen}
-      onHide={() => dispatch(closeModal())}
-      centered
-    >
+    <Modal show={isOpen} onHide={() => dispatch(closeModal())} centered>
       <Modal.Header>
         <Modal.Title>{t('modalRenameChannel.title')}</Modal.Title>
         <Button className="close" onClick={() => dispatch(closeModal())}>
           x
         </Button>
       </Modal.Header>
-      <Modal.Body>
-        {formNode}
-      </Modal.Body>
+      <Modal.Body>{formNode}</Modal.Body>
     </Modal>
   );
 };

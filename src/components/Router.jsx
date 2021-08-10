@@ -1,31 +1,26 @@
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from 'react-router-dom';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import LoginPage from '../pages/LoginPage.jsx';
 import ChatPage from '../pages/ChatPage.jsx';
-import PrivateRoute from './PrivateRoute.jsx';
-import PublicRoute from './PublicRoute.jsx';
-import Registration from '../pages/Registration.jsx';
+import AppRoute from './AppRoute.jsx';
+import RegistrationPage from '../pages/RegistrationPage.jsx';
 import Page404 from '../pages/Page404.jsx';
 
 const AppRouter = () => (
   <Router>
     <Switch>
-      <PublicRoute path="/login">
+      <AppRoute path="/login" isPrivate={false}>
         <LoginPage />
-      </PublicRoute>
-      <PublicRoute path="/signup">
-        <Registration />
-      </PublicRoute>
-      <PrivateRoute exact path="/">
+      </AppRoute>
+      <AppRoute path="/signup" isPrivate={false}>
+        <RegistrationPage />
+      </AppRoute>
+      <AppRoute exact path="/" isPrivate>
         <ChatPage />
-      </PrivateRoute>
-      <Route path="*">
+      </AppRoute>
+      <AppRoute path="*" isPrivate={false}>
         <Page404 />
-      </Route>
+      </AppRoute>
     </Switch>
   </Router>
 );

@@ -22,7 +22,7 @@ const getHeaderForAuth = () => {
   return {};
 };
 
-const Chat = () => {
+const ChatPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -32,7 +32,9 @@ const Chat = () => {
   useEffect(() => {
     const fetchChatData = async () => {
       try {
-        const { data } = await axios.get(routes.datasPath(), { headers: getHeaderForAuth() });
+        const { data } = await axios.get(routes.datasPath(), {
+          headers: getHeaderForAuth(),
+        });
         dispatch(fetchChannels(data));
         setIsLoading(false);
       } catch (error) {
@@ -53,7 +55,7 @@ const Chat = () => {
           <div className="m-2">
             <span>
               {t('networkError')}
-              { networkError}
+              {networkError}
             </span>
           </div>
         </Container>
@@ -95,4 +97,4 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+export default ChatPage;

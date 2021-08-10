@@ -21,16 +21,10 @@ const RemoveChannel = ({ modalInfo }) => {
   };
 
   return (
-    <Modal
-      show={isOpen}
-      onHide={() => dispatch(closeModal())}
-    >
+    <Modal show={isOpen} onHide={() => dispatch(closeModal())}>
       <Modal.Header>
         <Modal.Title>{t('modalRemoveChannel.title')}</Modal.Title>
-        <Button
-          className="close"
-          onClick={() => dispatch(closeModal())}
-        >
+        <Button className="close" onClick={() => dispatch(closeModal())}>
           x
         </Button>
       </Modal.Header>

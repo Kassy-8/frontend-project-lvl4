@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 import _ from 'lodash';
-import { fetchChannels, removeUsersChannel } from './channelsSlice.js';
+import { fetchChannels, removeUserChannel } from './channelsSlice.js';
 
 const messagesSlice = createSlice({
   name: 'messagesInfo',
@@ -9,7 +9,7 @@ const messagesSlice = createSlice({
     messages: [],
   },
   reducers: {
-    recieveNewMessage: (state, { payload }) => {
+    receiveNewMessage: (state, { payload }) => {
       state.messages.push(payload);
     },
   },
@@ -18,13 +18,13 @@ const messagesSlice = createSlice({
       const { messages } = payload;
       state.messages = messages;
     },
-    [removeUsersChannel]: (state, { payload }) => {
+    [removeUserChannel]: (state, { payload }) => {
       const { id } = payload;
       _.remove(state.messages, ({ channelId }) => channelId === id);
     },
   },
 });
 
-export const { fetchMessages, recieveNewMessage } = messagesSlice.actions;
+export const { fetchMessages, receiveNewMessage } = messagesSlice.actions;
 
 export default messagesSlice.reducer;

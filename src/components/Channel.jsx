@@ -6,10 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import { setCurrentChannel } from '../slices/channelsSlice.js';
-import {
-  selectChannel,
-  selectCurrentChannelId,
-} from '../selectors.js';
+import { selectChannel, selectCurrentChannelId } from '../selectors.js';
 
 const modalTypes = {
   remove: 'removeChannel',
@@ -43,7 +40,6 @@ const Channel = ({ id, showModalWindow }) => {
     </Button>
   );
 
-  // дропдаун почему то выпадает в контейнере для каналов, почему - не могу постигнуть
   const usersChannel = (
     <Dropdown as={ButtonGroup} className="d-flex">
       <Button
@@ -78,14 +74,8 @@ const Channel = ({ id, showModalWindow }) => {
   );
 
   return (
-    <Nav.Item
-      id={id}
-      as="li"
-      className="w-100"
-    >
-      {(isRemovableChannel)
-        ? usersChannel
-        : defaultChannel}
+    <Nav.Item id={id} as="li" className="w-100">
+      {(isRemovableChannel) ? usersChannel : defaultChannel}
     </Nav.Item>
   );
 };

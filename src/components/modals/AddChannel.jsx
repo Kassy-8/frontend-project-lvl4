@@ -33,7 +33,12 @@ const AddChannel = ({ modalInfo, reservedChannelsNames }) => {
       name: '',
     },
     validationSchema: yup.object({
-      name: yup.mixed().notOneOf(reservedChannelsNames, t('modalAddChannel.validation.noMatchName')),
+      name: yup
+        .mixed()
+        .notOneOf(
+          reservedChannelsNames,
+          t('modalAddChannel.validation.noMatchName'),
+        ),
     }),
     onSubmit,
   });
@@ -49,13 +54,9 @@ const AddChannel = ({ modalInfo, reservedChannelsNames }) => {
           onBlur={formik.handleBlur}
           value={formik.values.name}
           data-testid="add-channel"
-          isInvalid={
-            (formik.touched.name && formik.errors.name)
-          }
+          isInvalid={formik.touched.name && formik.errors.name}
         />
-        <Form.Control.Feedback
-          type="invalid"
-        >
+        <Form.Control.Feedback type="invalid">
           {formik.errors.name}
         </Form.Control.Feedback>
       </Form.Group>
@@ -78,20 +79,14 @@ const AddChannel = ({ modalInfo, reservedChannelsNames }) => {
   );
 
   return (
-    <Modal
-      show={isOpen}
-      onHide={() => dispatch(closeModal())}
-      centered
-    >
+    <Modal show={isOpen} onHide={() => dispatch(closeModal())} centered>
       <Modal.Header>
         <Modal.Title>{t('modalAddChannel.title')}</Modal.Title>
         <Button className="close" onClick={() => dispatch(closeModal())}>
           x
         </Button>
       </Modal.Header>
-      <Modal.Body>
-        {formNode}
-      </Modal.Body>
+      <Modal.Body>{formNode}</Modal.Body>
     </Modal>
   );
 };
