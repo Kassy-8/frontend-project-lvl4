@@ -6,18 +6,10 @@ const AppRoute = ({ children, path, isPrivate }) => {
   const auth = useAuth();
 
   const renderPrivateRoute = ({ location }) => (
-    (auth.isAuth) ? (
-      children
-    ) : (
-      <Redirect to={{ pathname: '/login', state: { from: location } }} />
-    ));
+    auth.isAuth ? children : (<Redirect to={{ pathname: '/login', state: { from: location } }} />));
 
   const renderPublicRoute = ({ location }) => (
-    (auth.isAuth) ? (
-      <Redirect to={{ pathname: '/', state: { from: location } }} />
-    ) : (
-      children
-    ));
+    auth.isAuth ? (<Redirect to={{ pathname: '/', state: { from: location } }} />) : children);
 
   return (
     <Route
