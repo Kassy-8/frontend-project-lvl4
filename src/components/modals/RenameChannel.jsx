@@ -13,7 +13,7 @@ const RenameChannel = ({ modalInfo, reservedChannelsNames }) => {
   const inputRef = useRef();
   const webSocket = useContext(webSocketContext);
 
-  const { isOpen, extra: channelInfo } = modalInfo;
+  const { extra: channelInfo } = modalInfo;
 
   useEffect(() => {
     inputRef.current.focus();
@@ -36,7 +36,9 @@ const RenameChannel = ({ modalInfo, reservedChannelsNames }) => {
     validateOnBlur: false,
     validationSchema: yup.object({
       name: yup
-        .mixed()
+        .string()
+        .required()
+        .trim()
         .notOneOf(
           reservedChannelsNames,
           t('modalRenameChannel.validation.noMatchName'),
@@ -81,7 +83,7 @@ const RenameChannel = ({ modalInfo, reservedChannelsNames }) => {
   );
 
   return (
-    <Modal show={isOpen} onHide={() => dispatch(closeModal())} centered>
+    <Modal show onHide={() => dispatch(closeModal())} centered>
       <Modal.Header>
         <Modal.Title>{t('modalRenameChannel.title')}</Modal.Title>
         <Button className="close" onClick={() => dispatch(closeModal())}>

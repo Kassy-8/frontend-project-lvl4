@@ -1,44 +1,65 @@
 /* eslint-disable no-param-reassign */
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import _ from 'lodash';
+import axios from 'axios';
+import routes from '../routes.js';
+
+export const fetchChannels = createAsyncThunk('channelsInfo/fetchChannels',
+  async (headerForAuth) => {
+    const { data } = await axios.get(routes.datasPath(), { headers: headerForAuth });
+    return data;
+  });
 
 const channelsSlice = createSlice({
   name: 'channels',
   initialState: {
-    channels: {},
+    channels: [],
     currentChannelId: null,
+    status: 'idle',
+    error: null,
   },
   reducers: {
     addChannel: (state, { payload }) => {
-      state.channels[payload.id] = payload;
+      state.channels.push(payload);
       state.currentChannelId = payload.id;
-    },
-    fetchChannels: (state, { payload }) => {
-      const { channels, currentChannelId } = payload;
-      channels.forEach((channel) => {
-        state.channels[channel.id] = channel;
-      });
-      state.currentChannelId = currentChannelId;
     },
     setCurrentChannel: (state, { payload }) => {
       state.currentChannelId = payload;
     },
     removeUserChannel: (state, { payload }) => {
       const { id: removingId } = payload;
-      state.channels = _.omit(state.channels, removingId);
-      const mainChannelId = _.findKey(state.channels, { name: 'general' });
-      state.currentChannelId = parseInt(mainChannelId, 10);
+      _.remove(state.channels, ({ id }) => id === removingId);
+      const mainChannel = state.channels.find(({ name }) => name === 'general');
+      state.currentChannelId = mainChannel.id;
     },
     renameUserChannel: (state, { payload }) => {
-      const { name, id } = payload;
-      state.channels[id].name = name;
+      const { name: newName, id: renamingId } = payload;
+      const renamedChannel = state.channels.find(({ id }) => id === renamingId);
+      renamedChannel.name = newName;
+    },
+  },
+  extraReducers: {
+    [fetchChannels.fulfilled]: (state, { payload }) => {
+      const { channels, currentChannelId } = payload;
+      state.channels = channels;
+      state.currentChannelId = currentChannelId;
+      state.status = 'succeeded';
+    },
+    [fetchChannels.pending]: (state) => {
+      if (state.error) {
+        state.error = null;
+      }
+      state.status = 'loading';
+    },
+    [fetchChannels.rejected]: (state, action) => {
+      state.status = 'failed';
+      state.error = action.error.message;
     },
   },
 });
 
 export const {
   addChannel,
-  fetchChannels,
   setCurrentChannel,
   removeUserChannel,
   renameUserChannel,

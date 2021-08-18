@@ -68,6 +68,6 @@ export default {
     sendingButton: 'Отправить',
     cancelButton: 'Отменить',
     loadingSpinner: 'Загружаются данные чата',
-    networkError: 'Произошла ошибка подключения',
+    networkError: 'Произошла ошибка подключения ',
   },
 };

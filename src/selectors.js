@@ -1,6 +1,8 @@
 export const selectChannels = (state) => state.channelsInfo.channels;
+export const selectChannelIds = (state) => state.channelsInfo.channels.map(({ id }) => id);
 export const selectCurrentChannelId = (state) => state.channelsInfo.currentChannelId;
-export const selectChannel = (id) => (state) => state.channelsInfo.channels[id];
+export const selectChannel = (id) => (state) => state.channelsInfo.channels
+  .find((channel) => channel.id === id);
 
 export const selectModalInfo = (state) => state.modalInfo;
 

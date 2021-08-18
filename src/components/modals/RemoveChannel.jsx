@@ -10,7 +10,7 @@ const RemoveChannel = ({ modalInfo }) => {
   const dispatch = useDispatch();
   const webSocket = useContext(webSocketContext);
 
-  const { isOpen, extra } = modalInfo;
+  const { extra } = modalInfo;
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -21,7 +21,7 @@ const RemoveChannel = ({ modalInfo }) => {
   };
 
   return (
-    <Modal show={isOpen} onHide={() => dispatch(closeModal())}>
+    <Modal show onHide={() => dispatch(closeModal())} centered>
       <Modal.Header>
         <Modal.Title>{t('modalRemoveChannel.title')}</Modal.Title>
         <Button className="close" onClick={() => dispatch(closeModal())}>

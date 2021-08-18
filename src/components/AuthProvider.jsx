@@ -29,6 +29,16 @@ const AuthProvider = ({ children }) => {
 
   const logOut = () => setLoggedIn({ isAuth: false, user: null });
 
+  const getHeaderForAuth = () => {
+    const userId = JSON.parse(localStorage.getItem('userId'));
+
+    if (userId && userId.token) {
+      return { Authorization: `Bearer ${userId.token}` };
+    }
+
+    return {};
+  };
+
   return (
     <authContext.Provider
       value={{
@@ -37,6 +47,7 @@ const AuthProvider = ({ children }) => {
         logIn,
         logOut,
         signUp,
+        getHeaderForAuth,
       }}
     >
       {children}

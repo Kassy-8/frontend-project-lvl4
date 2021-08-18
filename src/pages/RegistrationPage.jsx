@@ -25,6 +25,7 @@ const RegistrationPage = () => {
       passwordConfirmation: '',
     },
     validateOnBlur: false,
+    validateOnChange: false,
     validationSchema: yup.object({
       username: yup
         .string()
@@ -58,11 +59,6 @@ const RegistrationPage = () => {
     },
   });
 
-  const isNameInvalid = formik.touched.username && formik.errors.username;
-  const isPasswordInvalid = formik.touched.password && formik.errors.password;
-  const isConfirmationInvalid = formik.touched.passwordConfirmation
-    && formik.errors.passwordConfirmation;
-
   const registrationFormNode = (
     <Form onSubmit={formik.handleSubmit}>
       <h1 className="mb-3 text-center">{t('auth.registrationPage.title')}</h1>
@@ -76,10 +72,10 @@ const RegistrationPage = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           required
-          isInvalid={isNameInvalid || registrationFailed}
+          isInvalid={formik.errors.username || registrationFailed}
         />
         <div style={styles.formErrorBlock}>
-          {isNameInvalid}
+          {formik.errors.username}
           {registrationFailed
             && t('auth.registrationPage.failedRegustrationFeedback')}
         </div>
@@ -93,9 +89,9 @@ const RegistrationPage = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           required
-          isInvalid={isPasswordInvalid || registrationFailed}
+          isInvalid={formik.errors.password || registrationFailed}
         />
-        <div style={styles.formErrorBlock}>{isPasswordInvalid}</div>
+        <div style={styles.formErrorBlock}>{formik.errors.password}</div>
       </Form.Group>
       <Form.Group controlId="passwordConfirmation">
         <Form.Label>{t('auth.registrationPage.confirmationLabel')}</Form.Label>
@@ -106,10 +102,10 @@ const RegistrationPage = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           required
-          isInvalid={isConfirmationInvalid || registrationFailed}
+          isInvalid={formik.errors.passwordConfirmation || registrationFailed}
         />
         <div style={styles.formErrorBlock}>
-          {isConfirmationInvalid}
+          {formik.errors.passwordConfirmation}
           {networkError && t('networkError')}
         </div>
       </Form.Group>

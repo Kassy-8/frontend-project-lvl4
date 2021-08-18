@@ -19,7 +19,7 @@ const ModalWindow = () => {
     return null;
   }
 
-  const reservedChannelsNames = Object.values(channels).map(({ name }) => name);
+  const reservedChannelsNames = channels.map(({ name }) => name);
 
   const Component = modalsMapping[modalInfo.type];
 

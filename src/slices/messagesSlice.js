@@ -14,7 +14,7 @@ const messagesSlice = createSlice({
     },
   },
   extraReducers: {
-    [fetchChannels]: (state, { payload }) => {
+    [fetchChannels.fulfilled]: (state, { payload }) => {
       const { messages } = payload;
       state.messages = messages;
     },

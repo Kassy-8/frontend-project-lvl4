@@ -9,13 +9,11 @@ import { useTranslation } from 'react-i18next';
 import webSocketContext from '../../contexts/webSocketContext.js';
 import { closeModal } from '../../slices/modalSlice.js';
 
-const AddChannel = ({ modalInfo, reservedChannelsNames }) => {
+const AddChannel = ({ reservedChannelsNames }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const inputRef = useRef();
   const webSocket = useContext(webSocketContext);
-
-  const { isOpen } = modalInfo;
 
   useEffect(() => {
     inputRef.current.focus();
@@ -32,9 +30,13 @@ const AddChannel = ({ modalInfo, reservedChannelsNames }) => {
     initialValues: {
       name: '',
     },
+    validateOnChange: false,
+    validateOnBlur: false,
     validationSchema: yup.object({
       name: yup
-        .mixed()
+        .string()
+        .trim()
+        .required()
         .notOneOf(
           reservedChannelsNames,
           t('modalAddChannel.validation.noMatchName'),
@@ -79,7 +81,7 @@ const AddChannel = ({ modalInfo, reservedChannelsNames }) => {
   );
 
   return (
-    <Modal show={isOpen} onHide={() => dispatch(closeModal())} centered>
+    <Modal show onHide={() => dispatch(closeModal())} centered>
       <Modal.Header>
         <Modal.Title>{t('modalAddChannel.title')}</Modal.Title>
         <Button className="close" onClick={() => dispatch(closeModal())}>

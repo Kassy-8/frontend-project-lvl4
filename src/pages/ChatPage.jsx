@@ -1,53 +1,31 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import {
   Col, Container, Row, Spinner,
 } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
-import routes from '../routes.js';
+
+import useAuth from '../useAuth.js';
 import { fetchChannels } from '../slices/channelsSlice.js';
 import Header from '../components/Header.jsx';
 import ChannelsBox from '../components/ChannelsBox.jsx';
 import ChatBox from '../components/ChatBox.jsx';
 import ModalWindow from '../components/modals/ModalWindow.jsx';
 
-const getHeaderForAuth = () => {
-  const userId = JSON.parse(localStorage.getItem('userId'));
-
-  if (userId && userId.token) {
-    return { Authorization: `Bearer ${userId.token}` };
-  }
-
-  return {};
-};
-
 const ChatPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const auth = useAuth();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [networkError, setNetworkError] = useState(null);
+  const { status, error } = useSelector((state) => state.channelsInfo);
+
+  const isLoading = (status === 'idle') || (status === 'loading');
 
   useEffect(() => {
-    const fetchChatData = async () => {
-      try {
-        const { data } = await axios.get(routes.datasPath(), {
-          headers: getHeaderForAuth(),
-        });
-        dispatch(fetchChannels(data));
-        setIsLoading(false);
-      } catch (error) {
-        console.log('error in fetchChatData', error);
-        if (error.isAxiosError) {
-          setNetworkError(error);
-        }
-      }
-    };
-    fetchChatData();
+    dispatch(fetchChannels(auth.getHeaderForAuth()));
   }, []);
 
-  if (networkError) {
+  if (error) {
     return (
       <div className="h-100 d-flex flex-column">
         <Header />
@@ -55,7 +33,7 @@ const ChatPage = () => {
           <div className="m-2">
             <span>
               {t('networkError')}
-              {networkError}
+              {error}
             </span>
           </div>
         </Container>
@@ -77,7 +55,7 @@ const ChatPage = () => {
     <div className="h-100 d-flex flex-column">
       <Header />
       <Container fluid className="border h-100 my-4 overflow-auto">
-        {(isLoading)
+        {isLoading
           ? spinner
           : (
             <>

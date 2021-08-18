@@ -5,6 +5,7 @@ import {
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useTranslation } from 'react-i18next';
+import * as yup from 'yup';
 
 import webSocketContext from '../contexts/webSocketContext.js';
 import useAuth from '../useAuth.js';
@@ -38,6 +39,12 @@ const ChatBox = () => {
     initialValues: {
       message: '',
     },
+    validationSchema: yup.object({
+      message: yup
+        .string()
+        .trim()
+        .required(),
+    }),
     onSubmit: (values) => {
       const newMessage = {
         username: authInfo.username,
