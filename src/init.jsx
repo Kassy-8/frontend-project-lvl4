@@ -12,12 +12,16 @@ import {
 import { io } from 'socket.io-client';
 import '../assets/application.scss';
 
+import initSocketAPI from './initSocketAPI';
 import store from './store';
 import App from './App.jsx';
 import ErrorBoundaryPage from './pages/ErrorBoundaryPage.jsx';
+import webSocketContext from './contexts/webSocketContext.js';
 import translation from './assets/locale/ruLocale.js';
 
-const init = async (socketClient = io()) => {
+const init = async (socket = io()) => {
+  const socketAPI = initSocketAPI(socket, store);
+
   const i18nInstance = i18n.createInstance();
   await i18nInstance.use(initReactI18next).init({
     lng: 'ru',
@@ -37,13 +41,16 @@ const init = async (socketClient = io()) => {
     captureUncaught: true,
     captureUnhandledRejections: true,
   };
+
   return (
     <I18nextProvider i18n={i18nInstance}>
       <RollbarProvider config={rollbarConfig}>
         <ErrorBoundary level={LEVEL_WARN} fallbackUI={ErrorBoundaryPage}>
-          <Provider store={store}>
-            <App socketClient={socketClient} />
-          </Provider>
+          <webSocketContext.Provider value={socketAPI}>
+            <Provider store={store}>
+              <App />
+            </Provider>
+          </webSocketContext.Provider>
         </ErrorBoundary>
       </RollbarProvider>
     </I18nextProvider>

@@ -11,13 +11,15 @@ import Header from '../components/Header.jsx';
 import ChannelsBox from '../components/ChannelsBox.jsx';
 import ChatBox from '../components/ChatBox.jsx';
 import ModalWindow from '../components/modals/ModalWindow.jsx';
+import { selectChatPageError, selectChatPageStatus } from '../selectors.js';
 
 const ChatPage = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const auth = useAuth();
 
-  const { status, error } = useSelector((state) => state.channelsInfo);
+  const status = useSelector(selectChatPageStatus);
+  const error = useSelector(selectChatPageError);
 
   const isLoading = (status === 'idle') || (status === 'loading');
 

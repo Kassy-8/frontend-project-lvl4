@@ -4,6 +4,9 @@ export const selectCurrentChannelId = (state) => state.channelsInfo.currentChann
 export const selectChannel = (id) => (state) => state.channelsInfo.channels
   .find((channel) => channel.id === id);
 
+export const selectChatPageError = (state) => state.channelsInfo.error;
+export const selectChatPageStatus = (state) => state.channelsInfo.status;
+
 export const selectModalInfo = (state) => state.modalInfo;
 
 export const selectMessagesForActiveChannel = (id) => (state) => state.messagesInfo.messages

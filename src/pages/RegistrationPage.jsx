@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import {
@@ -15,14 +15,15 @@ const RegistrationPage = () => {
   const nameInputRef = useRef();
   const auth = useAuth();
 
-  const [registrationFailed, setRegistrationFailed] = useState(null);
-  const [networkError, setNetworkError] = useState(null);
-
   const formik = useFormik({
     initialValues: {
       username: '',
       password: '',
       passwordConfirmation: '',
+    },
+    initialStatus: {
+      registrationFailed: false,
+      networkError: false,
     },
     validateOnBlur: false,
     validateOnChange: false,
@@ -41,19 +42,17 @@ const RegistrationPage = () => {
         .required(t('auth.validation.required'))
         .oneOf([yup.ref('password')], t('auth.validation.passwordMatch')),
     }),
-    onSubmit: async (values) => {
+    onSubmit: async (values, formikBag) => {
       try {
         await auth.signUp(values);
       } catch (error) {
         if (error.isAxiosError) {
           if (error.response && error.response.status === 409) {
-            setNetworkError(null);
-            setRegistrationFailed(true);
+            formikBag.setStatus({ registrationFailed: true, networkError: false });
             nameInputRef.current.select();
             return;
           }
-          setRegistrationFailed(false);
-          setNetworkError(true);
+          formikBag.setStatus({ registrationFailed: false, networkError: true });
         }
       }
     },
@@ -72,11 +71,11 @@ const RegistrationPage = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           required
-          isInvalid={formik.errors.username || registrationFailed}
+          isInvalid={formik.errors.username || formik.status.registrationFailed}
         />
         <div style={styles.formErrorBlock}>
           {formik.errors.username}
-          {registrationFailed
+          {formik.status.registrationFailed
             && t('auth.registrationPage.failedRegustrationFeedback')}
         </div>
       </Form.Group>
@@ -89,7 +88,7 @@ const RegistrationPage = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           required
-          isInvalid={formik.errors.password || registrationFailed}
+          isInvalid={formik.errors.password || formik.status.registrationFailed}
         />
         <div style={styles.formErrorBlock}>{formik.errors.password}</div>
       </Form.Group>
@@ -102,11 +101,11 @@ const RegistrationPage = () => {
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
           required
-          isInvalid={formik.errors.passwordConfirmation || registrationFailed}
+          isInvalid={formik.errors.passwordConfirmation || formik.status.registrationFailed}
         />
         <div style={styles.formErrorBlock}>
           {formik.errors.passwordConfirmation}
-          {networkError && t('networkError')}
+          {formik.status.networkError && t('networkError')}
         </div>
       </Form.Group>
 
