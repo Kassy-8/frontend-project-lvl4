@@ -32,3 +32,6 @@ https://mighty-bastion-65317.herokuapp.com/
 * Build project (app starts on localhost: 5000):
 
     `make start`
+
+
+    It's for the testing branch only
